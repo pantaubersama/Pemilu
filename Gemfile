@@ -51,3 +51,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'grape'
 gem 'hashie-forbidden_attributes'
 gem 'rack-cors', :require => 'rack/cors'
+
+gem 'grape-swagger-rails'

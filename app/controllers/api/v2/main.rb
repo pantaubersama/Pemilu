@@ -1,11 +1,11 @@
 require "grape-swagger"
 module API
-  module V1
+  module V2
     class Main < Grape::API
-      mount API::V1::HelloWorlds::Routes
+      mount API::V2::HelloWorlds::Routes
 
       # swagger settings
-      options = {version: "v1"}
+      options = {version: "v2"}
       GrapeSwaggerRails.options.app_url            = "/#{options[:version]}/documentation"
       GrapeSwaggerRails.options.url                = "/doc"
       GrapeSwaggerRails.options.hide_api_key_input = true

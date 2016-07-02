@@ -1,15 +1,13 @@
 module API
-  module V1
+  module V2
     module Config
       extend ActiveSupport::Concern
       included do
-        version "v1", using: :header, vendor: 'mnpix'
+        version "v2", using: :header, vendor: 'mnpix'
         default_format :json
         format :json
-        content_type :json, 'application/json'
-        formatter :json, API::V1::SuccessFormatter
-        error_formatter :json, API::V1::ErrorFormatter
-
+        formatter :json, API::V2::SuccessFormatter
+        error_formatter :json, API::V2::ErrorFormatter
         rescue_from :all do |e|
           begin
             status = e.status
