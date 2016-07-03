@@ -2,6 +2,9 @@ require "grape-swagger"
 module API
   module V2
     class Main < Grape::API
+      use Grape::Middleware::Logger, {
+          logger: Logger.new(STDERR)
+      }
       mount API::V2::HelloWorlds::Routes
 
       # swagger settings
