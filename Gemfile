@@ -50,6 +50,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # Api
 gem 'grape'
 gem 'grape-middleware-logger'
+gem 'grape-entity'
 gem 'hashie-forbidden_attributes'
 gem 'rack-cors', :require => 'rack/cors'
 

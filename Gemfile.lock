@@ -75,6 +75,9 @@ GEM
       rack (>= 1.3.0)
       rack-accept
       virtus (>= 1.0.0)
+    grape-entity (0.5.1)
+      activesupport
+      multi_json (>= 1.3.2)
     grape-middleware-logger (1.6.0)
       grape (>= 0.14, < 1)
     grape-swagger (0.21.0)
@@ -199,6 +202,7 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.2)
   grape
+  grape-entity
   grape-middleware-logger
   grape-swagger-rails
   hashie-forbidden_attributes
