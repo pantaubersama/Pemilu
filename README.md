@@ -1,24 +1,27 @@
-# README
+# POKEMON API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+##Introduction
 
-Things you may want to cover:
+This source is my Core Application fo build backend API.
 
-* Ruby version
+I created it step by step, can u read by my commited in branch Production.
 
-* System dependencies
+##What I Implemented?
+- Rails 5
+    - don't care about this
+- Grape API
+    - https://github.com/ruby-grape/grape
+- Swagger Rails
+    - https://github.com/ruby-grape/grape-swagger-rails
+- Grape Entity
+    - https://github.com/ruby-grape/grape-entity
+- A logger for Grape apps
+    - https://github.com/ridiculous/grape-middleware-logger
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+###Logs
+- Versioning api
+- Entity for formated respon api
+- Logger api
+- Swagger documentation
+- Modular Architecture
+- ...
