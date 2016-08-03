@@ -17,6 +17,12 @@ I created it step by step, can u read by my commited in branch Production.
     - https://github.com/ruby-grape/grape-entity
 - A logger for Grape apps
     - https://github.com/ridiculous/grape-middleware-logger
+###USAGE
+####documnetation
+#####for doc v1
+- http://example.com/documentation/v1
+#####for doc v2
+- http://example.com/documentation/v2
 
 ###Logs
 - Versioning api
