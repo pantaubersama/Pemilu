@@ -9,14 +9,11 @@ module API
 
       # swagger settings
       options = {version: "v2"}
-      GrapeSwaggerRails.options.app_url            = "/#{options[:version]}/documentation"
-      GrapeSwaggerRails.options.url                = "/doc"
-      GrapeSwaggerRails.options.hide_api_key_input = true
       add_swagger_documentation(
           api_version:             options[:version],
           doc_version:             options[:version],
           hide_documentation_path: true,
-          mount_path:              "documentation/doc",
+          mount_path:              "documentation/#{options[:version]}/doc",
           hide_format:             true
       )
     end

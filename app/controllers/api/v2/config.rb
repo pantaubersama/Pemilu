@@ -3,11 +3,13 @@ module API
     module Config
       extend ActiveSupport::Concern
       included do
-        version "v2", using: :header, vendor: 'mnpix'
         default_format :json
+        version "v2", using: :accept_version_header, vendor: 'mnpix'
         format :json
+        content_type :json, 'application/json; charset=UTF-8'
         formatter :json, API::V2::SuccessFormatter
         error_formatter :json, API::V2::ErrorFormatter
+
         rescue_from :all do |e|
           begin
             status = e.status

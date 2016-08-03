@@ -2,10 +2,15 @@ module API
   module V2
     module ErrorFormatter
       def self.call message, backtrace, options, env
+        begin
+          code = env['api.endpoint'].status
+        rescue
+          code =  500
+        end
         {
             error:{
-                code: env['api.endpoint'].status,
-                message:  Rack::Utils::HTTP_STATUS_CODES[env['api.endpoint'].status],
+                code: code,
+                message:  Rack::Utils::HTTP_STATUS_CODES[code],
                 errors: [message]
             }
         }.to_json

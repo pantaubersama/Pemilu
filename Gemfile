@@ -59,4 +59,5 @@ gem 'grape-entity'
 gem 'hashie-forbidden_attributes'
 gem 'rack-cors', :require => 'rack/cors'
 
+gem 'grape-swagger'
 gem 'grape-swagger-rails'
