@@ -20,9 +20,9 @@ I created it step by step, can u read by my commited in branch Production.
 ###USAGE
 ####documnetation
 #####for doc v1
-- http://example.com/documentation/v1
+- http://thepokemonapi.herokuapp.com/documentation/v1
 #####for doc v2
-- http://example.com/documentation/v2
+- http://thepokemonapi.herokuapp.com/documentation/v2
 
 ###Logs
 - Versioning api
