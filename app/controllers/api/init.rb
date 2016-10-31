@@ -7,7 +7,7 @@ module API
 
     versions = ["v1", "v2"]
     options = {}
-    GrapeSwaggerRails.options.before_action do |request|
+    GrapeSwaggerRails.options.before_filter do |request|
       versions.each do |v|
         if URI.parse(request.url).request_uri.eql?("/documentation/#{v}/")
           options = {version: "#{v}"}
