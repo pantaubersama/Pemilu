@@ -7,8 +7,7 @@ This source is my Core Application fo build backend API.
 I created it step by step, can u read by my commited in branch Production.
 
 ##What I Implemented?
-- Rails 5
-    - don't care about this
+- Rails 5 API
 - Grape API
     - https://github.com/ruby-grape/grape
 - Swagger Rails
@@ -36,4 +35,5 @@ I created it step by step, can u read by my commited in branch Production.
 - Logger api
 - Swagger documentation
 - Modular Architecture
+- Rspec
 - ...

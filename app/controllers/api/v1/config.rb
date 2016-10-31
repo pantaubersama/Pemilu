@@ -7,16 +7,25 @@ module API
         version "v1", using: :accept_version_header, vendor: 'mnpix'
         format :json
         content_type :json, 'application/json; charset=UTF-8'
-        formatter :json, API::V1::SuccessFormatter
-        error_formatter :json, API::V1::ErrorFormatter
+        formatter :json, API::SuccessFormatter
+        error_formatter :json, API::ErrorFormatter
 
-        rescue_from :all do |e|
-          begin
-            status = e.status
-          rescue
-            status = 500
+        rescue_from :all
+        helpers do
+          include ActionController::HttpAuthentication::Token
+          def me
+            @me
           end
-          error!(e, status)
+
+          def token
+            token_params_from(headers['Authorization']).shift[1]
+          end
+
+          def logger
+            Rails.logger
+          end
+
+
         end
       end
     end
