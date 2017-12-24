@@ -1,5 +1,4 @@
 class API::V1::HelloWorlds::Resources::HelloWorlds < Grape::API
-  include API::V1::Config
   resource "hello_worlds" do
     desc "Version"
     params do
