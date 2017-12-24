@@ -1,6 +1,8 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
+    credentials = true
     if Rails.env.test? || Rails.env.development?
+      credentials = false
       origins "*"
     else
       origins "*"
@@ -9,7 +11,8 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     resource '*',
              :headers     => :any,
              :methods     => [:get, :post, :delete, :put],
-             :credentials => true,
+             :credentials => credentials,
              :max_age     => 0
   end
+
 end

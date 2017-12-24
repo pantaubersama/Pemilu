@@ -2,6 +2,9 @@ class API::V1::HelloWorlds::Resources::HelloWorlds < Grape::API
   include API::V1::Config
   resource "hello_worlds" do
     desc "Version"
+    params do
+      optional :v, type: String, default: 'v1', values: ['v1'], description: "Documentation Version"
+    end
     get "version" do
       results = {version: "v1"}
       present results

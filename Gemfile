@@ -61,7 +61,8 @@ gem 'figaro'
 # then run $ bundle exec figaro install
 
 ###doc [7] set up factory_girl
-gem 'factory_girl_rails'
+# DEPRECATION gem 'factory_girl_rails'
+gem 'factory_bot_rails'
 
 ###doc [8] set up API grape and swagger doc
 gem 'grape'

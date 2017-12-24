@@ -4,7 +4,6 @@ module API
     mount API::V2::Main
 
     # swagger settings
-
     versions = ["v1", "v2"]
     options = {}
     GrapeSwaggerRails.options.before_filter do |request|
@@ -18,7 +17,6 @@ module API
       GrapeSwaggerRails.options.url                = "/doc"
       GrapeSwaggerRails.options.hide_url_input     = true
       GrapeSwaggerRails.options.hide_api_key_input = true
-      GrapeSwaggerRails.options.headers            = {"Accept-Version" => "#{options[:version]}"}
     end
 
 
