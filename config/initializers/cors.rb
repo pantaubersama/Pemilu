@@ -1,6 +1,6 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    credentials = true
+    credentials = false
     if Rails.env.test? || Rails.env.development?
       credentials = false
       origins "*"
