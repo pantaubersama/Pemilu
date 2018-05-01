@@ -17,7 +17,7 @@ class API::V1::HelloWorlds::Resources::HelloWorlds < Grape::API
     params do
       requires :id, type: Integer
     end
-    get "/:id" do
+    get "/show" do
       results = [{id: 1 , title: "Hello World"},{id: 2 , title: "Hello World 2"},{id: 3 , title: "Hello World 3"},]
       present results[params.id-1], with: API::V1::HelloWorlds::Entities::Hello
     end
@@ -34,7 +34,7 @@ class API::V1::HelloWorlds::Resources::HelloWorlds < Grape::API
       requires :id, type: Integer
       requires :title, type: String
     end
-    put "/:id" do
+    put "/" do
       error!("Can't find id #{params.id}", 422) unless [1,2,3].include?(params.id)
       results = [{id: params.id , title: params.title }]
       present results, with: API::V1::HelloWorlds::Entities::Hello
@@ -43,7 +43,7 @@ class API::V1::HelloWorlds::Resources::HelloWorlds < Grape::API
     params do
       requires :id, type: Integer
     end
-    delete "/:id" do
+    delete "/" do
       error!("Can't find id #{params.id}", 422) unless [1,2,3].include?(params.id)
 
       present "success deleted data with id #{params.id}"

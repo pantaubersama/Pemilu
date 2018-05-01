@@ -3,7 +3,7 @@ module API
   module V1
     class Main < Grape::API
       # Default Config API
-      include API::V1::Default
+      include API::V1::Config
 
       # Exception Handlers
       include API::V1::ExceptionHandlers

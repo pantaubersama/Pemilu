@@ -1,6 +1,6 @@
 module API
   module V1
-    module Default
+    module Config
       def self.included(base)
         base.instance_eval do
           # Global config Grape
