@@ -189,6 +189,10 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
+    rename (1.0.6)
+      activesupport
+      rails (>= 3.0.0)
+      thor (>= 0.19.1)
     rspec (3.7.0)
       rspec-core (~> 3.7.0)
       rspec-expectations (~> 3.7.0)
@@ -269,6 +273,7 @@ DEPENDENCIES
   rack-cors
   rails (~> 5.2.0)
   rails_12factor
+  rename
   rspec-rails (~> 3.5)
   rubocop (~> 0.57.2)
   spring

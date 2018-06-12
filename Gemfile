@@ -79,3 +79,6 @@ gem 'hashie-forbidden_attributes'
 gem 'grape-swagger'
 gem 'grape-swagger-rails'
 gem 'rubocop', '~> 0.57.2', require: false
+
+gem 'rename'
+#rails g rename:into New-Name
