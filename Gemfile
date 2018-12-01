@@ -64,3 +64,8 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+###doc [6] set up figaro for env
+# gem 'figaro'
+# then run $ bundle exec figaro install
+gem 'dotenv-rails', require: 'dotenv/rails-now'
