@@ -19,8 +19,8 @@
 
 # Ignore uploaded files in development
 /storage/*
+!/storage/.keep
 
-# Ignore Byebug command history file.
 .byebug_history
 
 # Ignore master key for decrypting credentials and more.
@@ -29,3 +29,9 @@
 # Ignore application configuration
 /config/application.yml
 /.idea
+.env.*
+.ruby-version
+
+# Ignore uploaded files
+/public/uploads
+/spec/support/uploads
