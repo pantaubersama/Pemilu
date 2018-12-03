@@ -69,3 +69,20 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # gem 'figaro'
 # then run $ bundle exec figaro install
 gem 'dotenv-rails', require: 'dotenv/rails-now'
+
+###doc [7] set up API grape and swagger doc
+gem 'grape'
+gem 'grape-middleware-logger'
+gem 'grape-entity'
+gem 'hashie-forbidden_attributes'
+
+# documentation
+gem 'grape-swagger'
+gem 'grape-swagger-rails'
+
+# rename app
+gem 'rename'
+
+###doc [8] uncomment rack to handling Cross-Origin Resource Sharing (CORS) API
+# Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
+gem 'rack-cors'
