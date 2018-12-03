@@ -8,7 +8,7 @@ class API::V1::Adventures::Resources::Adventures < API::V1::ApplicationResource
     desc "Get All"
     get "/" do
       results = [{ id: 1, title: "Hello World" }, { id: 2, title: "Hello World 2" }, { id: 3, title: "Hello World 3" },]
-      present results, with: API::V1::Adventures::Entities::Adventure
+      present :adventures, results, with: API::V1::Adventures::Entities::Adventure
     end
     desc "Get by id"
     params do
@@ -16,15 +16,15 @@ class API::V1::Adventures::Resources::Adventures < API::V1::ApplicationResource
     end
     get "/show" do
       results = [{ id: 1, title: "Hello World" }, { id: 2, title: "Hello World 2" }, { id: 3, title: "Hello World 3" },]
-      present results[params.id - 1], with: API::V1::Adventures::Entities::Adventure
+      present :adventure, results[params.id - 1], with: API::V1::Adventures::Entities::Adventure
     end
     desc "Create"
     params do
       requires :title, type: String
     end
     post "/" do
-      results = [{ id: 4, title: params.title }]
-      present results, with: API::V1::Adventures::Entities::Adventure
+      results = { id: 4, title: params.title }
+      present :adventure, results, with: API::V1::Adventures::Entities::Adventure
     end
     desc "Update"
     params do
@@ -33,10 +33,8 @@ class API::V1::Adventures::Resources::Adventures < API::V1::ApplicationResource
     end
     put "/" do
       error!("Can't find id #{params.id}", 422) unless [1, 2, 3].include?(params.id)
-      results = [{ id: params.id, title: params.title }]
-      meta    = { version: params.version }
-      present meta
-      present results, with: API::V1::Adventures::Entities::Adventure
+      results = { id: params.id, title: params.title }
+      present :adventure, results, with: API::V1::Adventures::Entities::Adventure
     end
     desc "Delete"
     params do
