@@ -1,4 +1,6 @@
 class API::V1::Adventures::Resources::Adventures < API::V1::ApplicationResource
+  helpers API::V1::Helpers
+
   resource "adventures" do
     desc "Version"
     get "version" do
@@ -7,8 +9,10 @@ class API::V1::Adventures::Resources::Adventures < API::V1::ApplicationResource
     end
     desc "Get All"
     get "/" do
-      results = [{ id: 1, title: "Hello World" }, { id: 2, title: "Hello World 2" }, { id: 3, title: "Hello World 3" },]
-      present :adventures, paginate(results), with: API::V1::Adventures::Entities::Adventure
+      results   = [{ id: 1, title: "Hello World" }, { id: 2, title: "Hello World 2" }, { id: 3, title: "Hello World 3" },]
+      resources = paginate(results)
+      present_metas resources
+      present :adventures, resources, with: API::V1::Adventures::Entities::Adventure
     end
     desc "Get by id"
     params do

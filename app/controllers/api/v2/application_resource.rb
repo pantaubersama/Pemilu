@@ -1,9 +1,6 @@
 module API
   module V2
     class ApplicationResource < Grape::API
-      # Helpers
-      helpers API::V2::Helpers
-
       # Pagination
       paginate per_page: 100, max_per_page: 500
 

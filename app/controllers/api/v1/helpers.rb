@@ -1,6 +1,9 @@
 module API::V1::Helpers
-  extend Grape::API::Helpers
-  Grape::Entity.format_with :iso8601 do |date|
-    date.iso8601 if date.present?
+  # meta response
+  def present_metas resources
+    total_pages  = resources.total_pages
+    limit_value  = resources.limit_value
+    current_page = resources.current_page
+    present :meta, { total_pages: total_pages, limit_value: limit_value, current_page: current_page }, with: API::V1::Metas::Entities::Meta
   end
 end
