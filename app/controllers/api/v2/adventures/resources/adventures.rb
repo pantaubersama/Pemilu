@@ -6,9 +6,10 @@ class API::V2::Adventures::Resources::Adventures < API::V2::ApplicationResource
       present results
     end
     desc "Get All"
+    paginate per_page: 100, max_per_page: 500
     get "/" do
       results = [{ id: 1, title: "Hello World" }, { id: 2, title: "Hello World 2" }, { id: 3, title: "Hello World 3" },]
-      present :adventures, results, with: API::V2::Adventures::Entities::Adventure
+      present :adventures, paginate(results), with: API::V1::Adventures::Entities::Adventure
     end
     desc "Get by id"
     params do

@@ -86,3 +86,9 @@ gem 'rename'
 ###doc [8] uncomment rack to handling Cross-Origin Resource Sharing (CORS) API
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
+
+###doc [9] paginator
+# Then choose your preferred paginator from the following:
+gem 'kaminari'
+# Finally...
+gem 'api-pagination'

@@ -9,12 +9,27 @@ RSpec.describe "Api::V2::Adventures", type: :request do
     end
   end
   describe "[GET] Endpoint /" do
-    it "should returns 200 with valid params when success" do
+    it "should returns 200 with valid params when success all" do
       get "/v2/adventures"
       expect(json_response[:data]).to eq({ "adventures" => [
           { "id" => 1, "title" => "Hello World" },
           { "id" => 2, "title" => "Hello World 2" },
           { "id" => 3, "title" => "Hello World 3" }
+      ] })
+      expect(response.status).to eq(200)
+    end
+    it "should returns 200 with valid params when success using pagination (1)" do
+      get "/v2/adventures", params: { page: 1, per_page: 1 }
+      expect(json_response[:data]).to eq({ "adventures" => [
+          { "id" => 1, "title" => "Hello World" }
+      ] })
+      expect(response.status).to eq(200)
+    end
+    it "should returns 200 with valid params when success using pagination (2)" do
+      get "/v2/adventures", params: { page: 1, per_page: 2 }
+      expect(json_response[:data]).to eq({ "adventures" => [
+          { "id" => 1, "title" => "Hello World" },
+          { "id" => 2, "title" => "Hello World 2" }
       ] })
       expect(response.status).to eq(200)
     end
