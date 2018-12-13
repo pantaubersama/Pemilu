@@ -1,7 +1,7 @@
 # README
-##sorry no doc, need help call me at `namakukingkong@gmail.com`
+## sorry no doc, need help call me at `namakukingkong@gmail.com`
 
-#####Setup
+##### Setup
 - `git clone git@github.com:namakukingkong/pokemon_api.git`
 - `cd pokemon_api`
 - `rails g rename:into <new_name>`
@@ -39,7 +39,7 @@
 - `$ rails s`
 - go to `http://localhost:3000/doc`
 
-#####What do you get
+##### What do you get
 - rails API
 - postgres using uuid
 - grape with modular arch
