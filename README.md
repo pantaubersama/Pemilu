@@ -11,11 +11,11 @@
     BASE_URL="http://0.0.0.0:3000"
     
     # database master
-    DATABASE_NAME=pokeon_api_development
+    DATABASE_NAME=pemilu_development
     DATABASE_USERNAME=postgres
     DATABASE_PASSWORD=namakualam
     DATABASE_HOSTNAME= localhost
-    DATABASE_PORT="5433"
+    DATABASE_PORT="5432"
     RAILS_MAX_THREADS="5"
 ```
 
@@ -24,11 +24,11 @@
     BASE_URL="http://0.0.0.0:3000"
     
     # database master
-    DATABASE_NAME=pokeon_api_development
+    DATABASE_NAME=pemilu_test
     DATABASE_USERNAME=postgres
     DATABASE_PASSWORD=namakualam
     DATABASE_HOSTNAME= localhost
-    DATABASE_PORT="5433"
+    DATABASE_PORT="5432"
     RAILS_MAX_THREADS="5"
 ```
    
