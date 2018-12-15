@@ -15,6 +15,7 @@ module API
     include Grape::Extensions::Hashie::Mash::ParamBuilder
 
     mount API::V1::MainLinimasa
+    mount API::V2::MainLinimasa
 
     GrapeSwaggerRails.options.app_url            = "/linimasa/v1/doc"
     GrapeSwaggerRails.options.url                = "/api"
