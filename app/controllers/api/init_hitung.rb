@@ -1,5 +1,5 @@
 module API
-  class Init < Grape::API
+  class InitHitung < Grape::API
     # Create log in console
     #if ENV['API_DEBUGGING'].eql?("true")
     insert_after Grape::Middleware::Formatter, Grape::Middleware::Logger, {
@@ -14,10 +14,9 @@ module API
     # Build params using object
     include Grape::Extensions::Hashie::Mash::ParamBuilder
 
-    mount API::V1::Main
-    mount API::V2::Main
+    mount API::V1::MainHitung
 
-    GrapeSwaggerRails.options.app_url            = "/v1/doc"
+    GrapeSwaggerRails.options.app_url            = "/hitung/v1/doc"
     GrapeSwaggerRails.options.url                = "/api"
     GrapeSwaggerRails.options.hide_url_input     = false
     GrapeSwaggerRails.options.hide_api_key_input = true

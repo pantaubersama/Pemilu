@@ -1,14 +1,12 @@
 # README
-## sorry no doc, need help call me at `namakukingkong@gmail.com`
+## Pemilu 
+#### Modules : Lini Masa, Pendidikan Politik, Lapor, Hitung
 
 ##### Setup
-- `git clone git@github.com:namakukingkong/pokemon_api.git`
-- `cd pokemon_api`
-- `rails g rename:into <new_name>`
-- `cd ../<new_name>`
-- setup ur database (postgresql)
+- `git clone git@git.extrainteger.com:pantau-group/API/pemilu.git`
+- setup your database (postgresql)
 - create env variable files (.env.development , .env.test)
-    - .env.development 
+    - `.env.development`
 ```
     BASE_URL="http://0.0.0.0:3000"
     
@@ -21,7 +19,7 @@
     RAILS_MAX_THREADS="5"
 ```
 
- - .env.test 
+ - `.env.test` 
 ```
     BASE_URL="http://0.0.0.0:3000"
     
@@ -37,13 +35,10 @@
 - `$ bundle install`
 - `$ rails db:create db:migrate`
 - `$ rails s`
-- go to `http://localhost:3000/doc`
+- go to [`http://localhost:3000/doc`](http://localhost:3000/doc)
 
-##### What do you get
-- rails API
-- postgres using uuid
-- grape with modular arch
-- API versioning
-- respec (factory_bot, shulda_matcher,faker)
-- examples :) `http://localhost:3000/doc`
-- etc
+#### make sure all success installed
+- [`http://localhost:3000/linimasa/v1/infos`](http://localhost:3000/linimasa/v1/infos)
+- [`http://localhost:3000/pendidikan_politik/v1/infos`](http://localhost:3000/pendidikan_politik/v1/infos)
+- [`http://localhost:3000/lapor/v1/infos`](http://localhost:3000/lapor/v1/infos)
+- [`http://localhost:3000/hitung/v1/infos`](http://localhost:3000/hitung/v1/infos)

@@ -1,12 +1,16 @@
 require "grape-swagger"
 module API
-  module V2
-    class Main < Grape::API
+  module V1
+    class MainLapor < Grape::API
       # Default Config API
-      include API::V2::Config
+      include API::V1::Config
 
       # Mounting Modules Api
-      mount API::V2::Adventures::Routes
+      mount API::V1::Adventures::Routes
+
+      # Mounting Modules Api /linimasa
+      mount API::V1::Lapor::Infos::Routes
+
 
       # Swagger config
       add_swagger_documentation(
