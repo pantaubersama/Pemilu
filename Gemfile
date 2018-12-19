@@ -99,3 +99,5 @@ gem 'kaminari'
 gem 'api-pagination'
 
 gem 'seed_migration'
+
+gem 'unicorn', group: [:staging, :production]
