@@ -177,13 +177,20 @@ GEM
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)
     method_source (0.9.2)
+    mime-types (3.2.2)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2018.0812)
     mimemagic (0.3.2)
     mini_mime (1.0.1)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
     msgpack (1.2.4)
     multi_json (1.13.1)
+<<<<<<< HEAD
     multipart-post (2.0.0)
+=======
+    multi_xml (0.6.0)
+>>>>>>> WIP: oauth guard with wrapper
     mustermann (1.0.3)
     mustermann-grape (1.0.0)
       mustermann (~> 1.0.0)
@@ -342,6 +349,7 @@ DEPENDENCIES
   grape-swagger-rails
   guard-rspec
   hashie-forbidden_attributes
+  httparty
   kaminari
   listen (>= 3.0.5, < 3.2)
   pg (>= 0.18, < 2.0)

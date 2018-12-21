@@ -1,4 +1,6 @@
 require "grape-swagger"
+require 'pantau_auth_wrapper'
+
 module API
   module V1
     class MainHitung < Grape::API
