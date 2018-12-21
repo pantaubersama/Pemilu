@@ -2,11 +2,10 @@ class API::V1::Hitung::Infos::Resources::Infos < API::V1::ApplicationResource
   helpers API::V1::Helpers
   
   resource "infos" do
-    desc "Test", headers: AUTHORIZATION_HEADERS
+    desc "Test your token here!", headers: AUTHORIZATION_HEADERS
     oauth2 
     get :test do
-      authenticate_user! request.headers["Authorization"].try(:split, " ").try(:last) || params[:access_token]
-      present :hello,  current_user
+      present :hello, "yay !"
     end
 
     desc "Version"
