@@ -14,18 +14,6 @@ module API
     # Build params using object
     include Grape::Extensions::Hashie::Mash::ParamBuilder
 
-    # pantau auth wrapper
-    use ::PantauAuthWrapper::Oauth2
-    helpers ::PantauAuthWrapper::Helpers
-
-    # rescue invalid token
-    rescue_from PantauAuthWrapper::Errors::InvalidToken do |e|
-      error!(e, 401)
-    end
-    rescue_from PantauAuthWrapper::Errors::InvalidScope do |e|
-      error!(e, 401)
-    end
-
     mount API::V1::MainPendidikanPolitik
 
     GrapeSwaggerRails.options.app_url            = "/pendidikan_politik/v1/doc"

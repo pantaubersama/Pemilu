@@ -14,15 +14,17 @@ module API
     # Build params using object
     include Grape::Extensions::Hashie::Mash::ParamBuilder
 
-    # pantau auth wrapper
-    use ::PantauAuthWrapper::Oauth2
-    helpers ::PantauAuthWrapper::Helpers
+    # use middleware
+    use ::GrapeSimpleAuth::Oauth2
+
+    # use helpers
+    helpers ::GrapeSimpleAuth::Helpers
 
     # rescue invalid token
-    rescue_from PantauAuthWrapper::Errors::InvalidToken do |e|
+    rescue_from GrapeSimpleAuth::Errors::InvalidToken do |e|
       error!(e, 401)
     end
-    rescue_from PantauAuthWrapper::Errors::InvalidScope do |e|
+    rescue_from GrapeSimpleAuth::Errors::InvalidScope do |e|
       error!(e, 401)
     end
 

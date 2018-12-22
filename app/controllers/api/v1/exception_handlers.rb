@@ -3,19 +3,12 @@ module API
     module ExceptionHandlers
       def self.included(base)
         base.instance_eval do
-
           rescue_from :all do |e|
             # When required params are missing or validation fails
             if e.class.name == 'Grape::Exceptions::ValidationErrors'
               code    = 406
               message = e.message
               # Bad token
-            elsif e.class.name == "PantauAuthWrapper::Errors::InvalidToken"
-              code = 401
-              message = e.message
-            elsif e.class.name == "PantauAuthWrapper::Errors::InvalidScope"
-              code = 401
-              message = e.message
             elsif e.class.name == 'RuntimeError' && e.message == 'Invalid base64 string'
               code    = 406
               message = '401 Unauthorized'
