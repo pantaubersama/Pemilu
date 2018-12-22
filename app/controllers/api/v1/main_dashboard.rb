@@ -1,7 +1,7 @@
 require "grape-swagger"
 module API
   module V1
-    class MainLinimasa < Grape::API
+    class MainDashboard < Grape::API
       # Default Config API
       include API::V1::Config
 
@@ -12,8 +12,7 @@ module API
       # mount API::V1::Adventures::Routes
 
       # Mounting Modules Api /linimasa
-      # mount API::V1::Linimasa::Infos::Routes
-      mount API::V1::Linimasa::Crowlings::Routes
+      mount API::V1::Dashboard::Linimasa::Routes
 
 
       # Swagger config

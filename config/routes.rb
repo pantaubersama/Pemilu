@@ -5,5 +5,6 @@ Rails.application.routes.draw do
   mount API::InitPendidikanPolitik, at: "/pendidikan_politik"
   mount API::InitLapor, at: "/lapor"
   mount API::InitHitung, at: "/hitung"
+  mount API::InitDashboard, at: "/dashboard"
   mount GrapeSwaggerRails::Engine, as: "doc", at: "/doc"
 end
