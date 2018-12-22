@@ -103,3 +103,4 @@ gem 'seed_migration'
 gem 'unicorn', group: [:staging, :production]
 
 gem 'twitter'
+gem 'grape_simple_auth'
