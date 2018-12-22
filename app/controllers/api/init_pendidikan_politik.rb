@@ -14,6 +14,20 @@ module API
     # Build params using object
     include Grape::Extensions::Hashie::Mash::ParamBuilder
 
+    # use middleware
+    use ::GrapeSimpleAuth::Oauth2
+
+    # use helpers
+    helpers ::GrapeSimpleAuth::Helpers
+
+    # rescue invalid token
+    rescue_from GrapeSimpleAuth::Errors::InvalidToken do |e|
+      error!(e, 401)
+    end
+    rescue_from GrapeSimpleAuth::Errors::InvalidScope do |e|
+      error!(e, 401)
+    end
+
     mount API::V1::MainPendidikanPolitik
 
     GrapeSwaggerRails.options.app_url            = "/pendidikan_politik/v1/doc"
