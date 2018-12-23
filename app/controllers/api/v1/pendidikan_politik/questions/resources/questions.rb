@@ -15,7 +15,7 @@ class Api::V1::PendidikanPolitik::Questions::Resources::Questions < API::V1::App
       present :status, status
       present :question, q, with: Api::V1::PendidikanPolitik::Questions::Entities::Question
     end
-
+    
     desc "Show a question" do
       detail "Show a question"
     end
@@ -25,6 +25,24 @@ class Api::V1::PendidikanPolitik::Questions::Resources::Questions < API::V1::App
     get "/:id" do
       q = Question.find params[:id]
       present :question, q, with: Api::V1::PendidikanPolitik::Questions::Entities::Question
+    end
+    
+    desc "Delete a question" do
+      detail "Delete a question"
+      headers AUTHORIZATION_HEADERS
+    end
+    params do
+      requires :id
+    end
+    oauth2
+    delete "/" do
+      q = Question.find_by id: params[:id], user_id: current_user.id
+      
+      error!("ID not found : #{params.id}", 404) unless q
+
+      del = q.destroy!
+
+      present status: q.paranoia_destroyed?
     end
     
   end
