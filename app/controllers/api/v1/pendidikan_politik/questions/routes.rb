@@ -1,4 +1,4 @@
-module API::V1::PendidikanPolitik::Questions
+module Api::V1::PendidikanPolitik::Questions
   class Routes < Grape::API
     # Format response
     formatter :json, ::API::SuccessFormatter

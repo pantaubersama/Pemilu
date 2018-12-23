@@ -6,7 +6,7 @@ module API::V1::Helpers
     current_page = params.page
     present :meta, { total_pages: total_pages, limit_value: limit_value, current_page: current_page }, with: API::V1::Metas::Entities::Meta
   end
-  
+
   def prepare_file(f)
     ActionDispatch::Http::UploadedFile.new(f)
   end
@@ -22,5 +22,5 @@ module API::V1::Helpers
       id: (Time.now.to_i - date.to_i > 172800) ? (I18n.l(date, format: "%b %d, %Y", locale: :id) unless date.nil?) : (time_ago_in_words(date, {include_seconds: false, highest_measure_only: 2, locale: :id}) + " yang lalu")
     }
   end
-  
+
 end

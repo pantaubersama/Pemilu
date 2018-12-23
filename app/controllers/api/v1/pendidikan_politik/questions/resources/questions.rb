@@ -26,18 +26,18 @@ module API::V1::PendidikanPolitik::Questions::Resources
         present :status, status
         present :question, q, with: API::V1::PendidikanPolitik::Questions::Entities::Question
       end
-      
+
       desc "Show a question" do
         detail "Show a question"
       end
-      params do 
+      params do
         requires :id
       end
       get "/:id" do
         q = Question.find params[:id]
         present :question, q, with: API::V1::PendidikanPolitik::Questions::Entities::Question
       end
-      
+
       desc "Delete a question" do
         detail "Delete a question"
         headers AUTHORIZATION_HEADERS
@@ -48,7 +48,7 @@ module API::V1::PendidikanPolitik::Questions::Resources
       oauth2
       delete "/" do
         q = Question.find_by id: params[:id], user_id: current_user.id
-        
+
         error!("ID not found : #{params.id}", 404) unless q
 
         del = q.destroy!
@@ -56,7 +56,7 @@ module API::V1::PendidikanPolitik::Questions::Resources
         present :question, q, with: API::V1::PendidikanPolitik::Questions::Entities::Question
         present :status, q.paranoia_destroyed?
       end
-      
+
     end
 
     # permitted params

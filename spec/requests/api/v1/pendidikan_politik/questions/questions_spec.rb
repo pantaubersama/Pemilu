@@ -8,11 +8,11 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
     end
     stub_find_user_2
   end
-  
+
 
   describe "[POST] Endpoint /" do
     it "should returns 201 with valid params when success" do
-      post "/pendidikan_politik/v1/questions", headers: auth_headers(@access_token), 
+      post "/pendidikan_politik/v1/questions", headers: auth_headers(@access_token),
         params: {body: "Apakah harga premium akan disubsidi pemerintah?"}
       expect(response.status).to eq(201)
       expect(json_response[:data][:status]).to eq(true)
@@ -50,5 +50,5 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
       expect(response.status).to eq(200)
     end
   end
-  
+
 end
