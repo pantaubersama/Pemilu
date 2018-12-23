@@ -9,10 +9,11 @@ module API
       include API::V1::ExceptionHandlers
 
       # Mounting Modules Api
-      mount API::V1::Adventures::Routes
+      # mount API::V1::Adventures::Routes
 
       # Mounting Modules Api /linimasa
       mount API::V1::PendidikanPolitik::Infos::Routes
+      mount Api::V1::PendidikanPolitik::Questions::Routes
 
 
       # Swagger config

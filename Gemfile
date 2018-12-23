@@ -109,4 +109,6 @@ gem 'paranoia', '~> 2.2'
 # bundle exec rails generate paper_trail:install [--with-changes] [--with-associations]
 gem 'paper_trail'
 
+gem 'grape_simple_auth'
+
 gem 'seed_migration'
