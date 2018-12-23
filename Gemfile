@@ -112,3 +112,5 @@ gem 'paper_trail'
 gem 'grape_simple_auth'
 
 gem 'seed_migration'
+
+gem 'acts_as_votable', '~> 0.12.0'

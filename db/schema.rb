@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_23_014836) do
+ActiveRecord::Schema.define(version: 2018_12_23_040323) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -73,10 +73,14 @@ ActiveRecord::Schema.define(version: 2018_12_23_014836) do
   create_table "versions", force: :cascade do |t|
     t.string "item_type", null: false
 <<<<<<< HEAD
+<<<<<<< HEAD
     t.uuid "item_id", null: false
 =======
     t.integer "item_id", null: false
 >>>>>>> create question
+=======
+    t.string "item_id", null: false
+>>>>>>> votable model
     t.string "event", null: false
     t.string "whodunnit"
     t.text "object"
@@ -86,6 +90,20 @@ ActiveRecord::Schema.define(version: 2018_12_23_014836) do
     t.text "object_changes"
 >>>>>>> create question
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+  end
+
+  create_table "votes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "votable_type"
+    t.uuid "votable_id"
+    t.string "voter_type"
+    t.uuid "voter_id"
+    t.boolean "vote_flag"
+    t.string "vote_scope"
+    t.integer "vote_weight"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["votable_id", "votable_type", "vote_scope"], name: "index_votes_on_votable_id_and_votable_type_and_vote_scope"
+    t.index ["voter_id", "voter_type", "vote_scope"], name: "index_votes_on_voter_id_and_voter_type_and_vote_scope"
   end
 
 end
