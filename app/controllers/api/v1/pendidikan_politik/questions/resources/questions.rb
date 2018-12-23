@@ -2,6 +2,17 @@ class Api::V1::PendidikanPolitik::Questions::Resources::Questions < API::V1::App
   helpers API::V1::Helpers
 
   resource "questions" do
+    desc "List question" do
+      detail "List question"
+    end
+    paginate per_page: 10, max_per_page: 100
+    get "/" do
+      questions = Question.all
+      resources = paginate(questions)
+      present :questions, resources, with: Api::V1::PendidikanPolitik::Questions::Entities::Question
+      present_metas resources
+    end
+
     desc "Create a question" do
       detail "Create a question"
       headers AUTHORIZATION_HEADERS
