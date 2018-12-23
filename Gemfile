@@ -120,4 +120,5 @@ gem 'searchkick'
 
 gem 'paranoia', '~> 2.2'
 gem 'paper_trail'
-gem 'seed_migration'
+
+gem 'acts_as_votable', '~> 0.12.0'
