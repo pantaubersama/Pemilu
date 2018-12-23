@@ -20,14 +20,6 @@ module API
     # use helpers
     helpers ::GrapeSimpleAuth::Helpers
 
-    # rescue invalid token
-    rescue_from GrapeSimpleAuth::Errors::InvalidToken do |e|
-      error!(e, 401)
-    end
-    rescue_from GrapeSimpleAuth::Errors::InvalidScope do |e|
-      error!(e, 401)
-    end
-
     mount API::V1::MainLinimasa
     mount API::V2::MainLinimasa
 
