@@ -15,6 +15,17 @@ class Api::V1::PendidikanPolitik::Questions::Resources::Questions < API::V1::App
       present :status, status
       present :question, q, with: Api::V1::PendidikanPolitik::Questions::Entities::Question
     end
+
+    desc "Show a question" do
+      detail "Show a question"
+    end
+    params do 
+      requires :id
+    end
+    get "/:id" do
+      q = Question.find params[:id]
+      present :question, q, with: Api::V1::PendidikanPolitik::Questions::Entities::Question
+    end
     
   end
 
