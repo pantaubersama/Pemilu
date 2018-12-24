@@ -1,7 +1,8 @@
-class API::V1::Linimasa::Crowlings::Entities::Crowling < Grape::Entity
+class API::V1::Linimasa::Feeds::Entities::Feed < Grape::Entity
   expose :id
   expose :team
   expose :team_text
+  expose :created_at
   expose :source do
     expose :source_id, as: :id
     expose :source_text, as: :text

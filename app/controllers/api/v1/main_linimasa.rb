@@ -13,7 +13,8 @@ module API
 
       # Mounting Modules Api /linimasa
       # mount API::V1::Linimasa::Infos::Routes
-      mount API::V1::Linimasa::Crowlings::Routes
+      mount API::V1::Linimasa::Feeds::Routes
+      mount API::V1::Linimasa::JanjiPolitiks::Routes
 
 
       # Swagger config

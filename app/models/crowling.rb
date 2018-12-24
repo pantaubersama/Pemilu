@@ -5,4 +5,8 @@ class Crowling < ApplicationRecord
   def team_text
     [1, "1"].include?(team) ? "Jokowi - Makruf" : "Prabowo - Sandi"
   end
+
+  def trash
+    only_deleted
+  end
 end

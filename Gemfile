@@ -80,6 +80,7 @@ gem 'grape'
 gem 'grape-middleware-logger'
 gem 'grape-entity'
 gem 'hashie-forbidden_attributes'
+gem 'grape_simple_auth'
 
 # documentation
 gem 'grape-swagger'
@@ -95,12 +96,17 @@ gem 'rack-cors'
 ###doc [9] paginator
 # Then choose your preferred paginator from the following:
 gem 'kaminari'
-# Finally...
 gem 'api-pagination'
 
-gem 'seed_migration'
 
 gem 'unicorn', group: [:staging, :production]
-
 gem 'twitter'
-gem 'grape_simple_auth'
+
+###doc to safe my dick
+
+# bin/rails generate migration AddDeletedAtToClients deleted_at:datetime:index
+gem 'paranoia', '~> 2.2'
+# bundle exec rails generate paper_trail:install [--with-changes] [--with-associations]
+gem 'paper_trail'
+
+gem 'seed_migration'
