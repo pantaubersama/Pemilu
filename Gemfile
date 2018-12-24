@@ -114,3 +114,6 @@ gem 'grape_simple_auth'
 gem 'seed_migration'
 
 gem 'acts_as_votable', '~> 0.12.0'
+
+gem 'oauth2'
+gem "her"
