@@ -19,7 +19,7 @@ RSpec.describe User, type: :model do
 
     it "return users" do
       data = User.all.fetch
-      expect(data.size).to eq(2)  
+      expect(data.size).to eq(2)
     end
   end
 end

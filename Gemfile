@@ -122,3 +122,6 @@ gem 'paranoia', '~> 2.2'
 gem 'paper_trail'
 
 gem 'acts_as_votable', '~> 0.12.0'
+
+gem 'oauth2'
+gem "her"

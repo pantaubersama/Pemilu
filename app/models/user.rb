@@ -1,5 +1,5 @@
 class User
-  
+
   # Available methods :
   #
   # .find(id)

@@ -168,7 +168,7 @@ module HerStubber
       end
     end
   end
-  
-  
-  
+
+
+
 end
