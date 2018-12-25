@@ -25,7 +25,7 @@ RSpec.describe Question, type: :model do
     end
   end
 
-  describe "Could Vote" do
+  describe "Could be liked" do
     before do
       stub_find_user
       @question = FactoryBot.create :question
@@ -36,6 +36,21 @@ RSpec.describe Question, type: :model do
       expect(@question.vote_registered?).to eq true
 
       @question.liked_by @current_user
+      expect(@question.vote_registered?).to eq false
+    end
+  end
+
+  describe "Could be reported" do
+    before do
+      stub_find_user
+      @question = FactoryBot.create :question
+      @current_user = User.find "c9242c5a-805b-4ef5-b3a7-2a7f25785cc8"
+    end
+    it "once" do
+      @question.reported_by @current_user
+      expect(@question.vote_registered?).to eq true
+
+      @question.reported_by @current_user
       expect(@question.vote_registered?).to eq false
     end
   end

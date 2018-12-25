@@ -15,6 +15,7 @@ module API
       # mount API::V1::PendidikanPolitik::Infos::Routes
       mount API::V1::PendidikanPolitik::Questions::Routes
       mount API::V1::Votes::Routes
+      mount API::V1::Reports::Routes
 
 
       # Swagger config
