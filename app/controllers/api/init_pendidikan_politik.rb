@@ -1,3 +1,5 @@
+include ActionView::Helpers::DateHelper
+
 module API
   class InitPendidikanPolitik< Grape::API
     # Create log in console

@@ -9,7 +9,7 @@ module API::V1::PendidikanPolitik::Questions::Resources
       paginate per_page: 25, max_per_page: 500
       get "/" do
         resources = Question.search("*", load: false, page: params.page, per_page: params.per_page).results
-        present :questions, resources, with: API::V1::PendidikanPolitik::Questions::Entities::Question
+        present :questions, resources, with: API::V1::PendidikanPolitik::Questions::Entities::Question, index_version: true
         present_metas resources
       end
 

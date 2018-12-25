@@ -14,4 +14,12 @@ module API::V2::Helpers
   def permitted_params(params)
     ActionController::Parameters.new(params)
   end
+
+  def friendly_date date
+    {
+      iso_8601: date,
+      en: (Time.now.to_i - date.to_i > 172800) ? (I18n.l(date, format: "%b %d, %Y", locale: :en) unless date.nil?) : (time_ago_in_words(date, {include_seconds: false, highest_measure_only: 2, locale: :en}) + " ago"),
+      id: (Time.now.to_i - date.to_i > 172800) ? (I18n.l(date, format: "%b %d, %Y", locale: :id) unless date.nil?) : (time_ago_in_words(date, {include_seconds: false, highest_measure_only: 2, locale: :id}) + " yang lalu")
+    }
+  end
 end
