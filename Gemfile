@@ -101,7 +101,6 @@ gem 'api-pagination'
 
 gem 'unicorn', group: [:staging, :production]
 gem 'twitter'
-gem 'grape_simple_auth', path: "/Users/yunanhelmy/Locals/Projects/pantau-group/api/simple_auth"
 
 ###doc to safe my dick
 
@@ -110,11 +109,10 @@ gem 'paranoia', '~> 2.2'
 # bundle exec rails generate paper_trail:install [--with-changes] [--with-associations]
 gem 'paper_trail'
 
-gem 'grape_simple_auth'
+gem 'grape_simple_auth', '~> 0.2.0'
 
 gem 'seed_migration'
 
 gem 'acts_as_votable', '~> 0.12.0'
 
-gem 'oauth2'
 gem "her"
