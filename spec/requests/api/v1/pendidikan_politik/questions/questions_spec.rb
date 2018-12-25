@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Api::V1::PendidikanPolitik::Question", type: :request do
+RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request do
   before do
     @access_token = SecureRandom.hex
     5.times do
