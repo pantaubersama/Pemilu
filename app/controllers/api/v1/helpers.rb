@@ -6,4 +6,12 @@ module API::V1::Helpers
     current_page = resources.current_page
     present :meta, { total_pages: total_pages, limit_value: limit_value, current_page: current_page }, with: API::V1::Metas::Entities::Meta
   end
+  
+  def prepare_file(f)
+    ActionDispatch::Http::UploadedFile.new(f)
+  end
+
+  def permitted_params(params)
+    ActionController::Parameters.new(params)
+  end
 end

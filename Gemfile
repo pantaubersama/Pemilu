@@ -109,4 +109,10 @@ gem 'paranoia', '~> 2.2'
 # bundle exec rails generate paper_trail:install [--with-changes] [--with-associations]
 gem 'paper_trail'
 
+gem 'grape_simple_auth', '~> 0.2.0'
+
 gem 'seed_migration'
+
+gem 'acts_as_votable', '~> 0.12.0'
+
+gem "her"
