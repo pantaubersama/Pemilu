@@ -1,3 +1,10 @@
+PATH
+  remote: /Users/yunanhelmy/Locals/Projects/pantau-group/api/simple_auth
+  specs:
+    grape_simple_auth (0.1.2)
+      grape (~> 1.1.0)
+      httparty (~> 0.16.3)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -122,9 +129,6 @@ GEM
       grape (>= 0.16.2)
     grape-swagger-rails (0.3.0)
       railties (>= 3.2.12)
-    grape_simple_auth (0.1.2)
-      grape (~> 1.1.0)
-      httparty (~> 0.16.3)
     guard (2.15.0)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
@@ -372,7 +376,7 @@ DEPENDENCIES
   grape-middleware-logger
   grape-swagger
   grape-swagger-rails
-  grape_simple_auth
+  grape_simple_auth!
   guard-rspec
   hashie-forbidden_attributes
   her

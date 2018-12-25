@@ -1,6 +1,6 @@
 class AddCachedVotesToQuestion < ActiveRecord::Migration[5.2]
   def change
-    change_table :question do |t|
+    change_table :questions do |t|
       t.integer :cached_votes_total, default: 0
       t.integer :cached_votes_score, default: 0
       t.integer :cached_votes_up, default: 0

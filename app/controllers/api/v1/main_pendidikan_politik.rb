@@ -12,8 +12,9 @@ module API
       # mount API::V1::Adventures::Routes
 
       # Mounting Modules Api /linimasa
-      mount API::V1::PendidikanPolitik::Infos::Routes
-      mount Api::V1::PendidikanPolitik::Questions::Routes
+      # mount API::V1::PendidikanPolitik::Infos::Routes
+      mount API::V1::PendidikanPolitik::Questions::Routes
+      mount API::V1::Votes::Routes
 
 
       # Swagger config

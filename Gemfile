@@ -101,6 +101,7 @@ gem 'api-pagination'
 
 gem 'unicorn', group: [:staging, :production]
 gem 'twitter'
+gem 'grape_simple_auth', path: "/Users/yunanhelmy/Locals/Projects/pantau-group/api/simple_auth"
 
 ###doc to safe my dick
 
