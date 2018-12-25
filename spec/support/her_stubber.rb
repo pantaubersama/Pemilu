@@ -7,7 +7,7 @@ module HerStubber
     # config/initializers/her.rb
     api.setup url: ENV["AUTH_BASE_URL"] + "/v1" do |c|
       # Request
-      # c.use PantauAuth::ClientCredential
+      c.use PantauAuth::PantauAuthKey
       c.use Faraday::Request::UrlEncoded
 
       # Response
