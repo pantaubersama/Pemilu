@@ -80,7 +80,6 @@ gem 'grape'
 gem 'grape-middleware-logger'
 gem 'grape-entity'
 gem 'hashie-forbidden_attributes'
-gem 'grape_simple_auth'
 
 # documentation
 gem 'grape-swagger'
