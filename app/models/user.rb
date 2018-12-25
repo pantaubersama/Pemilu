@@ -15,7 +15,7 @@ class User
   end
 
   def self.polymorphic_name
-    "voter"
+    "User"
   end
 
 end
