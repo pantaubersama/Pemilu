@@ -94,7 +94,7 @@ gem 'rack-cors'
 
 ###doc [9] paginator
 # Then choose your preferred paginator from the following:
-gem 'kaminari'
+gem 'pagy'
 gem 'api-pagination'
 
 
@@ -115,3 +115,5 @@ gem 'seed_migration'
 gem 'acts_as_votable', '~> 0.12.0'
 
 gem "her"
+
+gem 'searchkick'

@@ -6,10 +6,9 @@ module API::V1::PendidikanPolitik::Questions::Resources
       desc "List question" do
         detail "List question"
       end
-      paginate per_page: 10, max_per_page: 100
+      paginate per_page: 25, max_per_page: 500
       get "/" do
-        questions = Question.all
-        resources = paginate(questions)
+        resources = Question.search("*", load: false, page: params.page, per_page: params.per_page).results
         present :questions, resources, with: API::V1::PendidikanPolitik::Questions::Entities::Question
         present_metas resources
       end
@@ -54,7 +53,8 @@ module API::V1::PendidikanPolitik::Questions::Resources
 
         del = q.destroy!
 
-        present status: q.paranoia_destroyed?
+        present :question, q, with: API::V1::PendidikanPolitik::Questions::Entities::Question
+        present :status, q.paranoia_destroyed?
       end
       
     end
