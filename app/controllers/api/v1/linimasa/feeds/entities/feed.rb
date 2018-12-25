@@ -8,9 +8,9 @@ class API::V1::Linimasa::Feeds::Entities::Feed < Grape::Entity
     expose :source_text, as: :text
   end
   expose :account do
-    expose :id
-    expose :name
-    expose :username
-    expose :profile_image_url
+    expose :account_id, as: :id
+    expose :account_name, as: :name
+    expose :account_username, as: :username
+    expose :account_profile_image_url, as: :profile_image_url
   end
 end

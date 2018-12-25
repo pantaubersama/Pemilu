@@ -7,6 +7,5 @@ module PantauAuth
       env[:request_headers]["Authorization"] = token
       @app.call(env)
     end
-    
   end
 end

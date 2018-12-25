@@ -80,6 +80,7 @@ gem 'grape'
 gem 'grape-middleware-logger'
 gem 'grape-entity'
 gem 'hashie-forbidden_attributes'
+gem 'grape_simple_auth'
 
 # documentation
 gem 'grape-swagger'
@@ -108,8 +109,6 @@ gem 'paranoia', '~> 2.2'
 # bundle exec rails generate paper_trail:install [--with-changes] [--with-associations]
 gem 'paper_trail'
 
-gem 'grape_simple_auth', '~> 0.2.0'
-
 gem 'seed_migration'
 
 gem 'acts_as_votable', '~> 0.12.0'
@@ -124,4 +123,12 @@ gem 'paper_trail'
 gem 'acts_as_votable', '~> 0.12.0'
 
 gem 'oauth2'
-gem "her"
+
+gem 'her'
+
+# logger
+gem 'wirble'
+gem 'awesome_print', require: 'ap'
+
+gem 'sidekiq'
+gem 'whenever', require: false

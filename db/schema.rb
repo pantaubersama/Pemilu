@@ -36,7 +36,6 @@ ActiveRecord::Schema.define(version: 2018_12_20_134022) do
     t.uuid "crowling_id", null: false
     t.string "type", null: false
     t.integer "team", null: false
-    t.datetime "published_at", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
@@ -51,6 +50,8 @@ ActiveRecord::Schema.define(version: 2018_12_20_134022) do
     t.uuid "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_janji_politiks_on_deleted_at"
   end
 
   create_table "questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

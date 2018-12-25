@@ -1,16 +1,16 @@
 module API
   class InitLapor < Grape::API
     # Create log in console
-    #if ENV['API_DEBUGGING'].eql?("true")
-    insert_after Grape::Middleware::Formatter, Grape::Middleware::Logger, {
-        logger:  Logger.new(STDERR),
-        filter:  Class.new {
-          def filter(opts)
-            opts.reject { |k, _| k.to_s == 'password' }
-          end }.new,
-        headers: %w(version cache-control)
-    }
-    #end
+    if ENV['API_DEBUGGING'].eql?("true")
+      insert_after Grape::Middleware::Formatter, Grape::Middleware::Logger, {
+          logger:  Logger.new(STDERR),
+          filter:  Class.new {
+            def filter(opts)
+              opts.reject { |k, _| k.to_s == 'password' }
+            end }.new,
+          headers: %w(version cache-control)
+      }
+    end
     # Build params using object
     include Grape::Extensions::Hashie::Mash::ParamBuilder
 
@@ -19,14 +19,6 @@ module API
 
     # use helpers
     helpers ::GrapeSimpleAuth::Helpers
-
-    # rescue invalid token
-    rescue_from GrapeSimpleAuth::Errors::InvalidToken do |e|
-      error!(e, 401)
-    end
-    rescue_from GrapeSimpleAuth::Errors::InvalidScope do |e|
-      error!(e, 401)
-    end
 
     mount API::V1::MainLapor
 

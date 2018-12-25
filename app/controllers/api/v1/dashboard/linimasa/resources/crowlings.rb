@@ -3,11 +3,11 @@ class API::V1::Dashboard::Linimasa::Resources::Crowlings < API::V1::ApplicationR
 
   resource "linimasa/crowling" do
     desc "Tambah Username", headers: AUTHORIZATION_HEADERS
-    oauth2
     params do
       requires :keywords, type: String, desc: "twitter username ex: @namakukingkong"
       requires :team, type: Integer, values: [1, 2]
     end
+    oauth2
     post "username" do
       crowling = Crowling.new(params)
       unless crowling.save
@@ -30,7 +30,7 @@ class API::V1::Dashboard::Linimasa::Resources::Crowlings < API::V1::ApplicationR
     oauth2
     paginate per_page: 100, max_per_page: 500
     get :trashes do
-      crowlings = Crowling.trash
+      crowlings = Crowling.deleted
       resources = paginate(crowlings)
       present :crowlings, resources, with: API::V1::Linimasa::Crowlings::Entities::Crowling
       present_metas resources
