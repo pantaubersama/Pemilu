@@ -23,8 +23,8 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
     it "should return 200 with valid ID" do
       q = Question.last
       get "/pendidikan_politik/v1/questions/#{q.id}"
-      # expect(response.status).to eq(200)
-      # expect(json_response[:data][:question][:id]).to eq(q.id)
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:question][:id]).to eq(q.id)
     end
   end
 
@@ -51,4 +51,30 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
     end
   end
 
+  describe "[GET] Endpoint /" do
+    it "sorting by created desc" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?order_by=created&direction=desc"
+      expect(json_response[:data][:questions][0][:created]).to be >= json_response[:data][:questions][1][:created]
+    end
+
+    it "sorting by created asc" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?order_by=created&direction=asc"
+      expect(json_response[:data][:questions][0][:created]).to be <= json_response[:data][:questions][1][:created]
+    end
+
+    it "sorting by cached_votes_up desc" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?order_by=cached_votes_up&direction=desc"
+      expect(json_response[:data][:questions][0][:like_count]).to be >= json_response[:data][:questions][1][:like_count]
+    end
+
+    it "sorting by cached_votes_up asc" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?order_by=cached_votes_up&direction=asc"
+      expect(json_response[:data][:questions][0][:like_count]).to be <= json_response[:data][:questions][1][:like_count]
+    end
+  end
+  
 end
