@@ -14,7 +14,7 @@ RSpec.describe "Api::V1::Linimasa::Feeds", type: :request do
 
     end
     it "should returns 200 with valid params when success" do
-      get "/linimasa/v1/feeds/pilpres", headers: auth_headers
+      get "/linimasa/v1/feeds/pilpres", headers: stub_auth_headers
       expect(json_response[:data][:feeds].size).to eq(5)
       expect(response.status).to eq(200)
     end

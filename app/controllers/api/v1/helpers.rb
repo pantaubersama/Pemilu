@@ -22,5 +22,10 @@ module API::V1::Helpers
       id: (Time.now.to_i - date.to_i > 172800) ? (I18n.l(date, format: "%b %d, %Y", locale: :id) unless date.nil?) : (time_ago_in_words(date, {include_seconds: false, highest_measure_only: 2, locale: :id}) + " yang lalu")
     }
   end
-
+  def authorize_admin!
+    error!("Tidak dapat mengakses API", 403) unless current_user.is_admin
+  end
+  def authorize_eligible_user!
+    error!("Tidak dapat mengakses API", 403) unless (current_user.cluster.present? && current_user.cluster.is_eligible)
+  end
 end

@@ -8,6 +8,7 @@ class API::V1::Dashboard::Linimasa::Resources::Linimasa < API::V1::ApplicationRe
       requires :per_page, type: Integer, default: 100
     end
     get "suggest/username" do
+      authorize_admin!
       users = $twitter.user_search(params.q, { page: params.page, count: params.per_page })
       present :users, users, with: API::V1::Dashboard::Linimasa::Entities::Username
     end

@@ -19,11 +19,12 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       optional :image, type: File
     end
     post do
+      authorize_eligible_user!
       resources = JanjiPolitik.new(params.merge({ user_id: current_user.id }))
       unless resources.save
         error!(resources.errors.full_messages.join(", "), 422)
       end
-      present :janji_politiks, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
+      present :janji_politik, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
     end
 
     desc "Upload image janji politiks", headers: AUTHORIZATION_HEADERS
@@ -33,7 +34,8 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       optional :image, type: File
     end
     put do
-      resources      = JanjiPolitik.find(params.id)
+      authorize_eligible_user!
+      resources      = JanjiPolitik.find_by(id: params.id, user_id: current_user.id)
       resource.image = params.image
       unless resources.save
         error!(resources.errors.full_messages.join(", "), 422)
@@ -47,7 +49,8 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       requires :id, type: String
     end
     delete do
-      resources = JanjiPolitik.find(params.id)
+      authorize_eligible_user!
+      resources = JanjiPolitik.find_by(id: params.id, user_id: current_user.id)
       unless resources.delete
         error!(resources.errors.full_messages.join(", "), 422)
       end

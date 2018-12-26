@@ -6,11 +6,10 @@ RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
   end
   describe "[GET] Endpoint /janji_politiks" do
     before do
-      # params: { avatar: fixture_file_upload('files/avatar.jpg', 'image/jpg') }
       create :janji_politik, title: "Pengadaan Bunker Anti Bencana", body: "Pada 2019, di wacanakan bunker anti bencana siap di resmikan."
     end
     it "should returns 200 with valid params when success" do
-      get "/linimasa/v1/janji_politiks", headers: auth_headers(@access_token)
+      get "/linimasa/v1/janji_politiks", headers: stub_auth_headers(@access_token)
       expect(json_response[:data][:janji_politiks].size).to eq(1)
       expect(json_response[:data][:janji_politiks].first[:body]).to eq("Pada 2019, di wacanakan bunker anti bencana siap di resmikan.")
       expect(json_response[:data][:janji_politiks].first[:title]).to eq("Pengadaan Bunker Anti Bencana")
@@ -21,7 +20,18 @@ RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
       expect(response.status).to eq(200)
     end
   end
+  describe "[POST] Endpoint /janji_politiks" do
+    it "should returns 201 with valid params when success" do
+      post "/linimasa/v1/janji_politiks",
+           params:  {
+               title: "Berbagi nasi bungkus bersama rakyat.",
+               body: "Tak ayal apapun dilakukan",
+               image: fixture_file_upload('files/janji_image.jpg', 'image/jpg')
+           },
+           headers: stub_eligible_auth_headers
+      expect(json_response[:data][:janji_politik][:title]).to eq("Berbagi nasi bungkus bersama rakyat.")
+      expect(json_response[:data][:janji_politik][:body]).to eq("Tak ayal apapun dilakukan")
+      expect(response.status).to eq(201)
+    end
+  end
 end
-
-#client_credentials
-#

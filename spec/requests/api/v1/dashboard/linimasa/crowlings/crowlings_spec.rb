@@ -5,7 +5,7 @@ RSpec.describe "Api::V1::Linimasa::Crowlings", type: :request do
     it "should returns 201 with valid params when success" do
       post "/dashboard/v1/linimasa/crowling/username",
            params:  { keywords: "rizagalih", team: 1 },
-           headers: auth_headers
+           headers: stub_admin_auth_headers
       expect(json_response[:data][:crowling][:keywords]).to eq("rizagalih")
       expect(json_response[:data][:crowling][:team]).to eq(1)
       expect(json_response[:data][:crowling][:team_text]).to eq("Jokowi - Makruf")
@@ -20,7 +20,7 @@ RSpec.describe "Api::V1::Linimasa::Crowlings", type: :request do
       create :crowling, keywords: :alamybs, team: 2
     end
     it "should returns 200 with valid params when success" do
-      get "/dashboard/v1/linimasa/crowling", headers: auth_headers
+      get "/dashboard/v1/linimasa/crowling", headers: stub_admin_auth_headers
       expect(json_response[:data][:crowlings].size).to eq(2)
       keywords = json_response[:data][:crowlings].pluck(:keywords)
       expect(keywords.include?("rizagalih")).to eq(true)
@@ -29,7 +29,7 @@ RSpec.describe "Api::V1::Linimasa::Crowlings", type: :request do
       expect(response.status).to eq(200)
     end
     it "should returns 200 with valid params when success" do
-      get "/dashboard/v1/linimasa/crowling", params: { page: 1, per_page: 1 }, headers: auth_headers
+      get "/dashboard/v1/linimasa/crowling", params: { page: 1, per_page: 1 }, headers: stub_admin_auth_headers
       expect(json_response[:data][:crowlings].size).to eq(1)
       expect(json_response[:data][:meta]).to eq({ "pages" => { "page" => 1, "per_page" => 1, "total" => 1 } })
       expect(response.status).to eq(200)
@@ -43,7 +43,7 @@ RSpec.describe "Api::V1::Linimasa::Crowlings", type: :request do
       @crowling.destroy
     end
     it "should returns 200 with valid params when success" do
-      get "/dashboard/v1/linimasa/crowling/trashes", headers: auth_headers
+      get "/dashboard/v1/linimasa/crowling/trashes", headers: stub_admin_auth_headers
       expect(json_response[:data][:crowlings].size).to eq(1)
       keywords = json_response[:data][:crowlings].pluck(:keywords)
       expect(keywords.include?("namakukingkong")).to eq(true)
@@ -57,7 +57,7 @@ RSpec.describe "Api::V1::Linimasa::Crowlings", type: :request do
       create :crowling, keywords: :alamybs, team: 2
     end
     it "should returns 200 with valid params when success" do
-      delete "/dashboard/v1/linimasa/crowling", params: { id: @rizagalih.id }, headers: auth_headers
+      delete "/dashboard/v1/linimasa/crowling", params: { id: @rizagalih.id }, headers: stub_admin_auth_headers
       expect(json_response[:data][:message]).to eq("Crowling id #{@rizagalih.id} berhasil dihapus")
       expect(response.status).to eq(200)
     end

@@ -10,7 +10,7 @@ module AuthorizationRequestStubber
 
   DEFAULT_RESPONSE_HEADERS = { 'Content-Type' => 'application/json' }.freeze
 
-  def stub_credentials_request(access_token:)
+  def stub_credentials_request(access_token:, is_admin:, is_eligible:)
     stub_request(:get, "#{AUTH_BASE_URL}#{VERIFY_ENDPOINT}?access_token=#{access_token}").
         with(headers: DEFAULT_REQUEST_HEADERS).
         to_return(
@@ -24,12 +24,12 @@ module AuthorizationRequestStubber
                                  "last_name":    "Weeks",
                                  "uid":          "6",
                                  "provider":     "identitas",
-                                 "is_admin":     false,
+                                 "is_admin":     is_admin,
                                  "is_moderator": false,
                                  "cluster":      {
                                      "id":          "1882f49d-9de4-4d56-b9f8-5444e494b3f3",
                                      "name":        "Tim Sukses Paslon 1",
-                                     "is_eligible": false
+                                     "is_eligible": is_eligible
                                  }
                              },
                              "credential": {
@@ -104,22 +104,18 @@ module AuthorizationRequestStubber
   end
 
 
-  def auth_headers(access_token = SecureRandom.hex)
-    stub_credentials_request access_token: access_token
+  def stub_auth_headers(access_token = SecureRandom.hex)
+    stub_credentials_request(access_token: access_token, is_admin: false, is_eligible: false)
     { 'Authorization' => access_token }
   end
 
-  def stub_auth_token(access_token = SecureRandom.hex)
-    auth_token_request access_token: access_token
-    { 'Authorization' => access_token }
-
-    users_id_request access_token: access_token
+  def stub_admin_auth_headers(access_token = SecureRandom.hex)
+    stub_credentials_request(access_token: access_token, is_admin: true, is_eligible: false)
     { 'Authorization' => access_token }
   end
 
-  def stub_users_id(access_token = SecureRandom.hex)
-    users_id_request access_token: access_token
+  def stub_eligible_auth_headers(access_token = SecureRandom.hex)
+    stub_credentials_request(access_token: access_token, is_admin: false, is_eligible: true)
     { 'Authorization' => access_token }
-
   end
 end

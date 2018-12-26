@@ -9,6 +9,7 @@ class API::V1::Dashboard::Linimasa::Resources::Crowlings < API::V1::ApplicationR
     end
     oauth2
     post "username" do
+      authorize_admin!
       crowling = Crowling.new(params)
       unless crowling.save
         error!(crowling.errors.full_messages.join(", "), 422)
@@ -20,6 +21,7 @@ class API::V1::Dashboard::Linimasa::Resources::Crowlings < API::V1::ApplicationR
     oauth2
     paginate per_page: 100, max_per_page: 500
     get do
+      authorize_admin!
       crowlings = Crowling.all
       resources = paginate(crowlings)
       present :crowlings, resources, with: API::V1::Linimasa::Crowlings::Entities::Crowling
@@ -30,6 +32,7 @@ class API::V1::Dashboard::Linimasa::Resources::Crowlings < API::V1::ApplicationR
     oauth2
     paginate per_page: 100, max_per_page: 500
     get :trashes do
+      authorize_admin!
       crowlings = Crowling.deleted
       resources = paginate(crowlings)
       present :crowlings, resources, with: API::V1::Linimasa::Crowlings::Entities::Crowling
@@ -42,6 +45,7 @@ class API::V1::Dashboard::Linimasa::Resources::Crowlings < API::V1::ApplicationR
       requires :id, type: String
     end
     delete do
+      authorize_admin!
       crowling = Crowling.find(params.id)
       unless crowling.delete
         error!(crowling.errors.full_messages.join(", "), 422)
