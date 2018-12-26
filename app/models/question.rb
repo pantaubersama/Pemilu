@@ -15,6 +15,7 @@ class Question < ApplicationRecord
       id: self.id,
       cached_votes_up: self.cached_votes_up,
       body: self.body,
+      created: self.created,
       created_at: self.friendly_date(self.created_at),
       user: {
         email: self.user.email,
@@ -28,6 +29,11 @@ class Question < ApplicationRecord
       }
     }
   end
+
+  def created
+    created_at
+  end
+  
 
   def user
     User.find self.user_id
