@@ -7,7 +7,7 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
     paginate per_page: 100, max_per_page: 500
     get do
       resources = paginate(JanjiPolitik.all)
-      present :feeds, resources, with: API::V1::Linimasa::Feeds::Entities::Feed
+      present :janji_politiks, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
       present_metas resources
     end
 
@@ -19,7 +19,7 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       optional :image, type: File
     end
     post do
-      resources = JanjiPolitik.new(params.merge({user_id: current_user.id}))
+      resources = JanjiPolitik.new(params.merge({ user_id: current_user.id }))
       unless resources.save
         error!(resources.errors.full_messages.join(", "), 422)
       end
@@ -47,7 +47,7 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       requires :id, type: String
     end
     delete do
-      resources      = JanjiPolitik.find(params.id)
+      resources = JanjiPolitik.find(params.id)
       unless resources.delete
         error!(resources.errors.full_messages.join(", "), 422)
       end

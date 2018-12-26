@@ -10,14 +10,5 @@ class API::V1::Linimasa::Feeds::Resources::Feeds < API::V1::ApplicationResource
       present :feeds, resources, with: API::V1::Linimasa::Feeds::Entities::Feed
       present_metas resources
     end
-
-    desc "List feed janji politik", headers: AUTHORIZATION_HEADERS
-    oauth2
-    paginate per_page: 100, max_per_page: 500
-    get :janji_politik do
-      resources = paginate(JanjiPolitik.all)
-      present :feeds, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
-      present_metas resources
-    end
   end
 end
