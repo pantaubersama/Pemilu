@@ -129,3 +129,9 @@ gem 'awesome_print', require: 'ap'
 
 gem 'sidekiq'
 gem 'whenever', require: false
+
+# upload image
+gem 'carrierwave', '~> 1.0'
+gem 'mini_magick'
+gem 'fog', require: 'fog/aws'
+gem 'fog-aws'
