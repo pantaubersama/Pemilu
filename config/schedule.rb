@@ -6,7 +6,7 @@
 # Example:
 #
 
-every 1.minutes do
+every 5.minutes do
   runner "TwitterUsernameJob.runner"
 end
 
