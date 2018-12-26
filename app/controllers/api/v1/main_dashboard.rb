@@ -13,6 +13,7 @@ module API
 
       # Mounting Modules Api /linimasa
       mount API::V1::Dashboard::Linimasa::Routes
+      mount API::V1::Dashboard::BannerInfos::Routes
 
 
       # Swagger config
