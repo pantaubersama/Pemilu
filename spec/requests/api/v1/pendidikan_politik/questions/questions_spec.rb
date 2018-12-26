@@ -23,8 +23,8 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
     it "should return 200 with valid ID" do
       q = Question.last
       get "/pendidikan_politik/v1/questions/#{q.id}"
-      # expect(response.status).to eq(200)
-      # expect(json_response[:data][:question][:id]).to eq(q.id)
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:question][:id]).to eq(q.id)
     end
   end
 
@@ -51,4 +51,72 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
     end
   end
 
+  describe "[GET] Endpoint /" do
+    it "sorting by created desc" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?order_by=created&direction=desc"
+      expect(json_response[:data][:questions][0][:created]).to be >= json_response[:data][:questions][1][:created]
+    end
+
+    it "sorting by created asc" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?order_by=created&direction=asc"
+      expect(json_response[:data][:questions][0][:created]).to be <= json_response[:data][:questions][1][:created]
+    end
+
+    it "sorting by cached_votes_up desc" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?order_by=cached_votes_up&direction=desc"
+      expect(json_response[:data][:questions][0][:like_count]).to be >= json_response[:data][:questions][1][:like_count]
+    end
+
+    it "sorting by cached_votes_up asc" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?order_by=cached_votes_up&direction=asc"
+      expect(json_response[:data][:questions][0][:like_count]).to be <= json_response[:data][:questions][1][:like_count]
+    end
+  end
+
+  describe "[GET] Endpoint /" do
+    it "filter by user_verified_true" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?filter_by=user_verified_true"
+      expect(json_response[:data][:questions].size).to eq(0)
+    end
+
+    it "filter by user_verified_false" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?filter_by=user_verified_false"
+      expect(json_response[:data][:questions].size).to eq(5)
+    end
+
+    it "no filter : user_verified_all" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?filter_by=user_verified_all"
+      expect(json_response[:data][:questions].size).to eq(5)
+    end
+  end
+
+  describe "[GET] Endpoint /" do
+    it "mix parameters : pagination, filter, order [1]" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?filter_by=user_verified_false&order_by=cached_votes_up&direction=asc&page=1&per_page=3"
+      expect(json_response[:data][:questions].size).to eq(3)
+      expect(json_response[:data][:questions][0][:like_count]).to be <= json_response[:data][:questions][1][:like_count]
+    end
+
+    it "mix parameters : pagination, filter, order [2]" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?filter_by=user_verified_false&order_by=cached_votes_up&direction=asc&page=2&per_page=3"
+      expect(json_response[:data][:questions].size).to eq(2)
+      expect(json_response[:data][:questions][0][:like_count]).to be <= json_response[:data][:questions][1][:like_count]
+    end
+
+    it "mix parameters : pagination, filter, order [3]" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?filter_by=user_verified_false&order_by=cached_votes_up&direction=asc&page=3&per_page=3"
+      expect(json_response[:data][:questions].size).to eq(0)
+    end
+  end
+  
 end

@@ -22,4 +22,17 @@ module API::V2::Helpers
       id: (Time.now.to_i - date.to_i > 172800) ? (I18n.l(date, format: "%b %d, %Y", locale: :id) unless date.nil?) : (time_ago_in_words(date, {include_seconds: false, highest_measure_only: 2, locale: :id}) + " yang lalu")
     }
   end
+
+  def question_filter(x)
+    case x
+    when :user_verified_true
+      { "user.verified" => true }
+    when :user_verified_false
+      { "user.verified" => false }
+    when :user_verified_all
+      {}
+    else
+      {}
+    end
+  end
 end
