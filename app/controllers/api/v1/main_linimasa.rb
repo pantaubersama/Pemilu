@@ -15,6 +15,7 @@ module API
       # mount API::V1::Linimasa::Infos::Routes
       mount API::V1::Linimasa::Feeds::Routes
       mount API::V1::Linimasa::JanjiPolitiks::Routes
+      mount API::V1::Linimasa::BannerInfos::Routes
 
 
       # Swagger config
