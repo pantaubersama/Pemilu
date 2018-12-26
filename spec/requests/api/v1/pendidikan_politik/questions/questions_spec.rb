@@ -76,5 +76,47 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
       expect(json_response[:data][:questions][0][:like_count]).to be <= json_response[:data][:questions][1][:like_count]
     end
   end
+
+  describe "[GET] Endpoint /" do
+    it "filter by user_verified_true" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?filter_by=user_verified_true"
+      expect(json_response[:data][:questions].size).to eq(0)
+    end
+
+    it "filter by user_verified_false" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?filter_by=user_verified_false"
+      expect(json_response[:data][:questions].size).to eq(5)
+    end
+
+    it "no filter : user_verified_all" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?filter_by=user_verified_all"
+      expect(json_response[:data][:questions].size).to eq(5)
+    end
+  end
+
+  describe "[GET] Endpoint /" do
+    it "mix parameters : pagination, filter, order [1]" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?filter_by=user_verified_false&order_by=cached_votes_up&direction=asc&page=1&per_page=3"
+      expect(json_response[:data][:questions].size).to eq(3)
+      expect(json_response[:data][:questions][0][:like_count]).to be <= json_response[:data][:questions][1][:like_count]
+    end
+
+    it "mix parameters : pagination, filter, order [2]" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?filter_by=user_verified_false&order_by=cached_votes_up&direction=asc&page=2&per_page=3"
+      expect(json_response[:data][:questions].size).to eq(2)
+      expect(json_response[:data][:questions][0][:like_count]).to be <= json_response[:data][:questions][1][:like_count]
+    end
+
+    it "mix parameters : pagination, filter, order [3]" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?filter_by=user_verified_false&order_by=cached_votes_up&direction=asc&page=3&per_page=3"
+      expect(json_response[:data][:questions].size).to eq(0)
+    end
+  end
   
 end

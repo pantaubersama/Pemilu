@@ -10,11 +10,16 @@ module API::V1::PendidikanPolitik::Questions::Resources
       paginate per_page: 25, max_per_page: 500
       params do
         use :order, order_by: %i(created cached_votes_up), default_order_by: :created, default_order: :desc
+        use :filter, filter_by: %i(user_verified_all user_verified_true user_verified_false)
       end
       get "/" do
         default_order = {created: :desc}
         build_order = params.order_by.present? && params.direction.present? ? { params.order_by.to_sym => params.direction.to_sym } : default_order
-        resources = Question.search("*", load: false, page: params.page, per_page: params.per_page, order: build_order).results
+
+        default_conditions = {}
+        build_conditions = params.filter_by.present? ? question_filter(params.filter_by) : default_conditions
+
+        resources = Question.search("*", load: false, page: params.page, per_page: params.per_page, order: build_order, where: build_conditions).results
         present :questions, resources, with: API::V1::PendidikanPolitik::Questions::Entities::Question, index_version: true
         present_metas resources
       end
