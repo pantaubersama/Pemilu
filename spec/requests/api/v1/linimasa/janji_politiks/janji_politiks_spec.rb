@@ -2,8 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
   before do
-    @access_token = SecureRandom.hex
-    stub_auth_token(@access_token)
+    stub_find_user_2
   end
   describe "[GET] Endpoint /janji_politiks" do
     before do
@@ -15,7 +14,7 @@ RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
       expect(json_response[:data][:janji_politiks].size).to eq(1)
       expect(json_response[:data][:janji_politiks].first[:body]).to eq("Pada 2019, di wacanakan bunker anti bencana siap di resmikan.")
       expect(json_response[:data][:janji_politiks].first[:title]).to eq("Pengadaan Bunker Anti Bencana")
-      expect(json_response[:data][:janji_politiks]).to eq("1036fd3c-04ed-4949-b57c-b7dc8ff3e737")
+      expect(json_response[:data][:janji_politiks].first[:user][:id]).to eq("1036fd3c-04ed-4949-b57c-b7dc8ff3e737")
       expect(json_response[:data][:janji_politiks].first[:user][:email]).to eq("namakukingkong@gmail.com")
       expect(json_response[:data][:janji_politiks].first[:user][:first_name]).to eq("Joan")
       expect(json_response[:data][:janji_politiks].first[:user][:last_name]).to eq("Weeks")

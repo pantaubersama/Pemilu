@@ -25,13 +25,13 @@ RSpec.describe "Api::V1::Linimasa::Crowlings", type: :request do
       keywords = json_response[:data][:crowlings].pluck(:keywords)
       expect(keywords.include?("rizagalih")).to eq(true)
       expect(keywords.include?("alamybs")).to eq(true)
-      expect(json_response[:data][:meta]).to eq({ "pages" => { "page" => 1, "per_page" => 100, "total" => 1 } })
+      expect(json_response[:data][:meta]).to eq({ "pages" => { "page" => 1, "per_page" => 100, "total" => 2 } })
       expect(response.status).to eq(200)
     end
     it "should returns 200 with valid params when success" do
       get "/dashboard/v1/linimasa/crowling", params: { page: 1, per_page: 1 }, headers: auth_headers
       expect(json_response[:data][:crowlings].size).to eq(1)
-      expect(json_response[:data][:meta]).to eq({ "pages" => { "page" => 1, "per_page" => 1, "total" => 2 } })
+      expect(json_response[:data][:meta]).to eq({ "pages" => { "page" => 1, "per_page" => 1, "total" => 1 } })
       expect(response.status).to eq(200)
     end
   end

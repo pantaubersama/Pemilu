@@ -67,6 +67,7 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include JSONResponseReader, type: :request
   config.include AuthorizationRequestStubber, type: :request
+  config.include HerStubber
 
   # start by truncating all the tables but then use the faster transaction strategy the rest of the time.
   config.before(:suite) do

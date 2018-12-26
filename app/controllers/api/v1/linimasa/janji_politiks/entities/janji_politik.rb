@@ -4,7 +4,5 @@ class API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik < Grape::Entity
   expose :body
   expose :image
   expose :created_at
-  expose :user do |jp|
-    User.find(jp.user_id)
-  end
+  expose :user, using: API::V1::Users::Entities::User
 end

@@ -13,7 +13,7 @@ module API
 
       # Mounting Modules Api /linimasa
       # mount API::V1::PendidikanPolitik::Infos::Routes
-      mount API::V1::PendidikanPolitik::Questions::Routes
+      mount Api::V1::PendidikanPolitik::Questions::Routes
       mount API::V1::Votes::Routes
       mount API::V1::Reports::Routes
 
