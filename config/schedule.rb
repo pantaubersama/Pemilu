@@ -6,7 +6,7 @@
 # Example:
 #
 
-every 5.minutes do
+every 5.minutes, roles: [:app] do
   runner "TwitterUsernameJob.runner"
 end
 
