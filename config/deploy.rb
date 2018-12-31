@@ -19,6 +19,7 @@ set :repo_url, "git@git.extrainteger.com:pantau-group/API/pemilu.git"
 
 # Default value for :pty is false
 # set :pty, true
+set :pty,  false
 
 # Default value for :linked_files is []
 # append :linked_files, "config/database.yml"

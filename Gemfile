@@ -54,6 +54,7 @@ group :development do
   gem 'capistrano-rails'
   gem 'capistrano3-unicorn'
   gem 'capistrano-rvm'
+  gem 'capistrano-sidekiq'
 end
 
 group :test do

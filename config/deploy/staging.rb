@@ -7,8 +7,12 @@ set :deploy_to, '/home/ubuntu/pantau_pemilu_staging'
 
 set :branch, 'staging'
 set :rails_env, 'staging'
+set :unicorn_roles, :web
+set :whenever_roles, :app
+set :sidekiq_roles, :app
 
-server "52.77.101.168", user: "ubuntu", roles: %w{app web db}
+server "52.77.101.168", user: "ubuntu", roles: %w{web db}
+server "13.228.240.205", user: "ubuntu", roles: %w{app}
 
 set :ssh_options, {
   forward_agent: false,
