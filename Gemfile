@@ -80,7 +80,7 @@ gem 'grape'
 gem 'grape-middleware-logger'
 gem 'grape-entity'
 gem 'hashie-forbidden_attributes'
-gem 'grape_simple_auth'
+gem 'grape_simple_auth', '~> 0.3.0'
 
 # documentation
 gem 'grape-swagger'
@@ -116,12 +116,6 @@ gem 'acts_as_votable', '~> 0.12.0'
 gem "her"
 
 gem 'searchkick'
-
-gem 'acts_as_votable', '~> 0.12.0'
-
-gem 'oauth2'
-
-gem 'her'
 
 # logger
 gem 'wirble'

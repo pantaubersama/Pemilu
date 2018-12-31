@@ -1,14 +1,16 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
+# encoding: UTF-8
+# This file is auto-generated from the current content of the database. Instead
+# of editing this file, please use the migrations feature of Seed Migration to
+# incrementally modify your database, and then regenerate this seed file.
 #
-# Examples:
+# If you need to create the database on another system, you should be using
+# db:seed, not running all the migrations from scratch. The latter is a flawed
+# and unsustainable approach (the more migrations you'll amass, the slower
+# it'll run and the greater likelihood for issues).
 #
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+# It's strongly recommended to check this file into your version control system.
 
-BannerInfo.create([
-                      { id: "ade8d637-e85e-4726-8005-6cede80ea860", page_name: "pilpres", title: "Judul banner pilpres", body: "Body banner pilpres" },
-                      { id: "5d01f7ab-4c90-4199-999b-da5287d06a88", page_name: "janji politik", title: "Judul banner 'janji politik'", body: "Body banner 'janji politik'" },
-                      { id: "a22d2acd-7eda-4a7a-95a0-931abf5db8e3", page_name: "tanya", title: "Judul banner tanya", body: "Body banner tanya" },
-                      { id: "9b98ac07-3208-4d60-976e-49ace39e38a7", page_name: "kuis", title: "Judul banner kuis", body: "Body banner kuis" },
-                  ])
+ActiveRecord::Base.transaction do
+end
+
+SeedMigration::Migrator.bootstrap()
