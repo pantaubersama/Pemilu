@@ -1,7 +1,12 @@
 class API::V1::Linimasa::Feeds::Entities::Feed < Grape::Entity
   expose :id
-  expose :team
-  expose :team_text
+  expose :team do
+    expose :team, as: :id
+    expose :team_text, as: :title
+    expose :avatar do |feed|
+      "avatar"
+    end
+  end
   expose :created_at
   expose :source do
     expose :source_id, as: :id
