@@ -2,8 +2,8 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
   helpers API::V1::Helpers
 
   resource "janji_politiks" do
-    desc "List janji politiks", headers: AUTHORIZATION_HEADERS
-    oauth2
+    desc "List janji politiks", headers: OPTIONAL_AUTHORIZATION_HEADERS
+    optional_oauth2
     paginate per_page: 100, max_per_page: 500
     get do
       resources = paginate(JanjiPolitik.all)
