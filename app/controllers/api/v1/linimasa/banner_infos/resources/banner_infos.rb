@@ -2,19 +2,19 @@ class API::V1::Linimasa::BannerInfos::Resources::BannerInfos < API::V1::Applicat
   helpers API::V1::Helpers
 
   resource "banner_infos" do
-    desc "List banner", headers: AUTHORIZATION_HEADERS
-    oauth2
+    desc "List banner", headers: OPTIONAL_AUTHORIZATION_HEADERS
+    optional_oauth2
     get do
       banners = BannerInfo.all
       present :banner_infos, banners, with: API::V1::Dashboard::BannerInfos::Entities::BannerInfo
     end
 
-    desc "Get banner by page name", headers: AUTHORIZATION_HEADERS
-    oauth2
+    desc "Get banner by page name", headers: OPTIONAL_AUTHORIZATION_HEADERS
+    optional_oauth2
     params do
       requires :page_name, type: String, values: ["pilpres", "janji politik", "tanya", "kuis"]
     end
-    get do
+    get :show do
       banner = nil
       if params.page_name.eql?("pilpres")
         banner = BannerInfo.find("ade8d637-e85e-4726-8005-6cede80ea860")
@@ -26,7 +26,7 @@ class API::V1::Linimasa::BannerInfos::Resources::BannerInfos < API::V1::Applicat
         banner = BannerInfo.find("9b98ac07-3208-4d60-976e-49ace39e38a7")
       end
       error!("Record banner info tidak ditemukan", 422) unless banner
-      present :banner_infos, banner, with: API::V1::Dashboard::BannerInfos::Entities::BannerInfo
+      present :banner_info, banner, with: API::V1::Dashboard::BannerInfos::Entities::BannerInfo
     end
   end
 end
