@@ -10,6 +10,11 @@ class Question < ApplicationRecord
 
   include API::V1::Helpers
 
+  belongs_to :question_folder, optional: true
+  
+  scope :in_folder, -> { where.not(question_folder_id: nil) }
+  scope :not_in_folder, -> { where(question_folder_id: nil) }
+
   def search_data
     {
       id: self.id,
