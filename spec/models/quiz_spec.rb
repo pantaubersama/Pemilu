@@ -8,6 +8,26 @@ RSpec.describe Quiz, type: :model do
     end
   end
 
+  describe "Publish / Unpublish" do
+    it "success not published" do
+      a = FactoryBot.create :quiz
+      expect(a.is_published).to eq(false) 
+    end
+
+    it "success published" do
+      a = FactoryBot.create :quiz
+      a.publish!
+      expect(a.is_published).to eq(true) 
+    end
+
+    it "success unpublished" do
+      a = FactoryBot.create :quiz
+      a.publish!
+      a.unpublish!
+      expect(a.is_published).to eq(false) 
+    end
+  end
+
   describe "Create full quiz" do
     it "success with question and answer" do
       quiz = FactoryBot.create :quiz
