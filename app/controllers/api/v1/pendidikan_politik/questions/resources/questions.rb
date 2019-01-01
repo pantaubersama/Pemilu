@@ -22,7 +22,7 @@ module API::V1::PendidikanPolitik::Questions::Resources
         build_conditions = params.filter_by.present? ? question_filter(params.filter_by) : default_conditions
 
         resources = Question.search("*", load: false, page: params.page, per_page: params.per_page, order: build_order, where: build_conditions).results
-        liked_resources = ActsAsVotable::Vote.where(votable_type: "Question", votable_id: resources.map(&:id), voter_id: current_user.id).map(&:votable_id) if current_user.present?
+        liked_resources = ActsAsVotable::Vote.where(votable_type: "Question", votable_id: resources.map(&:id), voter_id: current_user.id, vote_flag: true, vote_scope: nil).map(&:votable_id) if current_user.present?
         present :questions, resources, with: API::V1::PendidikanPolitik::Questions::Entities::Question, index_version: true, liked_resources: liked_resources
         present_metas resources
       end
