@@ -23,7 +23,8 @@ module API::V1::PendidikanPolitik::Questions::Resources
 
         resources = Question.search("*", load: false, page: params.page, per_page: params.per_page, order: build_order, where: build_conditions).results
         liked_resources = ActsAsVotable::Vote.where(votable_type: "Question", votable_id: resources.map(&:id), voter_id: current_user.id, vote_flag: true, vote_scope: nil).map(&:votable_id) if current_user.present?
-        present :questions, resources, with: API::V1::PendidikanPolitik::Questions::Entities::Question, index_version: true, liked_resources: liked_resources
+        reported_resources = ActsAsVotable::Vote.where(votable_type: "Question", votable_id: resources.map(&:id), voter_id: current_user.id, vote_flag: false, vote_scope: "report").map(&:votable_id) if current_user.present?
+        present :questions, resources, with: API::V1::PendidikanPolitik::Questions::Entities::Question, index_version: true, liked_resources: liked_resources, reported_resources: reported_resources
         present_metas resources
       end
 
@@ -52,7 +53,8 @@ module API::V1::PendidikanPolitik::Questions::Resources
       get "/:id" do
         q = Question.find params[:id]
         liked_resources = ActsAsVotable::Vote.where(votable_type: "Question", votable_id: q.id, voter_id: current_user.id, vote_flag: true, vote_scope: nil).map(&:votable_id) if current_user.present?
-        present :question, q, with: API::V1::PendidikanPolitik::Questions::Entities::Question, liked_resources: liked_resources
+        reported_resources = ActsAsVotable::Vote.where(votable_type: "Question", votable_id: q.id, voter_id: current_user.id, vote_flag: false, vote_scope: "report").map(&:votable_id) if current_user.present?
+        present :question, q, with: API::V1::PendidikanPolitik::Questions::Entities::Question, liked_resources: liked_resources, reported_resources: reported_resources
       end
 
       desc "Delete a question" do
