@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_01_122154) do
+ActiveRecord::Schema.define(version: 2019_01_01_132050) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -95,6 +95,17 @@ ActiveRecord::Schema.define(version: 2019_01_01_122154) do
     t.index ["user_id"], name: "index_questions_on_user_id"
   end
 
+  create_table "quiz_answerings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "quiz_participation_id"
+    t.uuid "quiz_id"
+    t.uuid "quiz_question_id"
+    t.uuid "quiz_answer_id"
+    t.uuid "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["quiz_participation_id", "quiz_question_id"], name: "participating_in_question", unique: true
+  end
+
   create_table "quiz_answers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "team"
     t.text "content"
@@ -102,6 +113,16 @@ ActiveRecord::Schema.define(version: 2019_01_01_122154) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["quiz_question_id"], name: "index_quiz_answers_on_quiz_question_id"
+  end
+
+  create_table "quiz_participations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "quiz_id"
+    t.uuid "user_id"
+    t.integer "status", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["quiz_id"], name: "index_quiz_participations_on_quiz_id"
+    t.index ["user_id"], name: "index_quiz_participations_on_user_id"
   end
 
   create_table "quiz_questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
