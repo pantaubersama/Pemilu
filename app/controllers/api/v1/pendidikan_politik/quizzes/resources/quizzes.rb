@@ -36,6 +36,16 @@ module API::V1::PendidikanPolitik::Quizzes::Resources
         present_metas resources
       end
 
+      desc "Detail quiz" do
+        detail "Detail quiz"
+        headers OPTIONAL_AUTHORIZATION_HEADERS
+      end
+      optional_oauth2
+      get "/:id" do
+        quiz = ::Quiz.published.find params.id
+        present :quiz, quiz, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz, quiz_detail: true, current_user: current_user
+      end
+
     end
 
 
