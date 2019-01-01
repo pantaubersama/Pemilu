@@ -1,16 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe QuizAnswering, type: :model do
-  # class QuizAnswering < ApplicationRecord
-  #   include Userable
   
-  #   belongs_to :quiz_participation
-  #   belongs_to :quiz
-  #   belongs_to :quiz_question
-  #   belongs_to :quiz_answer
-    
-  # end
-
   before do
     stub_find_user
     @user = User.find "c9242c5a-805b-4ef5-b3a7-2a7f25785cc8"
