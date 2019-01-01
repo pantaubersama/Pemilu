@@ -11,13 +11,14 @@ module API
       # Mounting Modules Api
       # mount API::V1::Adventures::Routes
 
-      # Mounting Modules Api /linimasa
+      # Mounting Modules Api /pendidikan_politik
       # mount API::V1::PendidikanPolitik::Infos::Routes
       mount Api::V1::PendidikanPolitik::Questions::Routes
       mount API::V1::Votes::Routes
       mount API::V1::Reports::Routes
       mount API::V1::PendidikanPolitik::Examples::Routes unless Rails.env.production?
       mount API::V1::PendidikanPolitik::OnlyStaging::Routes unless Rails.env.production?
+      mount Api::V1::PendidikanPolitik::Quizzes::Routes
 
 
       # Swagger config

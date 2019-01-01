@@ -42,6 +42,11 @@ module API::V1::Helpers
       {}
     end
   end
+
+  def quiz_filter(x)
+    {quiz_participations: {status: x.to_s}}
+  end
+  
   
   
 end
