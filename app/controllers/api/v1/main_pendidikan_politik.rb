@@ -16,7 +16,8 @@ module API
       mount Api::V1::PendidikanPolitik::Questions::Routes
       mount API::V1::Votes::Routes
       mount API::V1::Reports::Routes
-      mount API::V1::PendidikanPolitik::Examples::Routes
+      mount API::V1::PendidikanPolitik::Examples::Routes unless Rails.env.production?
+      mount API::V1::PendidikanPolitik::OnlyStaging::Routes unless Rails.env.production?
 
 
       # Swagger config

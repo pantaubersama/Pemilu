@@ -57,12 +57,13 @@ group :development do
   gem 'capistrano-sidekiq'
 end
 
+
+###doc [4] set up faker
+gem 'faker'
+
 group :test do
   ###doc [3] set up shoulda_matchers
   gem 'shoulda-matchers', '~> 3.1'
-
-  ###doc [4] set up faker
-  gem 'faker'
 
   ###doc [5] set up database_cleaner
   gem 'database_cleaner'
