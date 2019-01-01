@@ -9,5 +9,8 @@ module API::V1::PendidikanPolitik::Questions::Entities
     expose :created
     expose :cached_votes_up, as: :like_count
     expose :user, using: API::V1::PendidikanPolitik::Questions::Entities::User
+    expose :is_liked, if: lambda { |c,o| o[:liked_resources].present? } do |obj, opt|
+      opt[:liked_resources].include? obj.id
+    end
   end
 end
