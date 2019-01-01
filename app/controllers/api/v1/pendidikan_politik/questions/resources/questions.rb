@@ -43,13 +43,16 @@ module API::V1::PendidikanPolitik::Questions::Resources
 
       desc "Show a question" do
         detail "Show a question"
+        headers OPTIONAL_AUTHORIZATION_HEADERS
       end
       params do
         requires :id
       end
+      optional_oauth2
       get "/:id" do
         q = Question.find params[:id]
-        present :question, q, with: API::V1::PendidikanPolitik::Questions::Entities::Question
+        liked_resources = ActsAsVotable::Vote.where(votable_type: "Question", votable_id: q.id, voter_id: current_user.id).map(&:votable_id) if current_user.present?
+        present :question, q, with: API::V1::PendidikanPolitik::Questions::Entities::Question, liked_resources: liked_resources
       end
 
       desc "Delete a question" do

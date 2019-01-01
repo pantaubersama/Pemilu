@@ -12,7 +12,7 @@ module API::V1::PendidikanPolitik::Questions::Entities
     expose :is_liked, if: lambda { |c,o| o[:liked_resources].present? } do |obj, opt|
       opt[:liked_resources].include? obj.id
     end
-    expose :is_liked, if: lambda { |c,o| o[:liked_resources].nil? } do |obj, opt|
+    expose :is_liked, if: lambda { |c,o| o[:liked_resources].nil? || o[:liked_resources].empty? } do |obj, opt|
       false
     end
   end
