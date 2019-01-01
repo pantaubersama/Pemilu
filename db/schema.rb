@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_26_082958) do
+ActiveRecord::Schema.define(version: 2018_12_31_111734) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -37,9 +37,9 @@ ActiveRecord::Schema.define(version: 2018_12_26_082958) do
   end
 
   create_table "feeds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.bigint "source_id", null: false
+    t.string "source_id", null: false
     t.text "source_text", null: false
-    t.bigint "account_id", null: false
+    t.string "account_id", null: false
     t.string "account_name", null: false
     t.string "account_username", null: false
     t.string "account_profile_image_url", null: false
