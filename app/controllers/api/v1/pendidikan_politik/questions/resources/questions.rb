@@ -64,11 +64,12 @@ module API::V1::PendidikanPolitik::Questions::Resources
       end
       oauth2
       delete "/" do
-        q = Question.find_by id: params[:id], user_id: current_user.id
+        q = ::Question.find_by id: params[:id], user_id: current_user.id
 
         error!("ID not found : #{params.id}", 404) unless q
-
+        
         del = q.destroy!
+        ::Question.searchkick_index.remove(q)
 
         present :question, q, with: API::V1::PendidikanPolitik::Questions::Entities::Question
         present :status, q.paranoia_destroyed?
