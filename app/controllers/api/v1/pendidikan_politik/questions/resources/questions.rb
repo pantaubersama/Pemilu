@@ -51,7 +51,7 @@ module API::V1::PendidikanPolitik::Questions::Resources
       optional_oauth2
       get "/:id" do
         q = Question.find params[:id]
-        liked_resources = ActsAsVotable::Vote.where(votable_type: "Question", votable_id: q.id, voter_id: current_user.id).map(&:votable_id) if current_user.present?
+        liked_resources = ActsAsVotable::Vote.where(votable_type: "Question", votable_id: q.id, voter_id: current_user.id, vote_flag: true, vote_scope: nil).map(&:votable_id) if current_user.present?
         present :question, q, with: API::V1::PendidikanPolitik::Questions::Entities::Question, liked_resources: liked_resources
       end
 
