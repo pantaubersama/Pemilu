@@ -1,5 +1,5 @@
 module Teamable
-  
+
   #
   # I expect you to create field `team` type `integer`
   #
