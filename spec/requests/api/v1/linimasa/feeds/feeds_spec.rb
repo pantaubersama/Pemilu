@@ -16,6 +16,11 @@ RSpec.describe "Api::V1::Linimasa::Feeds", type: :request do
     it "should returns 200 with valid params when success" do
       get "/linimasa/v1/feeds/pilpres", headers: stub_auth_headers
       expect(json_response[:data][:feeds].size).to eq(5)
+      expect(json_response[:data][:feeds].last[:team]).to eq({
+                                                                 "avatar" => "https://s3-ap-southeast-1.amazonaws.com/pantau-test/assets/teams/avatar_team_1.png",
+                                                                 "id"     => 1,
+                                                                 "title"  => "Jokowi - Makruf"
+                                                             })
       expect(response.status).to eq(200)
     end
   end

@@ -15,7 +15,7 @@ module Teamable
     [1, "1"].include?(team) ? "Jokowi - Makruf" : "Prabowo - Sandi"
   end
 
-  def source
+  def team_source
     {
         id:     team,
         title:  team_text,
