@@ -10,15 +10,27 @@ class QuizResult
     display_simple.merge(answers: @result)
   end
 
+  def team_text team
+    [1, "1"].include?(team) ? "Jokowi - Makruf" : "Prabowo - Sandi"
+  end
+
+  def team_source team
+    {
+      id:     team,
+      title:  team_text(team),
+      avatar: "https://s3-ap-southeast-1.amazonaws.com/pantau-test/assets/teams/avatar_team_#{team}.png",
+    }
+  end
+
   def display_simple
     {
       teams: [
         { 
-          id: 1,
+          team: team_source(1),
           percentage: ((@result.select{|x| x == 1}.size.to_f / @result.size) * 100).round(2)
         },
         { 
-          id: 1,
+          team: team_source(2),
           percentage: ((@result.select{|x| x == 2}.size.to_f / @result.size) * 100).round(2)
         }
       ]
