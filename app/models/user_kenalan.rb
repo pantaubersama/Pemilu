@@ -1,6 +1,6 @@
 class UserKenalan < ApplicationRecord
   belongs_to :kenalan
-  validates_presence_of :user_id, :kenalan_id
+  validates :user_id, :kenalan_id, presence: true
   before_create :set_action_at
 
   def is_action

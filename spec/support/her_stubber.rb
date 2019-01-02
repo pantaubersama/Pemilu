@@ -49,6 +49,7 @@ module HerStubber
                   }
                 },
                 "verified": false,
+                "cluster": nil,
                 "about": "All about me"
               }
             }
@@ -88,6 +89,7 @@ module HerStubber
                   }
                 },
                 "verified": false,
+                "cluster": nil,
                 "about": nil
               }
             }
@@ -128,6 +130,7 @@ module HerStubber
                     }
                   },
                   "verified": false,
+                  "cluster": nil,
                   "about": nil
                 },
                 {
@@ -152,6 +155,7 @@ module HerStubber
                     }
                   },
                   "verified": false,
+                  "cluster": nil,
                   "about": nil
                 }
               ],

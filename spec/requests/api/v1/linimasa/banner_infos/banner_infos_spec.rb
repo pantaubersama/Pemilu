@@ -1,9 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "Api::V1::Linimasa::BannerInfos", type: :request do
-  before do
-    `RAILS_ENV=test bundle exec rake seed:migrate MIGRATION=20181231052715_banner_info_seed.rb`
-  end
   describe "[GET] Endpoint /banner_infos" do
     it "should returns 200 with valid params when success" do
       get "/linimasa/v1/banner_infos"

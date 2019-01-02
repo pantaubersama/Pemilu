@@ -3,5 +3,5 @@ class QuizAnswer < ApplicationRecord
 
   belongs_to :quiz_question
 
-  validates_presence_of :quiz_question_id
+  validates :quiz_question_id, presence: true
 end
