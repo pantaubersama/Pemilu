@@ -64,6 +64,12 @@ ActiveRecord::Schema.define(version: 2019_01_01_155031) do
     t.index ["deleted_at"], name: "index_janji_politiks_on_deleted_at"
   end
 
+  create_table "kenalans", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "text", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "question_folders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -148,6 +154,15 @@ ActiveRecord::Schema.define(version: 2019_01_01_155031) do
     t.datetime "migrated_on"
   end
 
+  create_table "user_kenalans", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.uuid "kenalan_id", null: false
+    t.datetime "action_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "kenalan_id"], name: "index_user_kenalans_on_user_id_and_kenalan_id", unique: true
+  end
+
   create_table "versions", force: :cascade do |t|
     t.string "item_type", null: false
     t.uuid "item_id", null: false
@@ -155,6 +170,7 @@ ActiveRecord::Schema.define(version: 2019_01_01_155031) do
     t.string "whodunnit"
     t.text "object"
     t.datetime "created_at"
+    t.text "object_changes"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
