@@ -7,7 +7,7 @@ module Teamable
   extend ActiveSupport::Concern
 
   included do
-    validates_presence_of :team
+    validates :team, presence: true
   end
 
 
