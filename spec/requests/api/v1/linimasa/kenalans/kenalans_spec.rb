@@ -1,9 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "Api::V1::Linimasa::Kenalans", type: :request do
-  before do
-    `RAILS_ENV=test bundle exec rake seed:migrate MIGRATION=20181231105142_kenalan_seed.rb`
-  end
   describe "[GET] Endpoint /kenalans" do
     it "should returns 200 with valid params when success" do
       get "/linimasa/v1/kenalans", headers: stub_auth_headers

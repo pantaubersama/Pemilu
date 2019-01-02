@@ -10,6 +10,10 @@ class JanjiPolitik < ApplicationRecord
   end
 
   def search_data
+    cluster_id = nil
+    if self.user.present? && self.user.cluster.present?
+      cluster_id = self.user.cluster.id
+    end
     {
         id:         self.id,
         title:      self.title,
@@ -25,6 +29,7 @@ class JanjiPolitik < ApplicationRecord
             first_name: self.user.first_name,
             last_name:  self.user.last_name,
             about:      self.user.about,
+            cluster:    cluster_id,
         }
     }
   end

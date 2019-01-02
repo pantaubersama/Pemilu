@@ -44,6 +44,20 @@ module API::V1::Helpers
     end
   end
 
+  def team_filter(x)
+    #team_all team_id_1 team_id_2
+    case x
+    when :team_id_1
+      { team: 1 }
+    when :team_id_2
+      { team: 2 }
+    when :team_all
+      {}
+    else
+      {}
+    end
+  end
+
   def quiz_filter(x)
     { quiz_participations: { status: x.to_s } }
   end

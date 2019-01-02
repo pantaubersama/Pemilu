@@ -11,7 +11,7 @@ RSpec.describe "Api::V1::Linimasa::Feeds", type: :request do
       crowling_2 = create :crowling, keywords: :alamybs, team: 2
       create :feed, crowling: crowling_1, source_id: 969876460256161712, source_text: "Woooo", account_id: 99252433, account_name: "Alam ybs", account_username: "alamybs", account_profile_image_url: "http://pbs.twimg.com/profile_images/1028985612458582016/vTOB00bG_normal.jpg", type: "TwTimelineFeed", team: 2
       create :feed, crowling: crowling_2, source_id: 971408683409154546, source_text: "Iki disik lek", account_id: 99252433, account_name: "Alam ybs", account_username: "alamybs", account_profile_image_url: "http://pbs.twimg.com/profile_images/1028985612458582016/vTOB00bG_normal.jpg", type: "TwTimelineFeed", team: 2
-
+      Feed.reindex
     end
     it "should returns 200 with valid params when success" do
       get "/linimasa/v1/feeds/pilpres", headers: stub_auth_headers
@@ -22,6 +22,20 @@ RSpec.describe "Api::V1::Linimasa::Feeds", type: :request do
                                                                  "title"  => "Jokowi - Makruf"
                                                              })
       expect(response.status).to eq(200)
+    end
+    it "filter by team_all" do
+      get "/linimasa/v1/feeds/pilpres", params: {filter_by: :team_all}
+      expect(json_response[:data][:feeds].size).to eq(5)
+    end
+
+    it "filter by user_verified_false" do
+      get "/linimasa/v1/feeds/pilpres", params: {filter_by: :team_id_1}
+      expect(json_response[:data][:feeds].size).to eq(3)
+    end
+
+    it "filter by team_id_2" do
+      get "/linimasa/v1/feeds/pilpres", params: {filter_by: :team_id_2}
+      expect(json_response[:data][:feeds].size).to eq(2)
     end
   end
 end
