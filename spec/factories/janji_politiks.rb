@@ -9,7 +9,6 @@ FactoryBot.define do
         question.reindex(refresh: true)
       end
     end
-    image { Rack::Test::UploadedFile.new 'spec/fixtures/files/janji_image.jpg', 'image/jpg' }
   end
 
 end

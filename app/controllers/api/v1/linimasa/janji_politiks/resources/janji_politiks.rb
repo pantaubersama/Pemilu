@@ -14,9 +14,9 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       default_conditions = {}
       build_conditions   = params.filter_by.present? ? question_filter(params.filter_by) : default_conditions
       if params.cluster_id.present?
-        build_conditions =  build_conditions.merge({cluster: params.cluster_id})
+        build_conditions = build_conditions.merge({ cluster: params.cluster_id })
       end
-      resources          = JanjiPolitik.search("*", load: false, page: params.page, per_page: params.per_page, order: { created_at: :desc }, where: build_conditions).results
+      resources = JanjiPolitik.search("*", load: false, page: params.page, per_page: params.per_page, order: { created_at: :desc }, where: build_conditions).results
 
       present :janji_politiks, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
       present_metas resources
@@ -27,7 +27,6 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
     params do
       requires :title, type: String
       requires :body, type: String
-      optional :image, type: File
     end
     post do
       authorize_eligible_user!
@@ -38,20 +37,18 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       present :janji_politik, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
     end
 
-    desc "Upload image janji politiks", headers: AUTHORIZATION_HEADERS
+    desc "Upload picture", headers: AUTHORIZATION_HEADERS
     oauth2
     params do
-      requires :id, type: String
-      optional :image, type: File
+      requires :picture, type: File
     end
-    put do
+    put :picture do
       authorize_eligible_user!
-      resources      = JanjiPolitik.find_by(id: params.id, user_id: current_user.id)
-      resource.image = params.image
+      resources = AssetPicture.new(params.merge({ bucket_title: "janji_politik" }))
       unless resources.save
         error!(resources.errors.full_messages.join(", "), 422)
       end
-      present :janji_politiks, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
+      present :asset_picture, resources, with: API::V1::AssetPictures::Entities::AssetPicture
     end
 
     desc "Delete janji politiks", headers: AUTHORIZATION_HEADERS

@@ -1,4 +1,4 @@
-class JanjiPolitikUploader < CarrierWave::Uploader::Base
+class AssetPictureUploader < CarrierWave::Uploader::Base
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
