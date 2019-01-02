@@ -1,12 +1,19 @@
 class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::ApplicationResource
   helpers API::V1::Helpers
+  helpers API::V1::SharedParams
 
   resource "janji_politiks" do
     desc "List janji politiks", headers: OPTIONAL_AUTHORIZATION_HEADERS
     optional_oauth2
+    params do
+      optional :cluster, type: File
+      use :filter, filter_by: %i(user_verified_all user_verified_true user_verified_false)
+    end
     paginate per_page: 100, max_per_page: 500
     get do
-      resources = paginate(JanjiPolitik.all)
+      default_conditions = {}
+      build_conditions   = params.filter_by.present? ? question_filter(params.filter_by) : default_conditions
+      resources          = JanjiPolitik.search("*", load: false, page: params.page, per_page: params.per_page, order: { created_at: :desc }, where: build_conditions).results
       present :janji_politiks, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
       present_metas resources
     end

@@ -1,4 +1,5 @@
 class Feed < ApplicationRecord
+  searchkick
   include Teamable
   acts_as_paranoid
   belongs_to :crowling

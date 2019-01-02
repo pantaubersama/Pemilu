@@ -7,6 +7,7 @@ RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
   describe "[GET] Endpoint /janji_politiks" do
     before do
       create :janji_politik, title: "Pengadaan Bunker Anti Bencana", body: "Pada 2019, di wacanakan bunker anti bencana siap di resmikan."
+      JanjiPolitik.reindex
     end
     it "should returns 200 with valid params when success" do
       get "/linimasa/v1/janji_politiks", headers: stub_auth_headers(@access_token)
@@ -18,6 +19,28 @@ RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
       expect(json_response[:data][:janji_politiks].first[:user][:first_name]).to eq("Joan")
       expect(json_response[:data][:janji_politiks].first[:user][:last_name]).to eq("Weeks")
       expect(response.status).to eq(200)
+    end
+  end
+  describe "[GET] Endpoint /janji_politiks [using filter]" do
+    before do
+      5.times do
+        create :janji_politik
+      end
+      JanjiPolitik.reindex
+    end
+    it "filter by user_verified_true" do
+      get "/linimasa/v1/janji_politiks?filter_by=user_verified_true"
+      expect(json_response[:data][:janji_politiks].size).to eq(0)
+    end
+
+    it "filter by user_verified_false" do
+      get "/linimasa/v1/janji_politiks?filter_by=user_verified_false"
+      expect(json_response[:data][:janji_politiks].size).to eq(5)
+    end
+
+    it "no filter : user_verified_all" do
+      get "/linimasa/v1/janji_politiks?filter_by=user_verified_all"
+      expect(json_response[:data][:janji_politiks].size).to eq(5)
     end
   end
   describe "[POST] Endpoint /janji_politiks" do
