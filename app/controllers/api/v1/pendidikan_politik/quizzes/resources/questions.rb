@@ -19,7 +19,7 @@ module API::V1::PendidikanPolitik::Quizzes::Resources
 
         present :quiz_participation, participation, with: API::V1::PendidikanPolitik::Quizzes::Entities::QuizParticipation
         present :answered_questions, answered_questions, with: API::V1::PendidikanPolitik::Quizzes::Entities::Question
-        present :questions, (quiz.quiz_questions.order("RANDOM()") - answered_questions), with: API::V1::PendidikanPolitik::Quizzes::Entities::Question
+        present :questions, (quiz.quiz_questions.order(Arel.sql("RANDOM()")) - answered_questions), with: API::V1::PendidikanPolitik::Quizzes::Entities::Question
         present :meta, quiz, with: API::V1::PendidikanPolitik::Quizzes::Entities::MetaQuiz, current_user: current_user
       end
 
