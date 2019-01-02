@@ -11,7 +11,7 @@ class JanjiPolitik < ApplicationRecord
   def search_data
     cluster_id = nil
     if self.user.present? && self.user.cluster.present?
-      cluster_id = self.user.cluster.id
+      cluster_id = self.user.cluster[:id]
     end
     {
         id:         self.id,
