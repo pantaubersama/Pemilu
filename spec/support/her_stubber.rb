@@ -30,8 +30,7 @@ module HerStubber
               "user": {
                 "id": "c9242c5a-805b-4ef5-b3a7-2a7f25785cc8",
                 "email": "helmy@extrainteger.com",
-                "first_name": "Yunan",
-                "last_name": "Helmy",
+                "full_name": "Yunan Helmy",
                 "username": "yunanhelmy",
                 "avatar": {
                   "url": "https://pantau-test.s3.amazonaws.com/uploads/user/avatar/c9242c5a-805b-4ef5-b3a7-2a7f25785cc8/badminton.png",
@@ -70,8 +69,7 @@ module HerStubber
               "user": {
                 "id": "1036fd3c-04ed-4949-b57c-b7dc8ff3e737",
                 "email": "namakukingkong@gmail.com",
-                "first_name": "Joan",
-                "last_name": "Weeks",
+                "full_name": "Joan Weeks",
                 "username": nil,
                 "avatar": {
                   "url": nil,
@@ -111,8 +109,7 @@ module HerStubber
                 {
                   "id": "1036fd3c-04ed-4949-b57c-b7dc8ff3e737",
                   "email": "namakukingkong@gmail.com",
-                  "first_name": "Joan",
-                  "last_name": "Weeks",
+                  "full_name": "Joan Weeks",
                   "username": nil,
                   "avatar": {
                     "url": nil,
@@ -136,8 +133,7 @@ module HerStubber
                 {
                   "id": "e90ae078-f617-4a32-bcaa-0865041db0e6",
                   "email": "hanifsgy@gmail.com",
-                  "first_name": "Hanif",
-                  "last_name": "Sugiyanto",
+                  "full_name": "Hanif Sugiyanto",
                   "username": nil,
                   "avatar": {
                     "url": nil,

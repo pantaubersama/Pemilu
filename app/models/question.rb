@@ -28,8 +28,7 @@ class Question < ApplicationRecord
             verified:   self.user.verified,
             id:         self.user.id,
             avatar:     self.user.avatar,
-            first_name: self.user.first_name,
-            last_name:  self.user.last_name,
+            full_name:  self.user.full_name,
             about:      self.user.about,
         }
     }

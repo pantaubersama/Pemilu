@@ -20,8 +20,7 @@ module AuthorizationRequestStubber
                              "info":       {
                                  "id":           "1036fd3c-04ed-4949-b57c-b7dc8ff3e737",
                                  "email":        "namakukingkong@gmail.com",
-                                 "first_name":   "Joan",
-                                 "last_name":    "Weeks",
+                                 "full_name":   "Joan Weeks",
                                  "uid":          "6",
                                  "provider":     "identitas",
                                  "is_admin":     is_admin,
@@ -78,8 +77,7 @@ module AuthorizationRequestStubber
                 "user": {
                     "id":         "1036fd3c-04ed-4949-b57c-b7dc8ff3e737",
                     "email":      "namakukingkong@gmail.com",
-                    "first_name": "Joan",
-                    "last_name":  "Weeks",
+                    "full_name": "Joan Weeks",
                     "username":   nil,
                     "avatar":     {
                         "url":              nil,
