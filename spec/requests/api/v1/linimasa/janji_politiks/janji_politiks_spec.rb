@@ -14,9 +14,9 @@ RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
       expect(json_response[:data][:janji_politiks].size).to eq(1)
       expect(json_response[:data][:janji_politiks].first[:body]).to eq("Pada 2019, di wacanakan bunker anti bencana siap di resmikan.")
       expect(json_response[:data][:janji_politiks].first[:title]).to eq("Pengadaan Bunker Anti Bencana")
-      expect(json_response[:data][:janji_politiks].first[:user][:id]).to eq("1036fd3c-04ed-4949-b57c-b7dc8ff3e737")
-      expect(json_response[:data][:janji_politiks].first[:user][:email]).to eq("namakukingkong@gmail.com")
-      expect(json_response[:data][:janji_politiks].first[:user][:full_name]).to eq("Joan Weeks")
+      expect(json_response[:data][:janji_politiks].first[:creator][:id]).to eq("1036fd3c-04ed-4949-b57c-b7dc8ff3e737")
+      expect(json_response[:data][:janji_politiks].first[:creator][:email]).to eq("namakukingkong@gmail.com")
+      expect(json_response[:data][:janji_politiks].first[:creator][:full_name]).to eq("Joan Weeks")
       expect(response.status).to eq(200)
     end
   end
