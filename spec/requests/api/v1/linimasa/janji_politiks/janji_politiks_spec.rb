@@ -16,8 +16,7 @@ RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
       expect(json_response[:data][:janji_politiks].first[:title]).to eq("Pengadaan Bunker Anti Bencana")
       expect(json_response[:data][:janji_politiks].first[:creator][:id]).to eq("1036fd3c-04ed-4949-b57c-b7dc8ff3e737")
       expect(json_response[:data][:janji_politiks].first[:creator][:email]).to eq("namakukingkong@gmail.com")
-      expect(json_response[:data][:janji_politiks].first[:creator][:first_name]).to eq("Joan")
-      expect(json_response[:data][:janji_politiks].first[:creator][:last_name]).to eq("Weeks")
+      expect(json_response[:data][:janji_politiks].first[:creator][:full_name]).to eq("Joan Weeks")
       expect(response.status).to eq(200)
     end
   end
