@@ -27,6 +27,7 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
     params do
       requires :title, type: String
       requires :body, type: String
+      optional :image, type: File
     end
     post do
       authorize_eligible_user!
@@ -37,18 +38,20 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       present :janji_politik, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
     end
 
-    desc "Upload picture", headers: AUTHORIZATION_HEADERS
+    desc "Update image janji politiks", headers: AUTHORIZATION_HEADERS
     oauth2
     params do
-      requires :picture, type: File
+      requires :id, type: String, desc: "Janji Politik ID"
+      requires :image, type: File
     end
-    put :picture do
+    put :image do
       authorize_eligible_user!
-      resources = AssetPicture.new(params.merge({ bucket_title: "janji_politik" }))
-      unless resources.save
-        error!(resources.errors.full_messages.join(", "), 422)
+      resource      = JanjiPolitik.find_by(id: params.id, user_id: current_user.id)
+      resource.image = params.image
+      unless resource.save
+        error!(resource.errors.full_messages.join(", "), 422)
       end
-      present :asset_picture, resources, with: API::V1::AssetPictures::Entities::AssetPicture
+      present :janji_politik, resource, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
     end
 
     desc "Delete janji politiks", headers: AUTHORIZATION_HEADERS

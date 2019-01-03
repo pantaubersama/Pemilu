@@ -2,6 +2,8 @@ class JanjiPolitik < ApplicationRecord
   searchkick
   acts_as_paranoid
   has_paper_trail
+  mount_uploader :image, AssetPictureUploader
+
   validates :title, :body, presence: true
 
   def user

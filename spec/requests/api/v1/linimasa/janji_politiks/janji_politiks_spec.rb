@@ -50,7 +50,7 @@ RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
            params:  {
                title: "Berbagi nasi bungkus bersama rakyat.",
                body:  "Tak ayal apapun dilakukan",
-               #image: fixture_file_upload('files/janji_image.jpg', 'image/jpg')
+               image: fixture_file_upload('files/janji_image.jpg', 'image/jpg')
            },
            headers: stub_eligible_auth_headers
       expect(json_response[:data][:janji_politik][:title]).to eq("Berbagi nasi bungkus bersama rakyat.")
@@ -60,20 +60,22 @@ RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
   end
 
   describe "[PUT] Endpoint /janji_politiks/picture" do
+    before do
+      @janji_politik = create :janji_politik, title: "Pengadaan Bunker Anti Bencana", body: "Pada 2019, di wacanakan bunker anti bencana siap di resmikan."
+      JanjiPolitik.reindex
+    end
     it "should returns 201 with valid params when success" do
-      put "/linimasa/v1/janji_politiks/picture",
+      put "/linimasa/v1/janji_politiks/image",
           params:  {
-              picture: fixture_file_upload('files/janji_image.jpg', 'image/jpg')
+              id:    @janji_politik.id,
+              image: fixture_file_upload('files/janji_image.jpg', 'image/jpg')
           },
           headers: stub_eligible_auth_headers
-      expect(json_response[:data][:asset_picture][:bucket_title]).to eq("janji_politik")
-      expect(json_response[:data][:asset_picture][:picture]).to eq({
-                                                                       "large" => {
-                                                                           "url" => "http://0.0.0.0:3000/uploads/asset_picture/picture/#{json_response[:data][:asset_picture][:id]}/large_janji_image.jpg"
-                                                                       },
-                                                                       "url"   => "http://0.0.0.0:3000/uploads/asset_picture/picture/#{json_response[:data][:asset_picture][:id]}/janji_image.jpg"
-                                                                   }
-                                                                )
+      expect(json_response[:data][:janji_politik][:image]).to eq({
+                                                                     "large"=> {
+                                                                         "url"=>"#{ENV["BASE_URL"]}/uploads/janji_politik/image/#{json_response[:data][:janji_politik][:id]}/large_janji_image.jpg"
+                                                                     },
+                                                                     "url"=>"#{ENV["BASE_URL"]}/uploads/janji_politik/image/#{json_response[:data][:janji_politik][:id]}/janji_image.jpg"})
       expect(response.status).to eq(200)
     end
   end

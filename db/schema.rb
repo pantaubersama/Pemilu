@@ -10,19 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_02_085743) do
+ActiveRecord::Schema.define(version: 2019_01_03_030814) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
-
-  create_table "asset_pictures", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "picture"
-    t.string "bucket_title", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
 
   create_table "banner_infos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
@@ -67,6 +60,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_085743) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.string "image"
     t.index ["deleted_at"], name: "index_janji_politiks_on_deleted_at"
   end
 
@@ -176,6 +170,7 @@ ActiveRecord::Schema.define(version: 2019_01_02_085743) do
     t.string "whodunnit"
     t.text "object"
     t.datetime "created_at"
+    t.text "object_changes"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
