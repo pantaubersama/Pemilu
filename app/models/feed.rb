@@ -8,20 +8,13 @@ class Feed < ApplicationRecord
   validates_uniqueness_of :type, scope: [:source_id, :crowling_id]
 
   def search_data
-    {
-        id:               self.id,
-        source_id:        self.source_id,
-        source_text:      self.source_text,
-
-        account_id:       self.account_id,
-        account_name:     self.account_name,
-        account_username: self.account_username,
-
-        team:             self.team,
-        team_source:      self.team_source,
-        crowling_id:      self.crowling_id,
-        created_at:       self.created_at,
-        all_fields:           ["--", self.source_text, self.account_name, self.account_username, "--"].compact.join(' ').downcase
-    }
+    resluts = {}
+    Feed.column_names.each do |column|
+      resluts[column] = self.send(column.to_s)
+    end
+    resluts.merge({
+                      team_source: self.team_source,
+                      all_fields:  ["--", self.source_text, self.account_name, self.account_username, "--"].compact.join(' ').downcase
+                  })
   end
 end
