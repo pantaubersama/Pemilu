@@ -6,17 +6,22 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
     desc "List janji politiks", headers: OPTIONAL_AUTHORIZATION_HEADERS
     optional_oauth2
     params do
+      optional :q, type: String
       optional :cluster_id, type: String, desc: "Cluster ID"
       use :filter, filter_by: %i(user_verified_all user_verified_true user_verified_false)
     end
     paginate per_page: 100, max_per_page: 500
     get do
+      query = "*"
+      if params.q.present?
+        query = "#{params.q}".downcase
+      end
       default_conditions = {}
       build_conditions   = params.filter_by.present? ? question_filter(params.filter_by) : default_conditions
       if params.cluster_id.present?
         build_conditions = build_conditions.merge({ cluster: params.cluster_id })
       end
-      resources = JanjiPolitik.search("*", load: false, page: params.page, per_page: params.per_page, order: { created_at: :desc }, where: build_conditions).results
+      resources = JanjiPolitik.search(query, match: :text_middle, load: false, page: params.page, per_page: params.per_page, order: { created_at: :desc }, where: build_conditions).results
 
       present :janji_politiks, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
       present_metas resources

@@ -1,5 +1,5 @@
 class JanjiPolitik < ApplicationRecord
-  searchkick
+  searchkick text_middle: [:all_fields]
   acts_as_paranoid
   has_paper_trail
   mount_uploader :image, AssetPictureUploader
@@ -31,7 +31,9 @@ class JanjiPolitik < ApplicationRecord
             last_name:  self.user.last_name,
             about:      self.user.about,
             cluster:    cluster_id,
-        }
+        },
+        all_fields: ["--", self.title, self.body, self.user.username, "--"].compact.join(' ').downcase
+
     }
   end
 end

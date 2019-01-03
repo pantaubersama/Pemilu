@@ -1,5 +1,5 @@
 class Feed < ApplicationRecord
-  searchkick
+  searchkick text_middle: [:all_fields]
   include Teamable
   acts_as_paranoid
   belongs_to :crowling
@@ -21,6 +21,7 @@ class Feed < ApplicationRecord
         team_source:      self.team_source,
         crowling_id:      self.crowling_id,
         created_at:       self.created_at,
+        all_fields:           ["--", self.source_text, self.account_name, self.account_username, "--"].compact.join(' ').downcase
     }
   end
 end
