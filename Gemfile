@@ -67,6 +67,8 @@ group :test do
 
   ###doc [5] set up database_cleaner
   gem 'database_cleaner'
+
+  gem 'bullet'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
