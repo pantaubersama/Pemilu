@@ -6,7 +6,7 @@ class Question < ApplicationRecord
   validates :user_id, presence: true
 
   include Reportable
-  searchkick
+  searchkick searchable: [:body], word_start: [:body], word_middle: [:body], word_end: [:body], word: [:body]
 
   include API::V1::Helpers
 
@@ -15,6 +15,11 @@ class Question < ApplicationRecord
   scope :in_folder, -> { where.not(question_folder_id: nil) }
   scope :not_in_folder, -> { where(question_folder_id: nil) }
 
+
+  def should_index?
+    deleted_at.nil?
+  end
+  
   def search_data
     {
         id:              self.id,

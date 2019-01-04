@@ -118,5 +118,62 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
       expect(json_response[:data][:questions].size).to eq(0)
     end
   end
+
+  describe "[GET] Endpoint /" do
+    before do
+      FactoryBot.create :question, body: "Lorem gembel"
+      FactoryBot.create :question, body: "Lorem gembel wedus"
+      Question.reindex
+    end
+
+    it "search" do
+      get "/pendidikan_politik/v1/questions?q=gembel"
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:questions].size).to be >= 2
+    end
+
+    it "search not found" do
+      get "/pendidikan_politik/v1/questions?q=telek%20gembel"
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:questions].size).to eq(0)
+    end
+
+    it "search using or" do
+      get "/pendidikan_politik/v1/questions?q=telek%20gembel&o=or"
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:questions].size).to be >= 2
+    end
+
+    it "search using match word_start" do
+      get "/pendidikan_politik/v1/questions?q=gem"
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:questions].size).to be >= 2
+    end
+
+    it "search using match word_start not found" do
+      get "/pendidikan_politik/v1/questions?q=mbel"
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:questions].size).to eq(0)
+    end
+
+    it "search using match word_end" do
+      get "/pendidikan_politik/v1/questions?q=mbel&m=word_end"
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:questions].size).to eq(2)
+    end
+
+    it "search using match word not found" do
+      get "/pendidikan_politik/v1/questions?q=gem&m=word"
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:questions].size).to eq(0)
+    end
+
+    it "search using match word" do
+      get "/pendidikan_politik/v1/questions?q=gembel&m=word"
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:questions].size).to eq(2)
+    end
+
+  end
   
 end

@@ -16,6 +16,7 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Quizzes", type: :request 
       post "/pendidikan_politik/v1/only_staging/generate_random_quiz", params: {total_question: 3}
 
       @quiz = Quiz.first
+      Quiz.reindex
     end
 
     it "should success" do
