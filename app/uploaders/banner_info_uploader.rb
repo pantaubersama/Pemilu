@@ -4,7 +4,8 @@ class BannerInfoUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
-  # storage :fog
+  storage :file if Rails.env.development? || Rails.env.test?
+  storage :fog if !Rails.env.development? && !Rails.env.test?
 
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:

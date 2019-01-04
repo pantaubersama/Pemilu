@@ -6,7 +6,7 @@ class API::V1::PendidikanPolitik::OnlyStaging::Resources::Quiz < API::V1::Applic
       requires :total_question, type: Integer
     end
     post "/generate_random_quiz" do
-      quiz = ::Quiz.create title: ::Faker::Lorem.sentence(3), description: ::Faker::Lorem.sentence(8), image: Rack::Test::UploadedFile.new('spec/images/html.png', 'image/png')
+      quiz = ::Quiz.create title: ::Faker::Lorem.sentence(3), description: ::Faker::Lorem.sentence(8), image: Rails.root.join("spec/images/html.png").open
       quiz.publish!
 
       present :quiz, quiz
