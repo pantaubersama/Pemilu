@@ -10,15 +10,15 @@ module API::V1::PendidikanPolitik::Questions::Resources
       end
       paginate per_page: 25, max_per_page: 500
       params do
-        optional :q, type: String, default: "*", documentation: {desc: "Search keyword"}
-        optional :o, type: String, values: ["or", "and"],  default: "and", documentation: {desc: "Search operator"}
+        use :searchkick_search, default_m: :word_start, default_o: "and"
         use :order, order_by: %i(created cached_votes_up), default_order_by: :created, default_order: :desc
         use :filter, filter_by: %i(user_verified_all user_verified_true user_verified_false)
       end
       optional_oauth2
       get "/" do
         q = params.q.nil? || params.q.empty? ? "*" : params.q
-        operator = params.o.nil? ? "and" : params.o
+        operator = params.o.nil? || params.o.empty? ? "and" : params.o
+        match_word = params.m.nil? || params.m.empty? ? :word_start : params.m.to_sym
 
         default_order = {created: :desc}
         build_order = params.order_by.present? && params.direction.present? ? { params.order_by.to_sym => params.direction.to_sym } : default_order
@@ -26,7 +26,8 @@ module API::V1::PendidikanPolitik::Questions::Resources
         default_conditions = {}
         build_conditions = params.filter_by.present? ? question_filter(params.filter_by) : default_conditions
 
-        resources = Question.search(q, operator: operator, load: false, page: params.page, per_page: params.per_page, order: build_order, where: build_conditions).results
+        resources = Question.search(q, operator: operator, match: match_word, misspellings: false,
+          load: false, page: params.page, per_page: params.per_page, order: build_order, where: build_conditions).results
         liked_resources = ActsAsVotable::Vote.where(votable_type: "Question", votable_id: resources.map(&:id), voter_id: current_user.id, vote_flag: true, vote_scope: nil).map(&:votable_id) if current_user.present?
         reported_resources = ActsAsVotable::Vote.where(votable_type: "Question", votable_id: resources.map(&:id), voter_id: current_user.id, vote_flag: false, vote_scope: "report").map(&:votable_id) if current_user.present?
         present :questions, resources, with: API::V1::PendidikanPolitik::Questions::Entities::Question, index_version: true, liked_resources: liked_resources, reported_resources: reported_resources
