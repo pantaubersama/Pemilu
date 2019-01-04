@@ -11,28 +11,32 @@ module API::V1::PendidikanPolitik::Quizzes::Resources
       end
       paginate per_page: 25, max_per_page: 500
       params do
+        use :searchkick_search, default_m: :word_start, default_o: "and"
         use :filter, filter_by: %i(all not_participating in_progress finished)
       end
       optional_oauth2
       get "/" do
-        default_conditions = {}
-        build_conditions = params.filter_by.present? ? quiz_filter(params.filter_by) : default_conditions
+        q = params.q.nil? || params.q.empty? ? "*" : params.q
+        operator = params.o.nil? || params.o.empty? ? "and" : params.o
+        match_word = params.m.nil? || params.m.empty? ? :word_start : params.m.to_sym
 
-        q = ::Quiz.published.order("quizzes.created_at desc")
-        if current_user.present? && params.filter_by.present?
+        query = current_user.present? ? QuizParticipation.where(user_id: current_user.id) : nil
+        build_conditions = {}
+        build_conditions = if current_user.present? && params.filter_by.present?
           if params.filter_by.to_sym == :not_participating
-            participated_quizzes = QuizParticipation.where(user_id: current_user.id).map(&:quiz_id)
-            q = q.where.not(id: participated_quizzes)
+            {id: {not: query.map(&:quiz_id) }}
           elsif params.filter_by.to_sym != :all
-            q = q.includes(:quiz_participations).where(build_conditions)
-              .where(quiz_participations: {user_id: current_user.id})
+            {id: query.where(status: params.filter_by.to_s).map(&:quiz_id)}
           end
         end
-        resources = paginate(q)
-        quiz_participations = ::QuizParticipation.where(quiz: resources.map(&:id), user_id: current_user.id).map{|q| [q.quiz_id, q.status]} if current_user.present?
 
+        resources = Quiz.search(q, operator: operator, match: match_word, misspellings: false,
+          load: false, page: params.page, per_page: params.per_page, where: build_conditions).results
         
-        present :quizzes, resources, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz, current_user: current_user, quiz_participations: quiz_participations 
+        present :quizzes, resources, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz, 
+          current_user: current_user,
+          index_version: true,
+          quiz_participations: (query.map{|q| [q.quiz_id, q.status]} if query) 
         present_metas resources
       end
 
