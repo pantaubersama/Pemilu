@@ -35,7 +35,6 @@ RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
 
     it "filter by user_verified_false" do
       get "/linimasa/v1/janji_politiks", params: {filter_by: :user_verified_false}
-      expect(json_response[:data][:janji_politiks].last).to eq({})
       expect(json_response[:data][:janji_politiks].size).to eq(5)
     end
 
