@@ -21,17 +21,21 @@ class JanjiPolitik < ApplicationRecord
       resluts[column] = self.send(column.to_s)
     end
     resluts.merge({
-                      user:       {
-                          email:      self.user.email,
-                          username:   self.user.username,
-                          verified:   self.user.verified,
-                          id:         self.user.id,
-                          avatar:     self.user.avatar,
-                          full_name:  self.user.full_name,
-                          about:      self.user.about,
-                          cluster:    cluster,
-                      },
-                      all_fields: ["--", self.title, self.body, self.user.username, "--"].compact.join(' ').downcase
+                    user:       {
+                      email:     self.user.email,
+                      username:  self.user.username,
+                      verified:  self.user.verified,
+                      id:        self.user.id,
+                      avatar:    self.user.avatar,
+                      full_name: self.user.full_name,
+                      about:     self.user.about,
+                      cluster:   cluster,
+                    },
+                    all_fields: ["--", self.title, self.body, self.user.username, self.user.full_name, "--"].compact.join(' ')
                   })
+  end
+
+  def should_index?
+    deleted_at.nil?
   end
 end

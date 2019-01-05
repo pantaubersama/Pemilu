@@ -14,7 +14,11 @@ class Feed < ApplicationRecord
     end
     resluts.merge({
                       team_source: self.team_source,
-                      all_fields:  ["--", self.source_text, self.account_name, self.account_username, "--"].compact.join(' ').downcase
+                      all_fields:  ["--", self.source_text, self.account_name, self.account_username, "--"].compact.join(' ')
                   })
+  end
+
+  def should_index?
+    deleted_at.nil?
   end
 end

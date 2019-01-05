@@ -14,14 +14,14 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
     get do
       query = "*"
       if params.q.present?
-        query = "#{params.q}".downcase
+        query = "#{params.q}"
       end
-      default_conditions = {}
-      build_conditions   = params.filter_by.present? ? question_filter(params.filter_by) : default_conditions
+      build_conditions = params.filter_by.present? ? question_filter(params.filter_by) : {}
       if params.cluster_id.present?
         build_conditions = build_conditions.merge({ cluster: params.cluster_id })
       end
-      resources = JanjiPolitik.search(query, match: :text_middle, load: false, page: params.page, per_page: params.per_page, order: { created_at: :desc }, where: build_conditions).results
+
+      resources = JanjiPolitik.search(query, match: :text_middle, misspellings: false, load: true, page: params.page, per_page: params.per_page, order: { created_at: :desc }, where: build_conditions).results
 
       present :janji_politiks, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
       present_metas resources
@@ -51,7 +51,7 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
     end
     put :image do
       authorize_eligible_user!
-      resource      = JanjiPolitik.find_by(id: params.id, user_id: current_user.id)
+      resource       = JanjiPolitik.find_by(id: params.id, user_id: current_user.id)
       resource.image = params.image
       unless resource.save
         error!(resource.errors.full_messages.join(", "), 422)

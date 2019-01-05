@@ -120,7 +120,7 @@ gem 'acts_as_votable', '~> 0.12.0'
 
 gem "her"
 
-gem 'searchkick'
+gem 'searchkick', '~> 3.1.2'
 
 # logger
 gem 'wirble'

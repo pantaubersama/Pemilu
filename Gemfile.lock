@@ -589,7 +589,7 @@ DEPENDENCIES
   rails (~> 5.2.1, >= 5.2.1.1)
   rename
   rspec-rails (~> 3.5)
-  searchkick
+  searchkick (~> 3.1.2)
   seed_migration
   shoulda-matchers (~> 3.1)
   sidekiq

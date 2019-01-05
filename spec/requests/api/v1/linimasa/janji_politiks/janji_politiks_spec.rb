@@ -44,13 +44,19 @@ RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
     end
 
     it "filter by user_verified_false" do
-      get "/linimasa/v1/janji_politiks", params: {filter_by: :user_verified_false, q: "bunker"}
+      get "/linimasa/v1/janji_politiks", params: {filter_by: :user_verified_false, q: "BunKeR"}
       expect(json_response[:data][:janji_politiks].size).to eq(4)
     end
 
     it "no filter : user_verified_all" do
       get "/linimasa/v1/janji_politiks", params: {filter_by: :user_verified_all}
       expect(json_response[:data][:janji_politiks].size).to eq(5)
+    end
+    it "no filter : user_verified_all" do
+      JanjiPolitik.last.destroy
+      get "/linimasa/v1/janji_politiks", params: {filter_by: :user_verified_all}
+      expect( JanjiPolitik.all.size).to eq(4)
+      expect(json_response[:data][:janji_politiks].size).to eq(4)
     end
   end
 
