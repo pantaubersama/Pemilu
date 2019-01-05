@@ -11,9 +11,9 @@ class JanjiPolitik < ApplicationRecord
   end
 
   def search_data
-    cluster_id = nil
+    cluster = nil
     if self.user.present? && self.user.cluster.present?
-      cluster_id = self.user.cluster[:id]
+      cluster = self.user.cluster
     end
 
     resluts = {}
@@ -29,7 +29,7 @@ class JanjiPolitik < ApplicationRecord
                           avatar:     self.user.avatar,
                           full_name:  self.user.full_name,
                           about:      self.user.about,
-                          cluster:    cluster_id,
+                          cluster:    cluster,
                       },
                       all_fields: ["--", self.title, self.body, self.user.username, "--"].compact.join(' ').downcase
                   })
