@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   describe "Get user" do
     before do
-      stub_find_user_2
+      stub_find_user
     end
 
     it "return user" do

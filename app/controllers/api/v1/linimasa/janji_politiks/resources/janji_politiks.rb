@@ -27,6 +27,23 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       present_metas resources
     end
 
+    desc "List me janji politiks", headers: OPTIONAL_AUTHORIZATION_HEADERS
+    optional_oauth2
+    params do
+      optional :q, type: String
+    end
+    paginate per_page: 100, max_per_page: 500
+    get :me do
+      query = "*"
+      if params.q.present?
+        query = "#{params.q}"
+      end
+      resources = JanjiPolitik.search(query, match: :text_middle, misspellings: false, load: true, page: params.page, per_page: params.per_page, order: { created_at: :desc }, where: {user_id: current_user.id}).results
+
+      present :janji_politiks, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
+      present_metas resources
+    end
+
     desc "Create janji politiks", headers: AUTHORIZATION_HEADERS
     oauth2
     params do

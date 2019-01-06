@@ -32,7 +32,7 @@ RSpec.describe "Api::V1::Votes::Resources::Votes", type: :request do
 
   describe "[Delete] Endpoint /" do
     before do
-      stub_find_user_2
+      stub_find_user
     end
     it "should success unlike" do
       @user = User.find "1036fd3c-04ed-4949-b57c-b7dc8ff3e737"
