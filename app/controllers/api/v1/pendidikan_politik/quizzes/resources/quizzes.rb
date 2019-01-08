@@ -11,8 +11,8 @@ module API::V1::PendidikanPolitik::Quizzes::Resources
       end
       paginate per_page: 25, max_per_page: 500
       params do
-        use :searchkick_search, default_m: :word_start, default_o: "and"
-        use :filter, filter_by: %i(all not_participating in_progress finished)
+        use :searchkick_search, default_m: "word_start", default_o: "and"
+        use :filter, filter_by: ["", "all", "not_participating", "in_progress", "finished"]
       end
       optional_oauth2
       get "/" do

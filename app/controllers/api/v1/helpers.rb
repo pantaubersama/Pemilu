@@ -33,11 +33,11 @@ module API::V1::Helpers
 
   def question_filter(x)
     case x
-    when :user_verified_true
+    when "user_verified_true"
       { "user.verified" => true }
-    when :user_verified_false
+    when "user_verified_false"
       { "user.verified" => false }
-    when :user_verified_all
+    when "user_verified_all"
       {}
     else
       {}
@@ -47,11 +47,11 @@ module API::V1::Helpers
   def team_filter(x)
     #team_all team_id_1 team_id_2
     case x
-    when :team_id_1
+    when "team_id_1"
       { team: 1 }
-    when :team_id_2
+    when "team_id_2"
       { team: 2 }
-    when :team_all
+    when "team_all"
       {}
     else
       {}

@@ -8,7 +8,7 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
     params do
       optional :q, type: String
       optional :cluster_id, type: String, desc: "Cluster ID"
-      use :filter, filter_by: %i(user_verified_all user_verified_true user_verified_false)
+      use :filter, filter_by: ["", "user_verified_all", "user_verified_true", "user_verified_false"]
     end
     paginate per_page: 100, max_per_page: 500
     get do

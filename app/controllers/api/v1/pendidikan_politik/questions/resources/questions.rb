@@ -10,9 +10,9 @@ module API::V1::PendidikanPolitik::Questions::Resources
       end
       paginate per_page: 25, max_per_page: 500
       params do
-        use :searchkick_search, default_m: :word_start, default_o: "and"
-        use :order, order_by: %i(created cached_votes_up), default_order_by: :created, default_order: :desc
-        use :filter, filter_by: %i(user_verified_all user_verified_true user_verified_false)
+        use :searchkick_search, default_m: "word_start", default_o: "and"
+        use :order, order_by: ["", "created", "cached_votes_up"], default_order_by: "created", default_order: "desc"
+        use :filter, filter_by: ["", "user_verified_all", "user_verified_true", "user_verified_false"]
       end
       optional_oauth2
       get "/" do

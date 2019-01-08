@@ -52,6 +52,12 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
   end
 
   describe "[GET] Endpoint /" do
+    it "success" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?order_by=&direction="
+      expect(json_response[:data][:questions][0][:created]).to be >= json_response[:data][:questions][1][:created]
+    end
+
     it "sorting by created desc" do
       Question.reindex
       get "/pendidikan_politik/v1/questions?order_by=created&direction=desc"
@@ -78,6 +84,12 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
   end
 
   describe "[GET] Endpoint /" do
+    it "success" do
+      Question.reindex
+      get "/pendidikan_politik/v1/questions?filter_by="
+      expect(response.status).to eq(200)
+    end
+
     it "filter by user_verified_true" do
       Question.reindex
       get "/pendidikan_politik/v1/questions?filter_by=user_verified_true"
@@ -124,6 +136,11 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
       FactoryBot.create :question, body: "Lorem gembel"
       FactoryBot.create :question, body: "Lorem gembel wedus"
       Question.reindex
+    end
+
+    it "success" do
+      get "/pendidikan_politik/v1/questions?q=&o=&m="
+      expect(response.status).to eq(200)
     end
 
     it "search" do
