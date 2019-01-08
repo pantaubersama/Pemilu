@@ -3,8 +3,9 @@ require 'rails_helper'
 RSpec.describe "Api::V1::Votes::Resources::Votes", type: :request do
   before do
     @access_token = SecureRandom.hex
-    FactoryBot.create :question
+    FactoryBot.create :question, user_id: "c9242c5a-805b-4ef5-b3a7-2a7f25785cc8"
     @question = Question.last
+    stub_find_user
   end
   
 
@@ -20,6 +21,9 @@ RSpec.describe "Api::V1::Votes::Resources::Votes", type: :request do
         params: {id: @question.id, class_name: "Question"}
       expect(response.status).to eq(201)
       expect(json_response[:data][:vote][:status]).to eq(false)
+
+      get "/pendidikan_politik/v1/questions/#{@question.id}"
+      expect(json_response[:data][:question][:like_count]).to eq(1)
     end
 
     it "should fail" do
@@ -46,6 +50,9 @@ RSpec.describe "Api::V1::Votes::Resources::Votes", type: :request do
       delete "/pendidikan_politik/v1/votes", headers: stub_auth_headers(@access_token),
         params: {id: @question.id, class_name: "Question"}
       expect(response.status).to eq(404)
+
+      get "/pendidikan_politik/v1/questions/#{@question.id}"
+      expect(json_response[:data][:question][:like_count]).to eq(0)
     end
 
   end

@@ -34,8 +34,8 @@ module API::V1::Votes::Resources
         q = klass.send(:find, params.id)
         vote = q.votes_for.find_by voter_id: current_user.id
         error! "Not found", 404 if vote.nil?
-        status = vote.destroy! 
-        present :vote, {status: status.destroyed?}, with: API::V1::Votes::Entities::Unvote
+        status = q.unliked_by current_user
+        present :vote, {status: status}, with: API::V1::Votes::Entities::Unvote
       end
     end
   end
