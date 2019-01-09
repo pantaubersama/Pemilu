@@ -18,7 +18,7 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       end
       build_conditions = params.filter_by.present? ? question_filter(params.filter_by) : {}
       if params.cluster_id.present?
-        build_conditions = build_conditions.merge({ cluster: params.cluster_id })
+        build_conditions = build_conditions.merge({ cluster_id: params.cluster_id })
       end
 
       resources = JanjiPolitik.search(query, match: :text_middle, misspellings: false, load: true, page: params.page, per_page: params.per_page, order: { created_at: :desc }, where: build_conditions).results
