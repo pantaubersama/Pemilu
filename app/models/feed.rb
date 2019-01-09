@@ -9,7 +9,7 @@ class Feed < ApplicationRecord
 
   def search_data
     resluts = {}
-    Feed.column_names.each do |column|
+    self.column_names.each do |column|
       resluts[column] = self.send(column.to_s)
     end
     resluts.merge({

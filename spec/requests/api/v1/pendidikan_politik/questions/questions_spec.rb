@@ -47,11 +47,13 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
     it "List questions" do
       Question.reindex
       get "/pendidikan_politik/v1/questions"
+      expect(json_response[:data][:questions].size).to eq(5)
       expect(response.status).to eq(200)
     end
   end
 
   describe "[GET] Endpoint /" do
+    it "sorting by created_at desc" do
     it "success" do
       Question.reindex
       get "/pendidikan_politik/v1/questions?order_by=&direction="
@@ -60,14 +62,14 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
 
     it "sorting by created desc" do
       Question.reindex
-      get "/pendidikan_politik/v1/questions?order_by=created&direction=desc"
-      expect(json_response[:data][:questions][0][:created]).to be >= json_response[:data][:questions][1][:created]
+      get "/pendidikan_politik/v1/questions?order_by=created_at&direction=desc"
+      expect(json_response[:data][:questions][0][:created_at]).to be >= json_response[:data][:questions][1][:created_at]
     end
 
-    it "sorting by created asc" do
+    it "sorting by created_at asc" do
       Question.reindex
-      get "/pendidikan_politik/v1/questions?order_by=created&direction=asc"
-      expect(json_response[:data][:questions][0][:created]).to be <= json_response[:data][:questions][1][:created]
+      get "/pendidikan_politik/v1/questions?order_by=created_at&direction=asc"
+      expect(json_response[:data][:questions][0][:created_at]).to be <= json_response[:data][:questions][1][:created_at]
     end
 
     it "sorting by cached_votes_up desc" do

@@ -1,4 +1,5 @@
 class JanjiPolitik < ApplicationRecord
+
   searchkick text_middle: [:all_fields]
   acts_as_paranoid
   has_paper_trail
@@ -17,7 +18,7 @@ class JanjiPolitik < ApplicationRecord
     end
 
     resluts = {}
-    JanjiPolitik.column_names.each do |column|
+    self.column_names.each do |column|
       resluts[column] = self.send(column.to_s)
     end
     resluts.merge({
