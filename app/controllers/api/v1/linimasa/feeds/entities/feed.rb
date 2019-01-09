@@ -1,9 +1,8 @@
-class API::V1::Linimasa::Feeds::Entities::Feed < Grape::Entity
+class API::V1::Linimasa::Feeds::Entities::Feed < API::V1::ApplicationEntity
   expose :id
   expose :team, with: API::V1::Teams::Entities::Team do |feed|
     feed.team_source
   end
-  expose :created_at
   expose :source do
     expose :source_id, as: :id
     expose :source_text, as: :text

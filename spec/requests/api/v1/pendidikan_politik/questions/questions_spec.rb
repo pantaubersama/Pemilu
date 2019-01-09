@@ -13,7 +13,7 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
   describe "[POST] Endpoint /" do
     it "should returns 201 with valid params when success" do
       post "/pendidikan_politik/v1/questions", headers: stub_auth_headers(@access_token),
-        params: {body: "Apakah harga premium akan disubsidi pemerintah?"}
+           params:                                      { body: "Apakah harga premium akan disubsidi pemerintah?" }
       expect(response.status).to eq(201)
       expect(json_response[:data][:status]).to eq(true)
     end
@@ -31,14 +31,14 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
   describe "[DELETE] Endpoint /" do
     it "should returns 200 when success" do
       q = Question.last
-      delete "/pendidikan_politik/v1/questions", params: {id: q.id}, headers: stub_auth_headers(@access_token)
+      delete "/pendidikan_politik/v1/questions", params: { id: q.id }, headers: stub_auth_headers(@access_token)
       expect(response.status).to eq(200)
       expect(json_response[:data][:status]).to eq(true)
     end
 
     it "404 question is not owned by current_user" do
       q = Question.create user_id: "c9242c5a-805b-4ef5-b3a7-2a7f25785cc8", body: Faker::Lorem.sentence(3)
-      delete "/pendidikan_politik/v1/questions", params: {id: q.id}, headers: stub_auth_headers(@access_token)
+      delete "/pendidikan_politik/v1/questions", params: { id: q.id }, headers: stub_auth_headers(@access_token)
       expect(response.status).to eq(404)
     end
   end
@@ -47,27 +47,28 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
     it "List questions" do
       Question.reindex
       get "/pendidikan_politik/v1/questions"
+      expect(json_response[:data][:questions].size).to eq(5)
       expect(response.status).to eq(200)
     end
   end
 
   describe "[GET] Endpoint /" do
-    it "success" do
+    it "sorting by created_at desc" do
       Question.reindex
       get "/pendidikan_politik/v1/questions?order_by=&direction="
-      expect(json_response[:data][:questions][0][:created]).to be >= json_response[:data][:questions][1][:created]
+      expect(json_response[:data][:questions][0][:created_at]).to be >= json_response[:data][:questions][1][:created_at]
     end
 
-    it "sorting by created desc" do
+    it "sorting by created_at desc" do
       Question.reindex
-      get "/pendidikan_politik/v1/questions?order_by=created&direction=desc"
-      expect(json_response[:data][:questions][0][:created]).to be >= json_response[:data][:questions][1][:created]
+      get "/pendidikan_politik/v1/questions?order_by=created_at&direction=desc"
+      expect(json_response[:data][:questions][0][:created_at]).to be >= json_response[:data][:questions][1][:created_at]
     end
 
-    it "sorting by created asc" do
+    it "sorting by created_at asc" do
       Question.reindex
-      get "/pendidikan_politik/v1/questions?order_by=created&direction=asc"
-      expect(json_response[:data][:questions][0][:created]).to be <= json_response[:data][:questions][1][:created]
+      get "/pendidikan_politik/v1/questions?order_by=created_at&direction=asc"
+      expect(json_response[:data][:questions][0][:created_at]).to be <= json_response[:data][:questions][1][:created_at]
     end
 
     it "sorting by cached_votes_up desc" do
@@ -192,5 +193,5 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
     end
 
   end
-  
+
 end

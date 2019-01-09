@@ -19,29 +19,29 @@ class Question < ApplicationRecord
   def should_index?
     deleted_at.nil?
   end
-  
+
   def search_data
     {
-        id:              self.id,
-        cached_votes_up: self.cached_votes_up,
-        body:            self.body,
-        created:         self.created,
-        created_at:      self.friendly_date(self.created_at),
-        user:            {
-            email:      self.user.email,
-            username:   self.user.username,
-            verified:   self.user.verified,
-            id:         self.user.id,
-            avatar:     self.user.avatar,
-            full_name:  self.user.full_name,
-            about:      self.user.about,
-        }
+      id:                 self.id,
+      cached_votes_up:    self.cached_votes_up,
+      body:               self.body,
+      created_at:         self.created_at,
+      created_at_in_word: self.created_at_in_word,
+      user:               {
+        email:     self.user.email,
+        username:  self.user.username,
+        verified:  self.user.verified,
+        id:        self.user.id,
+        avatar:    self.user.avatar,
+        full_name: self.user.full_name,
+        about:     self.user.about,
+      }
     }
   end
 
-  def created
-    created_at
-  end
+  # def created
+  #   created_at
+  # end
 
 
   def user
