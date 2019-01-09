@@ -3,9 +3,9 @@ root = true
 [*]
 charset=utf-8
 end_of_line=lf
-insert_final_newline=false
+insert_final_newline=true
 indent_style=space
-indent_size=4
+indent_size=2
 trim_trailing_whitespace=true
 
 [{*.jhm,*.xslt,*.xul,*.rng,*.xsl,*.xsd,*.ant,*.tld,*.fxml,*.jrxml,*.xml,*.jnlp,*.wsdl}]
