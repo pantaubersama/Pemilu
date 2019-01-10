@@ -7,6 +7,7 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
       FactoryBot.create :question
     end
     stub_find_user
+    Question.reindex
   end
 
 
@@ -34,6 +35,10 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
       delete "/pendidikan_politik/v1/questions", params: { id: q.id }, headers: stub_auth_headers(@access_token)
       expect(response.status).to eq(200)
       expect(json_response[:data][:status]).to eq(true)
+      
+      Question.reindex
+      get "/pendidikan_politik/v1/questions", headers: stub_auth_headers(@access_token)
+      expect(json_response[:data][:questions].size).to eq(4)
     end
 
     it "404 question is not owned by current_user" do
@@ -45,7 +50,7 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
 
   describe "[GET] Endpoint /" do
     it "List questions" do
-      Question.reindex
+      # Question.reindex
       get "/pendidikan_politik/v1/questions"
       expect(json_response[:data][:questions].size).to eq(5)
       expect(response.status).to eq(200)

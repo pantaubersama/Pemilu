@@ -74,9 +74,6 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with(:truncation)
     DatabaseCleaner.strategy = :transaction
 
-    # reindex models
-    Question.reindex
-
     # and disable callbacks
     Searchkick.disable_callbacks
   end
@@ -85,6 +82,10 @@ RSpec.configure do |config|
     Searchkick.callbacks(true) do
       example.run
     end
+  end
+
+  config.before(:each, search: true) do |example|
+    byebug
   end
 
   config.before type: :request do
