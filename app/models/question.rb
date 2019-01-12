@@ -10,7 +10,7 @@ class Question < ApplicationRecord
 
   include API::V1::Helpers
 
-  belongs_to :question_folder, optional: true
+  belongs_to :question_folder, optional: true, counter_cache: true
 
   scope :in_folder, -> { where.not(question_folder_id: nil) }
   scope :not_in_folder, -> { where(question_folder_id: nil) }
