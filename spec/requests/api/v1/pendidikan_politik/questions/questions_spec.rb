@@ -199,4 +199,13 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
 
   end
 
+  describe "My question" do
+    it "Have 7 question" do
+      FactoryBot.create :question
+      FactoryBot.create :question, question_folder_id: FactoryBot.create(:question_folder).id
+      get "/pendidikan_politik/v1/me/questions", headers: stub_auth_headers(@access_token)
+      expect(json_response[:data][:questions].size).to eq(7)
+    end
+  end
+
 end

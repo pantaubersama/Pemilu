@@ -5,5 +5,6 @@ module Api::V1::PendidikanPolitik::Questions
     error_formatter :json, ::API::ErrorFormatter
 
     mount API::V1::PendidikanPolitik::Questions::Resources::Questions
+    mount API::V1::PendidikanPolitik::Questions::Resources::Me
   end
 end
