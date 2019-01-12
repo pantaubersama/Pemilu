@@ -57,7 +57,7 @@ module API::V1::PendidikanPolitik::Questions::Resources
       end
       optional_oauth2
       get "/:id" do
-        q = Question.find params[:id]
+        q = Question.not_in_folder.find params[:id]
         liked_resources = ActsAsVotable::Vote.where(votable_type: "Question", votable_id: q.id, voter_id: current_user.id, vote_flag: true, vote_scope: nil).map(&:votable_id) if current_user.present?
         reported_resources = ActsAsVotable::Vote.where(votable_type: "Question", votable_id: q.id, voter_id: current_user.id, vote_flag: false, vote_scope: "report").map(&:votable_id) if current_user.present?
         present :question, q, with: API::V1::PendidikanPolitik::Questions::Entities::Question, liked_resources: liked_resources, reported_resources: reported_resources
@@ -72,7 +72,7 @@ module API::V1::PendidikanPolitik::Questions::Resources
       end
       oauth2
       delete "/" do
-        q = ::Question.find_by id: params[:id], user_id: current_user.id
+        q = Question.not_in_folder.find_by id: params[:id], user_id: current_user.id
 
         error!("ID not found : #{params.id}", 404) unless q
         

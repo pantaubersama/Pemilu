@@ -6,6 +6,7 @@ RSpec.describe "Api::V1::Votes::Resources::Votes", type: :request do
     FactoryBot.create :question, user_id: "c9242c5a-805b-4ef5-b3a7-2a7f25785cc8"
     @question = Question.last
     stub_find_user
+    @folder = FactoryBot.create :question_folder
   end
   
 
@@ -32,6 +33,14 @@ RSpec.describe "Api::V1::Votes::Resources::Votes", type: :request do
       expect(response.status).to eq(500)
     end
 
+    it "is in folder" do
+      @question.question_folder = @folder
+      @question.save!
+      post "/pendidikan_politik/v1/votes", headers: stub_auth_headers(@access_token),
+        params: {id: @question.id, class_name: "Question"}
+      expect(response.status).to eq(404)
+    end
+
   end
 
   describe "[Delete] Endpoint /" do
@@ -53,6 +62,14 @@ RSpec.describe "Api::V1::Votes::Resources::Votes", type: :request do
 
       get "/pendidikan_politik/v1/questions/#{@question.id}"
       expect(json_response[:data][:question][:like_count]).to eq(0)
+    end
+
+    it "is in folder" do
+      @question.question_folder = @folder
+      @question.save!
+      delete "/pendidikan_politik/v1/votes", headers: stub_auth_headers(@access_token),
+        params: {id: @question.id, class_name: "Question"}
+      expect(response.status).to eq(404)
     end
 
   end

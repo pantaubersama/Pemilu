@@ -17,7 +17,7 @@ class Question < ApplicationRecord
 
 
   def should_index?
-    deleted_at.nil?
+    deleted_at.nil? && question_folder_id.nil?
   end
 
   def search_data
