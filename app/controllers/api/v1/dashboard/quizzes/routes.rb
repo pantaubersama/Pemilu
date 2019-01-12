@@ -8,6 +8,7 @@ module API
           error_formatter :json, ::API::ErrorFormatter
 
           mount API::V1::Dashboard::Quizzes::Resources::Quizzes
+          mount API::V1::Dashboard::Quizzes::Resources::Questions
         end
       end
     end
