@@ -1,4 +1,4 @@
-class API::V1::Dashboard::QuestionFolders::Resources::QuestionFolders < API::V1::ApplicationResource
+class API::V1::Dashboard::Questions::Resources::QuestionFolders < API::V1::ApplicationResource
   helpers API::V1::Helpers
 
   before do
