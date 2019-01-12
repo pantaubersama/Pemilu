@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "Api::V1::Dashboard::Quizzes", type: :request do
   before do
     @access_token = SecureRandom.hex
+    stub_find_user
   end
   let(:quiz) { FactoryBot.create :quiz }
   
@@ -22,6 +23,18 @@ RSpec.describe "Api::V1::Dashboard::Quizzes", type: :request do
         quiz_id: quiz.id
       }
       expect(response.status).to eq(403)
+    end
+  end
+
+  describe "Trash" do
+    it "success" do
+      5.times do
+        FactoryBot.create :question
+      end
+      Question.last.destroy!
+      get "/dashboard/v1/questions/trash", headers: stub_admin_auth_headers(@access_token)
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:questions].size).to eq(1)
     end
   end
 

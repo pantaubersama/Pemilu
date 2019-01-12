@@ -6,8 +6,21 @@ class API::V1::Dashboard::Quizzes::Resources::Questions < API::V1::ApplicationRe
   end
 
   resource "questions" do
-    desc "Add question" do
-      detail "Add question"
+    desc "Trash" do
+      detail "Trash question"
+      headers AUTHORIZATION_HEADERS
+    end
+    paginate per_page: 25, max_per_page: 500
+    oauth2
+    get "/trash" do
+      q = Question.only_deleted
+      resources = paginate(q)
+      present :questions, resources, with: API::V1::PendidikanPolitik::Questions::Entities::Question
+      present_metas resources
+    end
+
+    desc "Add quiz question" do
+      detail "Add quiz question"
       headers AUTHORIZATION_HEADERS
     end
     params do
@@ -29,8 +42,8 @@ class API::V1::Dashboard::Quizzes::Resources::Questions < API::V1::ApplicationRe
       present :questions, quiz.quiz_questions.order(Arel.sql("RANDOM()")), with: API::V1::PendidikanPolitik::Quizzes::Entities::Question
     end
 
-    desc "Edit question" do
-      detail "Edit question"
+    desc "Edit quiz question" do
+      detail "Edit quiz question"
       headers AUTHORIZATION_HEADERS
     end
     params do
@@ -58,8 +71,8 @@ class API::V1::Dashboard::Quizzes::Resources::Questions < API::V1::ApplicationRe
       present :questions, quiz.quiz_questions.order(Arel.sql("RANDOM()")), with: API::V1::PendidikanPolitik::Quizzes::Entities::Question
     end
 
-    desc "Detail question" do
-      detail "Detail question"
+    desc "Detail quiz question" do
+      detail "Detail quiz question"
       headers AUTHORIZATION_HEADERS
     end
     params do
@@ -75,8 +88,8 @@ class API::V1::Dashboard::Quizzes::Resources::Questions < API::V1::ApplicationRe
       present :questions, q1, with: API::V1::PendidikanPolitik::Quizzes::Entities::Question
     end
 
-    desc "Delete question" do
-      detail "Delete question"
+    desc "Delete quiz question" do
+      detail "Delete quiz question"
       headers AUTHORIZATION_HEADERS
     end
     params do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_12_113744) do
+ActiveRecord::Schema.define(version: 2019_01_12_155445) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -75,6 +75,8 @@ ActiveRecord::Schema.define(version: 2019_01_12_113744) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "questions_count", default: 0
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_question_folders_on_deleted_at"
   end
 
   create_table "questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

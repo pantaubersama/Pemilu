@@ -5,6 +5,7 @@ RSpec.describe "Api::V1::Dashboard::QuestionsFolder", type: :request do
     @access_token = SecureRandom.hex
     @folder = FactoryBot.create :question_folder
     @question = FactoryBot.create :question, question_folder_id: @folder.id
+    the_q = FactoryBot.create :question
     stub_find_user
   end
   
@@ -41,6 +42,10 @@ RSpec.describe "Api::V1::Dashboard::QuestionsFolder", type: :request do
       expect(json_response[:data][:question_folder][:name]).to  eq(@folder2.name)
       expect(json_response[:data][:question_folder][:questions_count]).to  eq(2)
       expect(json_response[:data][:questions].size).to  eq(2)
+
+      Question.reindex
+      get "/pendidikan_politik/v1/questions"
+      expect(json_response[:data][:questions].size).to eq(1)
     end
   end
 
