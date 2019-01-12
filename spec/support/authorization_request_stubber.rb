@@ -55,6 +55,11 @@ module AuthorizationRequestStubber
     { 'Authorization' => access_token }
   end
 
+  def stub_not_authorized_headers(access_token = SecureRandom.hex)
+    stub_credentials_request(access_token: access_token, is_admin: false, is_eligible: false)
+    { 'Authorization' => access_token }
+  end
+
   def stub_eligible_auth_headers(access_token = SecureRandom.hex)
     stub_credentials_request(access_token: access_token, is_admin: false, is_eligible: true)
     { 'Authorization' => access_token }
