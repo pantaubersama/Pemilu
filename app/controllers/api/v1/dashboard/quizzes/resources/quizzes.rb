@@ -7,6 +7,19 @@ class API::V1::Dashboard::Quizzes::Resources::Quizzes < API::V1::ApplicationReso
 
   resource "quizzes" do
 
+    desc "Trash" do
+      detail "Trash quiz"
+      headers AUTHORIZATION_HEADERS
+    end
+    paginate per_page: 25, max_per_page: 500
+    oauth2
+    get "/trash" do
+      q = Quiz.only_deleted
+      resources = paginate(q)
+      present :quizzes, resources, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz
+      present_metas resources
+    end
+
     desc "Create quiz" do
       detail "Create quiz"
       headers AUTHORIZATION_HEADERS

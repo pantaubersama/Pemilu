@@ -91,4 +91,17 @@ RSpec.describe "Api::V1::Dashboard::Quizzes", type: :request do
       expect(@quiz.reload.status).to eq("archived")
     end
   end
+
+  describe "trash" do
+    it "success" do
+      5.times do
+        FactoryBot.create :quiz, status: "published"
+      end
+      q = Quiz.last
+      q.destroy!
+      get "/dashboard/v1/quizzes/trash", headers: stub_admin_auth_headers(@access_token)
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:quizzes].size).to eq(1)
+    end
+  end
 end
