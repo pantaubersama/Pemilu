@@ -16,14 +16,14 @@ RSpec.describe Quiz, type: :model do
 
     it "success published" do
       a = FactoryBot.create :quiz
-      a.publish!
+      a.published!
       expect(a.is_published).to eq(true) 
     end
 
     it "success unpublished" do
       a = FactoryBot.create :quiz
-      a.publish!
-      a.unpublish!
+      a.published!
+      a.draft!
       expect(a.is_published).to eq(false) 
     end
   end

@@ -1,5 +1,7 @@
 class QuizAnswer < ApplicationRecord
   include Teamable
+  
+  acts_as_paranoid
 
   belongs_to :quiz_question
 

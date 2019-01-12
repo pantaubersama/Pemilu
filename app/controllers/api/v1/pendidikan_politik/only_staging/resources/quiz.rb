@@ -7,7 +7,7 @@ class API::V1::PendidikanPolitik::OnlyStaging::Resources::Quiz < API::V1::Applic
     end
     post "/generate_random_quiz" do
       quiz = ::Quiz.create title: ::Faker::Lorem.sentence(3), description: ::Faker::Lorem.sentence(8), image: Rails.root.join("spec/images/html.png").open
-      quiz.publish!
+      quiz.published!
 
       present :quiz, quiz
 

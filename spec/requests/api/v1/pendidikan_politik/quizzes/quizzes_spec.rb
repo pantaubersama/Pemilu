@@ -16,12 +16,27 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Quizzes", type: :request 
       post "/pendidikan_politik/v1/only_staging/generate_random_quiz", params: {total_question: 3}
 
       @quiz = Quiz.first
+      @quiz.published!
       Quiz.reindex
     end
 
     it "should success" do
       get "/pendidikan_politik/v1/quizzes", headers: stub_auth_headers(@access_token)
       expect(response.status).to eq(200)
+      expect(json_response[:data][:quizzes].size).to eq(3)
+    end
+
+    it "should success again" do
+      q = Quiz.last
+      q.archived!
+
+      q = Quiz.first
+      q.draft!
+      
+      Quiz.reindex
+      get "/pendidikan_politik/v1/quizzes", headers: stub_auth_headers(@access_token)
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:quizzes].size).to eq(1)
     end
 
     it "no filter success" do

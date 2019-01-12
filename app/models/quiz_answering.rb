@@ -1,5 +1,7 @@
 class QuizAnswering < ApplicationRecord
   include Userable
+  
+  acts_as_paranoid
 
   belongs_to :quiz_participation
   belongs_to :quiz
