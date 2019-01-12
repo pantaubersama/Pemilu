@@ -1,4 +1,6 @@
 class QuestionFolder < ApplicationRecord
+  acts_as_paranoid
+
   has_many :questions
 
   def remove_existing_questions
