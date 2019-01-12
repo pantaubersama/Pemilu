@@ -1,7 +1,11 @@
 class Quiz < ApplicationRecord
-  include Publishable
-  mount_uploader :image, QuizUploader
+  # include Publishable
+  enum status: [:draft, :published, :archived]
 
+  mount_uploader :image, QuizUploader
+  
+  acts_as_paranoid
+  
   searchkick searchable:  [:title, :description],
              word_start:  [:title, :description],
              word_middle: [:title, :description],
@@ -26,7 +30,7 @@ class Quiz < ApplicationRecord
   end
 
   def should_index?
-    is_published?
+    published? && deleted_at.nil? && !archived? && !draft?
   end
 
 
@@ -35,5 +39,10 @@ class Quiz < ApplicationRecord
       q.status = 0
     end
   end
+
+  def is_published
+    published?
+  end
+  
 
 end

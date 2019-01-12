@@ -16,12 +16,62 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Quizzes", type: :request 
       post "/pendidikan_politik/v1/only_staging/generate_random_quiz", params: {total_question: 3}
 
       @quiz = Quiz.first
+      @quiz.published!
       Quiz.reindex
     end
 
-    it "should success" do
+    it "should success list 3 quiz" do
       get "/pendidikan_politik/v1/quizzes", headers: stub_auth_headers(@access_token)
       expect(response.status).to eq(200)
+      expect(json_response[:data][:quizzes].size).to eq(3)
+    end
+
+    it "should success list 2 quiz" do
+      get "/pendidikan_politik/v1/quizzes/#{@quiz.id}/questions", headers: stub_auth_headers(@access_token)
+
+      get "/pendidikan_politik/v1/quizzes", headers: stub_auth_headers(@access_token)
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:quizzes].size).to eq(2)
+    end
+
+    it "should success again" do
+      q = Quiz.last
+      q.archived!
+
+      q = Quiz.first
+      q.draft!
+      
+      Quiz.reindex
+      get "/pendidikan_politik/v1/quizzes", headers: stub_auth_headers(@access_token)
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:quizzes].size).to eq(1)
+    end
+
+    it "in progress quiz" do
+      get "/pendidikan_politik/v1/quizzes/#{@quiz.id}/questions", headers: stub_auth_headers(@access_token)
+
+      get "/pendidikan_politik/v1/quizzes/participated", headers: stub_auth_headers(@access_token),
+        params: {
+          filter_by: "in_progress"
+        }
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:quizzes].size).to eq(1)
+      expect(json_response[:data][:quizzes][0]["participation_status"]).to eq("in_progress")
+    end
+
+    it "finished quiz" do
+      get "/pendidikan_politik/v1/quizzes/#{@quiz.id}/questions", headers: stub_auth_headers(@access_token)
+      question = json_response[:data][:questions].last[:id]
+      answer = json_response[:data][:questions].last[:answers].last[:id]
+      post "/pendidikan_politik/v1/quizzes/#{@quiz.id}/questions", headers: stub_auth_headers(@access_token), params: {question_id: question, answer_id: answer}
+
+      get "/pendidikan_politik/v1/quizzes/participated", headers: stub_auth_headers(@access_token),
+        params: {
+          filter_by: "finished"
+        }
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:quizzes].size).to eq(1)
+      expect(json_response[:data][:quizzes][0]["participation_status"]).to eq("finished")
     end
 
     it "no filter success" do
@@ -43,24 +93,28 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Quizzes", type: :request 
     end
 
     it "filter 'in_progress' success" do
-      get "/pendidikan_politik/v1/quizzes/#{@quiz.id}/questions", headers: stub_auth_headers(@access_token)
-      get "/pendidikan_politik/v1/quizzes", headers: stub_auth_headers(@access_token), params: {filter_by: "in_progress"}
-      expect(json_response[:data][:quizzes].size).to eq(1)
-      expect(json_response[:data][:quizzes].map{|x| x[:participation_status]}.uniq.size).to eq(1)
-      expect(json_response[:data][:quizzes].map{|x| x[:participation_status]}.uniq).to eq(["in_progress"])
+      # get "/pendidikan_politik/v1/quizzes/#{@quiz.id}/questions", headers: stub_auth_headers(@access_token)
+      # get "/pendidikan_politik/v1/quizzes", headers: stub_auth_headers(@access_token), params: {filter_by: "in_progress"}
+      # expect(json_response[:data][:quizzes].size).to eq(1)
+      # expect(json_response[:data][:quizzes].map{|x| x[:participation_status]}.uniq.size).to eq(1)
+      # expect(json_response[:data][:quizzes].map{|x| x[:participation_status]}.uniq).to eq(["in_progress"])
+
+      puts "refactored to different endpoint"
     end
 
     it "filter 'finished' success" do
-      get "/pendidikan_politik/v1/quizzes/#{@quiz.id}/questions", headers: stub_auth_headers(@access_token)
-      question = json_response[:data][:questions].last[:id]
-      answer = json_response[:data][:questions].last[:answers].last[:id]
+      # get "/pendidikan_politik/v1/quizzes/#{@quiz.id}/questions", headers: stub_auth_headers(@access_token)
+      # question = json_response[:data][:questions].last[:id]
+      # answer = json_response[:data][:questions].last[:answers].last[:id]
 
-      post "/pendidikan_politik/v1/quizzes/#{@quiz.id}/questions", headers: stub_auth_headers(@access_token), params: {question_id: question, answer_id: answer}
-      get "/pendidikan_politik/v1/quizzes", headers: stub_auth_headers(@access_token), params: {filter_by: "finished"}
+      # post "/pendidikan_politik/v1/quizzes/#{@quiz.id}/questions", headers: stub_auth_headers(@access_token), params: {question_id: question, answer_id: answer}
+      # get "/pendidikan_politik/v1/quizzes", headers: stub_auth_headers(@access_token), params: {filter_by: "finished"}
 
-      expect(json_response[:data][:quizzes].size).to eq(1)
-      expect(json_response[:data][:quizzes].map{|x| x[:participation_status]}.uniq.size).to eq(1)
-      expect(json_response[:data][:quizzes].map{|x| x[:participation_status]}.uniq).to eq(["finished"])
+      # expect(json_response[:data][:quizzes].size).to eq(1)
+      # expect(json_response[:data][:quizzes].map{|x| x[:participation_status]}.uniq.size).to eq(1)
+      # expect(json_response[:data][:quizzes].map{|x| x[:participation_status]}.uniq).to eq(["finished"])
+
+      puts "refactored to different endpoint"
     end
   end
 
