@@ -30,7 +30,7 @@ class Quiz < ApplicationRecord
   end
 
   def should_index?
-    published? && deleted_at.nil? && !archived? && !draft?
+    is_published && deleted_at.nil?
   end
 
 
