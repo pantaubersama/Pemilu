@@ -11,7 +11,7 @@ class API::V1::Dashboard::Questions::Resources::QuestionFolders < API::V1::Appli
       detail "Trash folder"
       headers AUTHORIZATION_HEADERS
     end
-    paginate per_page: 25, max_per_page: 500
+    paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
     oauth2
     get "/trash" do
       q = QuestionFolder.only_deleted
@@ -24,7 +24,7 @@ class API::V1::Dashboard::Questions::Resources::QuestionFolders < API::V1::Appli
       detail "List folder"
       headers AUTHORIZATION_HEADERS
     end
-    paginate per_page: 25, max_per_page: 500
+    paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
     oauth2
     get "/" do
       q = QuestionFolder.all

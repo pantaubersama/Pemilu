@@ -9,7 +9,7 @@ module API::V1::PendidikanPolitik::Questions::Resources
         detail "My Question"
         headers AUTHORIZATION_HEADERS
       end
-      paginate per_page: 25, max_per_page: 100
+      paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
       oauth2
       get "/questions" do
         questions = Question.where(user_id: current_user.id)

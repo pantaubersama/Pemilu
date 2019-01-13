@@ -11,7 +11,7 @@ class API::V1::Dashboard::Quizzes::Resources::Quizzes < API::V1::ApplicationReso
       detail "Trash quiz"
       headers AUTHORIZATION_HEADERS
     end
-    paginate per_page: 25, max_per_page: 500
+    paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
     oauth2
     get "/trash" do
       q = Quiz.only_deleted

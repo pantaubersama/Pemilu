@@ -19,7 +19,7 @@ class API::V1::Dashboard::Linimasa::Resources::Crowlings < API::V1::ApplicationR
 
     desc "List crowlings", headers: AUTHORIZATION_HEADERS
     oauth2
-    paginate per_page: 100, max_per_page: 500
+    paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
     get do
       authorize_admin!
       crowlings = Crowling.all
@@ -30,7 +30,7 @@ class API::V1::Dashboard::Linimasa::Resources::Crowlings < API::V1::ApplicationR
 
     desc "List trash crowlings", headers: AUTHORIZATION_HEADERS
     oauth2
-    paginate per_page: 100, max_per_page: 500
+    paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
     get :trashes do
       authorize_admin!
       crowlings = Crowling.deleted

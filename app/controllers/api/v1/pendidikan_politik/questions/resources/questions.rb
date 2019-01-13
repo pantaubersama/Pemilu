@@ -8,7 +8,7 @@ module API::V1::PendidikanPolitik::Questions::Resources
         detail "List question"
         headers OPTIONAL_AUTHORIZATION_HEADERS
       end
-      paginate per_page: 25, max_per_page: 500
+      paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
       params do
         use :searchkick_search, default_m: :word_start, default_o: "and"
         use :order, order_by: [:created_at, :cached_votes_up], default_order_by: :created_at, default_order: :desc

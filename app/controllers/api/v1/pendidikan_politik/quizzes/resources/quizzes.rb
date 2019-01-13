@@ -9,7 +9,7 @@ module API::V1::PendidikanPolitik::Quizzes::Resources
         detail "List quiz. <br> Display all quizzes if no token. <br> Display no_participating quizzes if token provided."
         headers OPTIONAL_AUTHORIZATION_HEADERS
       end
-      paginate per_page: 25, max_per_page: 500
+      paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
       params do
         use :searchkick_search, default_m: "word_start", default_o: "and"
       end
@@ -39,7 +39,7 @@ module API::V1::PendidikanPolitik::Quizzes::Resources
         detail "List quiz (in progress / finished)"
         headers AUTHORIZATION_HEADERS
       end
-      paginate per_page: 25, max_per_page: 500
+      paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
       params do
         use :searchkick_search, default_m: "word_start", default_o: "and"
         use :filter, filter_by: ["in_progress", "finished"], default_filter_by: "in_progress"

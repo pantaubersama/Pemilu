@@ -10,7 +10,7 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       optional :cluster_id, type: String, desc: "Cluster ID"
       use :filter, filter_by: ["", "user_verified_all", "user_verified_true", "user_verified_false"]
     end
-    paginate per_page: 100, max_per_page: 500
+    paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
     get do
       query = "*"
       if params.q.present?
@@ -32,7 +32,7 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
     params do
       optional :q, type: String
     end
-    paginate per_page: 100, max_per_page: 500
+    paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
     get :me do
       query = "*"
       if params.q.present?
