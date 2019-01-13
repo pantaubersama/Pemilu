@@ -100,7 +100,7 @@ gem 'rack-cors'
 ###doc [9] paginator
 # Then choose your preferred paginator from the following:
 gem 'pagy'
-gem 'api-pagination'
+gem 'api-pagination', github: "extrainteger/api-pagination"
 
 
 gem 'unicorn', group: [:staging, :production]

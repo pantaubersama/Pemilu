@@ -9,6 +9,9 @@ module API
               code    = 406
               message = e.message
               # Bad token
+            elsif e.class.name == 'Pagy::OverflowError'
+              code    = 406
+              message = "Out of page :("
             elsif e.class.name == 'RuntimeError' && e.message == 'Invalid base64 string'
               code    = 406
               message = '401 Unauthorized'
