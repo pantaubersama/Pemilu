@@ -59,13 +59,13 @@ module API::V1::PendidikanPolitik::Quizzes::Resources
         end
 
         resources = Quiz.search(q, operator: operator, match: match_word, misspellings: false,
-          load: false, page: params.page, per_page: params.per_page, where: build_conditions).results
+          load: false, page: params.page, per_page: params.per_page, where: build_conditions)
         
         present :quizzes, resources, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz, 
           current_user: current_user,
           index_version: true,
           quiz_participations: (query.map{|q| [q.quiz_id, q.status]} if query) 
-        present_metas resources
+          present_metas_searchkick resources
       end
 
       desc "Detail quiz" do

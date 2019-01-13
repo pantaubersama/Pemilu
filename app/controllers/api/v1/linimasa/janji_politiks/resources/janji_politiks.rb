@@ -21,10 +21,10 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
         build_conditions = build_conditions.merge({ cluster_id: params.cluster_id })
       end
 
-      resources = JanjiPolitik.search(query, match: :text_middle, misspellings: false, load: true, page: params.page, per_page: params.per_page, order: { created_at: :desc }, where: build_conditions).results
+      resources = JanjiPolitik.search(query, match: :text_middle, misspellings: false, load: true, page: params.page, per_page: params.per_page, order: { created_at: :desc }, where: build_conditions)
 
       present :janji_politiks, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
-      present_metas resources
+      present_metas_searchkick resources
     end
 
     desc "List me janji politiks", headers: OPTIONAL_AUTHORIZATION_HEADERS
@@ -38,10 +38,10 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       if params.q.present?
         query = "#{params.q}"
       end
-      resources = JanjiPolitik.search(query, match: :text_middle, misspellings: false, load: true, page: params.page, per_page: params.per_page, order: { created_at: :desc }, where: {user_id: current_user.id}).results
+      resources = JanjiPolitik.search(query, match: :text_middle, misspellings: false, load: true, page: params.page, per_page: params.per_page, order: { created_at: :desc }, where: {user_id: current_user.id})
 
       present :janji_politiks, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
-      present_metas resources
+      present_metas_searchkick resources
     end
 
     desc "Create janji politiks", headers: AUTHORIZATION_HEADERS

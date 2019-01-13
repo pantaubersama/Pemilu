@@ -1,6 +1,71 @@
 require 'rails_helper'
 
 RSpec.describe "Api::V1::Linimasa::Feeds", type: :request do
+  describe "pagination" do
+    before do
+      @crowling = create :crowling, keywords: :rizagalih, team: 1
+    end
+    it "paginate searchkick page 1" do
+      13.times do
+        FactoryBot.create :feed, team: 1, crowling_id: @crowling.id, source_id: Faker::Number.number(10), source_text: Faker::Lorem.sentences(2), account_id: 99252433, account_name: "Icung Icha", account_username: "rizagalih", account_profile_image_url: "http://pbs.twimg.com/profile_images/1028985612458582016/vTOB00bG_normal.jpg", type: "TwTimelineFeed"
+      end
+      Feed.reindex
+      # total record = 13
+      get "/linimasa/v1/feeds/pilpres", headers: stub_auth_headers(@access_token),
+        params: {page: 1, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:feeds].size).to eq(5)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(1)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+  
+    it "paginate searchkick page 2" do
+      13.times do
+        FactoryBot.create :feed, team: 1, crowling_id: @crowling.id, source_id: Faker::Number.number(10), source_text: Faker::Lorem.sentences(2), account_id: 99252433, account_name: "Icung Icha", account_username: "rizagalih", account_profile_image_url: "http://pbs.twimg.com/profile_images/1028985612458582016/vTOB00bG_normal.jpg", type: "TwTimelineFeed"
+      end
+      Feed.reindex
+      # total record = 13
+      get "/linimasa/v1/feeds/pilpres", headers: stub_auth_headers(@access_token),
+        params: {page: 2, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:feeds].size).to eq(5)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(2)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+  
+    it "paginate searchkick page 3" do
+      13.times do
+        FactoryBot.create :feed, team: 1, crowling_id: @crowling.id, source_id: Faker::Number.number(10), source_text: Faker::Lorem.sentences(2), account_id: 99252433, account_name: "Icung Icha", account_username: "rizagalih", account_profile_image_url: "http://pbs.twimg.com/profile_images/1028985612458582016/vTOB00bG_normal.jpg", type: "TwTimelineFeed"
+      end
+      Feed.reindex
+      # total record = 13
+      get "/linimasa/v1/feeds/pilpres", headers: stub_auth_headers(@access_token),
+        params: {page: 3, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:feeds].size).to eq(3)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+  
+    it "paginate searchkick page 4" do
+      13.times do
+        FactoryBot.create :feed, team: 1, crowling_id: @crowling.id, source_id: Faker::Number.number(10), source_text: Faker::Lorem.sentences(2), account_id: 99252433, account_name: "Icung Icha", account_username: "rizagalih", account_profile_image_url: "http://pbs.twimg.com/profile_images/1028985612458582016/vTOB00bG_normal.jpg", type: "TwTimelineFeed"
+      end
+      Feed.reindex
+      # total record = 13
+      get "/linimasa/v1/feeds/pilpres", headers: stub_auth_headers(@access_token),
+        params: {page: 4, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:feeds].size).to eq(0)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(4)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+  end
+
   describe "[GET] Endpoint /feeds/pilpres" do
     before do
       crowling_1 = create :crowling, keywords: :rizagalih, team: 1

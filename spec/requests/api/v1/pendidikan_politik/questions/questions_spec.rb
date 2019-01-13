@@ -10,6 +10,67 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
     Question.reindex
   end
 
+  describe "pagination" do
+    it "paginate searchkick page 1" do
+      8.times do
+        FactoryBot.create :question
+      end
+      Question.reindex
+      # total record = 13
+      get "/pendidikan_politik/v1/questions", headers: stub_auth_headers(@access_token),
+        params: {page: 1, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:questions].size).to eq(5)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(1)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+
+    it "paginate searchkick page 2" do
+      8.times do
+        FactoryBot.create :question
+      end
+      Question.reindex
+      # total record = 13
+      get "/pendidikan_politik/v1/questions", headers: stub_auth_headers(@access_token),
+        params: {page: 2, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:questions].size).to eq(5)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(2)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+
+    it "paginate searchkick page 3" do
+      8.times do
+        FactoryBot.create :question
+      end
+      Question.reindex
+      # total record = 13
+      get "/pendidikan_politik/v1/questions", headers: stub_auth_headers(@access_token),
+        params: {page: 3, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:questions].size).to eq(3)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+
+    it "paginate searchkick page 4" do
+      8.times do
+        FactoryBot.create :question
+      end
+      Question.reindex
+      # total record = 13
+      get "/pendidikan_politik/v1/questions", headers: stub_auth_headers(@access_token),
+        params: {page: 4, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:questions].size).to eq(0)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(4)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+  end
 
   describe "[POST] Endpoint /" do
     it "should returns 201 with valid params when success" do

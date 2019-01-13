@@ -27,11 +27,11 @@ module API::V1::PendidikanPolitik::Questions::Resources
         build_conditions = params.filter_by.present? ? question_filter(params.filter_by) : default_conditions
 
         resources = Question.search(q, operator: operator, match: match_word, misspellings: false,
-          load: false, page: params.page, per_page: params.per_page, order: build_order, where: build_conditions).results
+          load: false, page: params.page, per_page: params.per_page, order: build_order, where: build_conditions)
         liked_resources = ActsAsVotable::Vote.where(votable_type: "Question", votable_id: resources.map(&:id), voter_id: current_user.id, vote_flag: true, vote_scope: nil).map(&:votable_id) if current_user.present?
         reported_resources = ActsAsVotable::Vote.where(votable_type: "Question", votable_id: resources.map(&:id), voter_id: current_user.id, vote_flag: false, vote_scope: "report").map(&:votable_id) if current_user.present?
         present :questions, resources, with: API::V1::PendidikanPolitik::Questions::Entities::Question, index_version: true, liked_resources: liked_resources, reported_resources: reported_resources
-        present_metas resources
+        present_metas_searchkick resources
       end
 
       desc "Create a question" do

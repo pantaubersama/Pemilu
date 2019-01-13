@@ -118,4 +118,69 @@ RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
       expect(response.status).to eq(200)
     end
   end
+
+  describe "pagination" do
+    before do
+      @crowling = create :crowling, keywords: :rizagalih, team: 1
+    end
+    it "paginate searchkick page 1" do
+      13.times do
+        FactoryBot.create :janji_politik, title: Faker::Lorem.sentences(2), body: Faker::Lorem.sentences(4)
+      end
+      JanjiPolitik.reindex
+      # total record = 13
+      get "/linimasa/v1/janji_politiks", headers: stub_auth_headers(@access_token),
+        params: {page: 1, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:janji_politiks].size).to eq(5)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(1)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+  
+    it "paginate searchkick page 2" do
+      13.times do
+        FactoryBot.create :janji_politik, title: Faker::Lorem.sentences(2), body: Faker::Lorem.sentences(4)
+      end
+      JanjiPolitik.reindex
+      # total record = 13
+      get "/linimasa/v1/janji_politiks", headers: stub_auth_headers(@access_token),
+        params: {page: 2, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:janji_politiks].size).to eq(5)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(2)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+  
+    it "paginate searchkick page 3" do
+      13.times do
+        FactoryBot.create :janji_politik, title: Faker::Lorem.sentences(2), body: Faker::Lorem.sentences(4)
+      end
+      JanjiPolitik.reindex
+      # total record = 13
+      get "/linimasa/v1/janji_politiks", headers: stub_auth_headers(@access_token),
+        params: {page: 3, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:janji_politiks].size).to eq(3)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+  
+    it "paginate searchkick page 4" do
+      13.times do
+        FactoryBot.create :janji_politik, title: Faker::Lorem.sentences(2), body: Faker::Lorem.sentences(4)
+      end
+      JanjiPolitik.reindex
+      # total record = 13
+      get "/linimasa/v1/janji_politiks", headers: stub_auth_headers(@access_token),
+        params: {page: 4, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:janji_politiks].size).to eq(0)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(4)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+  end
 end
