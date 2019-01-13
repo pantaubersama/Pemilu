@@ -20,6 +20,66 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Quizzes", type: :request 
       Quiz.reindex
     end
 
+    it "paginate searchkick page 1" do
+      10.times do
+        post "/pendidikan_politik/v1/only_staging/generate_random_quiz", params: {total_question: 3}        
+      end
+      Quiz.reindex
+      # total record = 13
+      get "/pendidikan_politik/v1/quizzes", headers: stub_auth_headers(@access_token),
+        params: {page: 1, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:quizzes].size).to eq(5)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(1)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+
+    it "paginate searchkick page 2" do
+      10.times do
+        post "/pendidikan_politik/v1/only_staging/generate_random_quiz", params: {total_question: 3}        
+      end
+      Quiz.reindex
+      # total record = 13
+      get "/pendidikan_politik/v1/quizzes", headers: stub_auth_headers(@access_token),
+        params: {page: 2, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:quizzes].size).to eq(5)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(2)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+
+    it "paginate searchkick page 3" do
+      10.times do
+        post "/pendidikan_politik/v1/only_staging/generate_random_quiz", params: {total_question: 3}        
+      end
+      Quiz.reindex
+      # total record = 13
+      get "/pendidikan_politik/v1/quizzes", headers: stub_auth_headers(@access_token),
+        params: {page: 3, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:quizzes].size).to eq(3)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+
+    it "paginate searchkick page 4" do
+      10.times do
+        post "/pendidikan_politik/v1/only_staging/generate_random_quiz", params: {total_question: 3}        
+      end
+      Quiz.reindex
+      # total record = 13
+      get "/pendidikan_politik/v1/quizzes", headers: stub_auth_headers(@access_token),
+        params: {page: 4, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:quizzes].size).to eq(0)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(4)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+
     it "should success list 3 quiz" do
       get "/pendidikan_politik/v1/quizzes", headers: stub_auth_headers(@access_token)
       expect(response.status).to eq(200)
