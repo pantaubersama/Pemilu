@@ -21,5 +21,15 @@ class API::V1::Linimasa::Feeds::Resources::Feeds < API::V1::ApplicationResource
       present :feeds, resources, with: API::V1::Linimasa::Feeds::Entities::Feed
       present_metas_searchkick resources
     end
+
+    desc "Detail feed pilpres", headers: OPTIONAL_AUTHORIZATION_HEADERS
+    optional_oauth2
+    params do
+      requires :id
+    end
+    get "pilpres/:id" do
+      resource = Feed.find(params.id)
+      present :feed, resource, with: API::V1::Linimasa::Feeds::Entities::Feed
+    end
   end
 end

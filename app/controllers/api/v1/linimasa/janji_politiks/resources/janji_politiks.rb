@@ -38,7 +38,7 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       if params.q.present?
         query = "#{params.q}"
       end
-      resources = JanjiPolitik.search(query, match: :text_middle, misspellings: false, load: true, page: params.page, per_page: params.per_page, order: { created_at: :desc }, where: {user_id: current_user.id})
+      resources = JanjiPolitik.search(query, match: :text_middle, misspellings: false, load: true, page: params.page, per_page: params.per_page, order: { created_at: :desc }, where: { user_id: current_user.id })
 
       present :janji_politiks, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
       present_metas_searchkick resources
@@ -89,6 +89,15 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       end
       response = { message: "Janji Politik id `#{params.id}` berhasil dihapus" }
       present response
+    end
+    desc "Detail janji politiks", headers: OPTIONAL_AUTHORIZATION_HEADERS
+    optional_oauth2
+    params do
+      requires :id
+    end
+    get "/:id" do
+      resource = JanjiPolitik.find(params.id)
+      present :janji_politik, resource, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
     end
   end
 end
