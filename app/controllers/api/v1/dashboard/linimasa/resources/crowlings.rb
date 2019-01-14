@@ -53,5 +53,17 @@ class API::V1::Dashboard::Linimasa::Resources::Crowlings < API::V1::ApplicationR
       response = { message: "Crowling id #{params.id} berhasil dihapus" }
       present response
     end
+
+    desc "Detail crowling", headers: AUTHORIZATION_HEADERS
+    oauth2
+    params do
+      requires :id, type: String
+    end
+    get "/:id" do
+      authorize_admin!
+      res = Crowling.find params[:id]
+      present :crowling, res, with: API::V1::Linimasa::Crowlings::Entities::CrowlingDetail
+    end
+    
   end
 end

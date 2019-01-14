@@ -47,6 +47,7 @@ RSpec.describe "Api::V1::Linimasa::Crowlings", type: :request do
     end
     it "should returns 200 with valid params when success" do
       get "/dashboard/v1/linimasa/crowling/trashes", headers: stub_admin_auth_headers
+      # byebug
       expect(json_response[:data][:crowlings].size).to eq(1)
       keywords = json_response[:data][:crowlings].pluck(:keywords)
       expect(keywords.include?("namakukingkong")).to eq(true)
@@ -63,6 +64,19 @@ RSpec.describe "Api::V1::Linimasa::Crowlings", type: :request do
       delete "/dashboard/v1/linimasa/crowling", params: { id: @rizagalih.id }, headers: stub_admin_auth_headers
       expect(json_response[:data][:message]).to eq("Crowling id #{@rizagalih.id} berhasil dihapus")
       expect(response.status).to eq(200)
+    end
+  end
+
+  describe "detail crowling" do
+    before do
+      @crowling_1 = create :crowling, keywords: :rizagalih, team: 1
+      create :feed, crowling: @crowling_1, source_id: 969376813649510400, source_text: "can't wait any longer. Please kam kam kam sini", account_id: 99252433, account_name: "Icung Icha", account_username: "rizagalih", account_profile_image_url: "http://pbs.twimg.com/profile_images/1028985612458582016/vTOB00bG_normal.jpg", type: "TwTimelineFeed", team: 1
+      create :feed, crowling: @crowling_1, source_id: 969876460256161792, source_text: "can't wait...!!! https://t.co/CuRJ9tz5y8", account_id: 99252433, account_name: "Icung Icha", account_username: "rizagalih", account_profile_image_url: "http://pbs.twimg.com/profile_images/1028985612458582016/vTOB00bG_normal.jpg", type: "TwTimelineFeed", team: 1
+      create :feed, crowling: @crowling_1, source_id: 971408683409158146, source_text: "dari fajar yg terlewatkan, bkn berarti tidak bisa", account_id: 99252433, account_name: "Icung Icha", account_username: "rizagalih", account_profile_image_url: "http://pbs.twimg.com/profile_images/1028985612458582016/vTOB00bG_normal.jpg", type: "TwTimelineFeed", team: 1
+    end
+    it "should returns 200 / success" do
+      get "/dashboard/v1/linimasa/crowling/#{@crowling_1.id}", headers: stub_admin_auth_headers
+      expect(json_response[:data][:crowling][:feeds].size).to eq(3)
     end
   end
 end
