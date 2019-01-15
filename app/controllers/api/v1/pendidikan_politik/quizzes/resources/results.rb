@@ -19,7 +19,7 @@ module API::V1::PendidikanPolitik::Quizzes::Resources
 
         answers = ::QuizAnswer.where(id: ::QuizAnswering.where(quiz_participation: participation).map(&:quiz_answer_id))
           .map(&:team)
-        result = ::QuizResult.new(answers, current_user.id).display
+        result = ::QuizResult.new(answers, current_user, participation, true).display
 
         present result
       end
@@ -37,7 +37,9 @@ module API::V1::PendidikanPolitik::Quizzes::Resources
         error! "Quiz is not yet finished", 422 if participation.status != "finished"
 
         questions = quiz.quiz_questions
-
+        
+        present :user, current_user, with: API::V1::Users::Entities::UserSimple
+        present :quiz_participation, participation, with: API::V1::PendidikanPolitik::Quizzes::Entities::QuizParticipation
         present :questions, questions, with: API::V1::PendidikanPolitik::Quizzes::Entities::Result, current_user: current_user
       end
 
