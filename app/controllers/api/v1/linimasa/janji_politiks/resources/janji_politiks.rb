@@ -44,6 +44,27 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       present_metas_searchkick resources
     end
 
+    desc "List trash politiks", headers: AUTHORIZATION_HEADERS
+    oauth2
+    paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
+    get :trashes do
+      authorize_admin!
+      politiks = JanjiPolitik.deleted
+      resources = paginate(politiks)
+      present :politiks, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
+      present_metas resources
+    end
+
+    desc "Detail trash politiks", headers: AUTHORIZATION_HEADERS
+    oauth2
+    params do
+      requires :id
+    end
+    get "trash/:id" do
+      resource = JanjiPolitik.deleted.find(params.id)
+      present :politiks, resource, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
+    end
+
     desc "Create janji politiks", headers: AUTHORIZATION_HEADERS
     oauth2
     params do

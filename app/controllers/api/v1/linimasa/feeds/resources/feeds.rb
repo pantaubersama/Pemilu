@@ -22,7 +22,7 @@ class API::V1::Linimasa::Feeds::Resources::Feeds < API::V1::ApplicationResource
       present_metas_searchkick resources
     end
 
-    desc "Detail feed pilpres", headers: OPTIONAL_AUTHORIZATION_HEADERS
+    desc "Detail feed pilpres", headers: AUTHORIZATION_HEADERS
     optional_oauth2
     params do
       requires :id
@@ -43,7 +43,7 @@ class API::V1::Linimasa::Feeds::Resources::Feeds < API::V1::ApplicationResource
       present_metas resources
     end
 
-    desc "Detail trash pilpres", headers: OPTIONAL_AUTHORIZATION_HEADERS
+    desc "Detail trash pilpres", headers: AUTHORIZATION_HEADERS
     optional_oauth2
     params do
       requires :id

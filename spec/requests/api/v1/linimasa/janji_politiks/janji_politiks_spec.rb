@@ -198,4 +198,31 @@ RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
       expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
     end
   end
+
+  describe "[GET] Endpoint /linimasa/v1/janji_politiks/trashes" do
+    before do
+      @janji_politik = create :janji_politik, title: "Pengadaan Bunker Anti Bencana", body: "Pada 2019, di wacanakan bunker anti bencana siap di resmikan."
+      @janji_politik.delete
+    end
+    it "should returns 200 with valid params when success" do
+      get "/linimasa/v1/janji_politiks/trashes", headers: stub_admin_auth_headers
+      expect(json_response[:data][:politiks].size).to eq(1)
+      title = json_response[:data][:politiks].pluck(:title)
+      expect(title).not_to eq(nil)
+      expect(json_response[:data][:meta]).to eq({ "pages" => { "page" => 1, "per_page" => 100, "total" => 1 } })
+      expect(response.status).to eq(200)
+    end
+  end
+
+  describe "detail trash politiks" do
+    before do
+      @janji_politik = create :janji_politik, title: "Pengadaan Bunker Anti Bencana", body: "Pada 2019, di wacanakan bunker anti bencana siap di resmikan."
+      @janji_politik.delete
+    end
+    it "should returns 200 / success" do
+      get "/linimasa/v1/janji_politiks/trash/#{@janji_politik.id}", headers: stub_admin_auth_headers
+      expect(json_response[:data][:politiks][:id]).to eq(@janji_politik.id)
+    end
+  end
+
 end
