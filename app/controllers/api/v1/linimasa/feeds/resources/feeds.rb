@@ -31,5 +31,42 @@ class API::V1::Linimasa::Feeds::Resources::Feeds < API::V1::ApplicationResource
       resource = Feed.find(params.id)
       present :feed, resource, with: API::V1::Linimasa::Feeds::Entities::Feed
     end
+
+    desc "List trash feeds", headers: AUTHORIZATION_HEADERS
+    oauth2
+    paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
+    get :trashes do
+      authorize_admin!
+      feeds = Feed.deleted
+      resources = paginate(feeds)
+      present :feeds, resources, with: API::V1::Linimasa::Feeds::Entities::Feed
+      present_metas resources
+    end
+
+    desc "Detail trash pilpres", headers: OPTIONAL_AUTHORIZATION_HEADERS
+    optional_oauth2
+    params do
+      requires :id
+    end
+    get "trash/:id" do
+      resource = Feed.deleted.find(params.id)
+      present :feed, resource, with: API::V1::Linimasa::Feeds::Entities::Feed
+    end
+
+    desc "Delete Feed", headers: AUTHORIZATION_HEADERS
+    oauth2
+    params do
+      requires :id, type: String
+    end
+    delete do
+      authorize_admin!
+      feed = Feed.find(params.id)
+      unless feed.delete
+        error!(feed.errors.full_messages.join(", "), 422)
+      end
+      response = { message: "Feed id #{params.id} berhasil dihapus" }
+      present response
+    end
+
   end
 end

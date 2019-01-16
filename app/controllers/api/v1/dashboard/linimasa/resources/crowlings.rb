@@ -62,7 +62,7 @@ class API::V1::Dashboard::Linimasa::Resources::Crowlings < API::V1::ApplicationR
     get "/:id" do
       authorize_admin!
       res = Crowling.find params[:id]
-      present :crowling, res, with: API::V1::Linimasa::Crowlings::Entities::CrowlingDetail
+      present :crowling, res, with: API::V1::Linimasa::Crowlings::Entities::Crowling
     end
     
   end

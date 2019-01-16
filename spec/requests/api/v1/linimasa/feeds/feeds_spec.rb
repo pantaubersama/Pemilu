@@ -118,4 +118,45 @@ RSpec.describe "Api::V1::Linimasa::Feeds", type: :request do
       expect(response.status).to eq(200)
     end
   end
+
+  describe "[GET] Endpoint /linimasa/v1/feeds/trashes" do
+    before do
+      @crowling = create :crowling, keywords: :rizagalih, team: 1
+      @feed = FactoryBot.create :feed, team: 1, crowling_id: @crowling.id, source_id: Faker::Number.number(10), source_text: Faker::Lorem.sentences(2), account_id: 99252433, account_name: "Icung Icha", account_username: "rizagalih", account_profile_image_url: "http://pbs.twimg.com/profile_images/1028985612458582016/vTOB00bG_normal.jpg", type: "TwTimelineFeed"
+      @feed.delete
+    end
+    it "should returns 200 with valid params when success" do
+      get "/linimasa/v1/feeds/trashes", headers: stub_admin_auth_headers
+      expect(json_response[:data][:feeds].size).to eq(1)
+      team = json_response[:data][:feeds].pluck(:team)
+      expect(team).not_to eq(nil)
+      expect(json_response[:data][:meta]).to eq({ "pages" => { "page" => 1, "per_page" => 100, "total" => 1 } })
+      expect(response.status).to eq(200)
+    end
+  end
+
+  describe "detail trash" do
+    before do
+      @crowling = create :crowling, keywords: :rizagalih, team: 1
+      @feed = FactoryBot.create :feed, team: 1, crowling_id: @crowling.id, source_id: Faker::Number.number(10), source_text: Faker::Lorem.sentences(2), account_id: 99252433, account_name: "Icung Icha", account_username: "rizagalih", account_profile_image_url: "http://pbs.twimg.com/profile_images/1028985612458582016/vTOB00bG_normal.jpg", type: "TwTimelineFeed"
+      @feed.delete
+    end
+    it "should returns 200 / success" do
+      get "/linimasa/v1/feeds/trash/#{@feed.id}", headers: stub_admin_auth_headers
+      expect(json_response[:data][:feed][:id]).to eq(@feed.id)
+    end
+  end
+
+  describe "[DELETE] Endpoint /linimasa/v1/feeds" do
+    before do
+      @crowling = create :crowling, keywords: :rizagalih, team: 1
+      @feed = FactoryBot.create :feed, team: 1, crowling_id: @crowling.id, source_id: Faker::Number.number(10), source_text: Faker::Lorem.sentences(2), account_id: 99252433, account_name: "Icung Icha", account_username: "rizagalih", account_profile_image_url: "http://pbs.twimg.com/profile_images/1028985612458582016/vTOB00bG_normal.jpg", type: "TwTimelineFeed"
+    end
+    it "should returns 200 with valid params when success" do
+      delete "/linimasa/v1/feeds", params: { id: @feed.id }, headers: stub_admin_auth_headers
+      expect(json_response[:data][:message]).to eq("Feed id #{@feed.id} berhasil dihapus")
+      expect(response.status).to eq(200)
+    end
+  end
+
 end
