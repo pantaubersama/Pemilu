@@ -3,9 +3,9 @@ class Quiz < ApplicationRecord
   enum status: [:draft, :published, :archived]
 
   mount_uploader :image, QuizUploader
-  
+
   acts_as_paranoid
-  
+
   searchkick searchable:  [:title, :description],
              word_start:  [:title, :description],
              word_middle: [:title, :description],
