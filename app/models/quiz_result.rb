@@ -1,14 +1,42 @@
 class QuizResult
-  attr_accessor :result, :user_id
+  attr_accessor :result, :user, :participation, :display_answer
   
-  def initialize r, u
+  def initialize r, u, p, d
     @result = r
-    @user_id = u
+    @user = u
+    @participation = p
+    @display_answer = d
   end
 
   def display
-    display_simple.merge(answers: @result)
+    res = []
+    res = @result if @display_answer == true
+    display_simple.merge(answers: res)
+      .merge(quiz_participation: decorate_participation)
+      .merge(user: decorate_user)
   end
+
+  def decorate_participation
+    {
+      created_at: @participation.created_at,
+      created_at_in_word: @participation.created_at_in_word,
+      id: @participation.id,
+      status: @participation.status,
+      participated_at: @participation.created_at_in_word
+    }
+  end
+
+  def decorate_user
+    {
+      id: @user.id,
+      email: @user.email,
+      full_name: @user.full_name,
+      avatar: @user.avatar,
+      verified: @user.verified
+    }
+  end
+  
+  
 
   def team_text team
     [1, "1"].include?(team) ? "Jokowi - Makruf" : "Prabowo - Sandi"
@@ -38,7 +66,8 @@ class QuizResult
   end
 
   def display_overview
-    display_simple.merge meta_quizzes
+    display_simple.merge(meta_quizzes)
+      .merge(user: decorate_user)
   end
 
   def meta_quizzes
@@ -46,7 +75,7 @@ class QuizResult
       meta: {
         quizzes: {
           total: Quiz.published.count,
-          finished: QuizParticipation.where(user_id: @user_id, status: "finished").count
+          finished: QuizParticipation.where(user_id: @user.id, status: "finished").count
         }
       }
     }

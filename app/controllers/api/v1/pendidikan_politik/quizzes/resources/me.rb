@@ -14,7 +14,7 @@ module API::V1::PendidikanPolitik::Quizzes::Resources
         participations = ::QuizParticipation.where(user_id: current_user.id, status: "finished").map(&:id)
         answers = ::QuizAnswer.where(id: ::QuizAnswering.where(quiz_participation: participations).map(&:quiz_answer_id))
           .map(&:team)
-        result = ::QuizResult.new(answers, current_user.id).display_overview
+        result = ::QuizResult.new(answers, current_user, participations, true).display_overview
 
         present result
       end

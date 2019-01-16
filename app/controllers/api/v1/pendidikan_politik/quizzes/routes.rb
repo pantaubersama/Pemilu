@@ -8,5 +8,6 @@ module Api::V1::PendidikanPolitik::Quizzes
     mount API::V1::PendidikanPolitik::Quizzes::Resources::Questions
     mount API::V1::PendidikanPolitik::Quizzes::Resources::Results
     mount API::V1::PendidikanPolitik::Quizzes::Resources::Me
+    mount API::V1::PendidikanPolitik::Quizzes::Resources::QuizParticipations
   end
 end

@@ -294,10 +294,13 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Quizzes", type: :request 
 
     it "Quiz result" do
       get "/pendidikan_politik/v1/quizzes/#{@quiz.id}/result", headers: stub_auth_headers(@access_token)
-      expect(json_response[:data][:answers].size).to eq(3)
+      expect(json_response[:data][:answers].size).to eq(3) # display answers
       expect(json_response[:data][:teams].size).to eq(2)
       expect(json_response[:data][:teams][0][:percentage]).to be >= 0.0
       expect(json_response[:data][:teams][1][:percentage]).to be >= 0.0
+
+      expect(json_response[:data][:user][:id]).to eq("1036fd3c-04ed-4949-b57c-b7dc8ff3e737")
+      expect(json_response[:data][:quiz_participation][:id]).not_to eq(nil)
 
       expect(json_response[:data][:teams][0][:team]).to eq(
         {"avatar"=>"https://s3-ap-southeast-1.amazonaws.com/pantau-test/assets/teams/avatar_team_1.png", "id"=>1, "title"=>"Jokowi - Makruf"}
@@ -309,6 +312,10 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Quizzes", type: :request 
 
     it "Quiz summary" do
       get "/pendidikan_politik/v1/quizzes/#{@quiz.id}/summary", headers: stub_auth_headers(@access_token)
+
+      expect(json_response[:data][:user][:id]).to eq("1036fd3c-04ed-4949-b57c-b7dc8ff3e737")
+      expect(json_response[:data][:quiz_participation][:id]).not_to eq(nil)
+
       expect(json_response[:data][:questions].size).to eq(3)
       expect(json_response[:data][:questions][0][:answered][:id]).not_to eq(nil)
       expect(json_response[:data][:questions][1][:answered][:id]).not_to eq(nil)
@@ -317,6 +324,7 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Quizzes", type: :request 
 
     it "My preference" do
       get "/pendidikan_politik/v1/me/quizzes", headers: stub_auth_headers(@access_token)
+      expect(json_response[:data][:user][:id]).to eq("1036fd3c-04ed-4949-b57c-b7dc8ff3e737")
       expect(json_response[:data][:teams].size).to eq(2)
       expect(json_response[:data][:teams][0][:percentage]).not_to eq(nil)
       expect(json_response[:data][:teams][1][:percentage]).not_to eq(nil)
