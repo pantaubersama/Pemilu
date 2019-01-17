@@ -134,6 +134,31 @@ RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
     end
   end
 
+  describe "[PUT] Update Janji Politik" do
+    before do
+      @janji_politik = create :janji_politik, title: "Pengadaan Bunker Anti Bencana", body: "Pada 2019, di wacanakan bunker anti bencana siap di resmikan."
+      JanjiPolitik.reindex
+    end
+    it "should returns 200 with valid params when success" do
+      put "/linimasa/v1/janji_politiks/#{@janji_politik.id}",
+          params:  {
+            id: @janji_politik.id,
+            title: "Edited",
+            body: "Edited Body",
+            image: fixture_file_upload('files/janji_image.jpg', 'image/jpg')
+          },
+          headers: stub_admin_auth_headers
+      expect(json_response[:data][:status]).to eq(true)
+      expect(json_response[:data][:janji_politik][:title]).to eq("Edited")
+      expect(json_response[:data][:janji_politik][:body]).to eq("Edited Body")
+      expect(json_response[:data][:janji_politik][:image]).to eq({
+                                                                   "large" => {
+                                                                     "url" => "#{ENV["BASE_URL"]}/uploads/janji_politik/image/#{json_response[:data][:janji_politik][:id]}/large_janji_image.jpg"
+                                                                   },
+                                                                   "url"   => "#{ENV["BASE_URL"]}/uploads/janji_politik/image/#{json_response[:data][:janji_politik][:id]}/janji_image.jpg" })
+    end
+  end
+
   describe "pagination" do
     before do
       @crowling = create :crowling, keywords: :rizagalih, team: 1
