@@ -97,6 +97,25 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       present :janji_politik, resource, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
     end
 
+    desc "Update Janji Politik" do
+      detail "Update Janji Politik"
+      headers AUTHORIZATION_HEADERS
+    end
+    params do
+      optional :title, type: String
+      optional :body, type: String
+      optional :image, type: File
+    end
+    oauth2
+    put "/:id" do
+      authorize_admin!
+      params[:image] = prepare_file(params[:image]) if params[:image].present?
+      q = JanjiPolitik.find params.id
+      status = q.update_attributes(janji_params)
+      present :status, status
+      present :politiks, q, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
+    end
+
     desc "Delete janji politiks", headers: AUTHORIZATION_HEADERS
     oauth2
     params do
@@ -121,4 +140,11 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       present :janji_politik, resource, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
     end
   end
+
+  helpers do
+    def janji_params
+      permitted_params(params.except(:access_token)).permit(:title, :body, :image)
+    end
+  end
+
 end
