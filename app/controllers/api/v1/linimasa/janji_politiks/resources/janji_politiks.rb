@@ -113,7 +113,7 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       q = JanjiPolitik.find params.id
       status = q.update_attributes(janji_params)
       present :status, status
-      present :politiks, q, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
+      present :janji_politik, q, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
     end
 
     desc "Delete janji politiks", headers: AUTHORIZATION_HEADERS
