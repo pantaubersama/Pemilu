@@ -76,7 +76,7 @@ RSpec.describe "Api::V1::Linimasa::Crowlings", type: :request do
     end
     it "should returns 200 / success" do
       get "/dashboard/v1/linimasa/crowling/#{@crowling_1.id}", headers: stub_admin_auth_headers
-      expect(json_response[:data][:crowling][:feeds].size).to eq(3)
+      expect(response.status).to eq(200)
     end
   end
 end
