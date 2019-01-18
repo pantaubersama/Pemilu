@@ -10,12 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_12_155445) do
+ActiveRecord::Schema.define(version: 2019_01_18_102608) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "app_versions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.integer "app_type"
+    t.boolean "force_update", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "banner_infos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
@@ -168,19 +176,6 @@ ActiveRecord::Schema.define(version: 2019_01_12_155445) do
     t.datetime "migrated_on"
   end
 
-  create_table "stadia", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "type", null: false
-    t.text "statement", null: false
-    t.text "statement_source"
-    t.datetime "show_time_at", null: false
-    t.integer "time_limit", null: false
-    t.integer "progress", null: false
-    t.integer "stadium_condition"
-    t.uuid "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "user_kenalans", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id", null: false
     t.uuid "kenalan_id", null: false
@@ -197,7 +192,6 @@ ActiveRecord::Schema.define(version: 2019_01_12_155445) do
     t.string "whodunnit"
     t.text "object"
     t.datetime "created_at"
-    t.text "object_changes"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
