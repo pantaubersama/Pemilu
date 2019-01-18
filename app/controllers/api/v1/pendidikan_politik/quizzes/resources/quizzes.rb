@@ -26,7 +26,7 @@ module API::V1::PendidikanPolitik::Quizzes::Resources
         end
 
         resources = Quiz.search(q, operator: operator, match: match_word, misspellings: false,
-          load: false, page: params.page, per_page: params.per_page, where: build_conditions)
+          load: false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), where: build_conditions)
         
         present :quizzes, resources, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz, 
           current_user: current_user,
@@ -59,7 +59,7 @@ module API::V1::PendidikanPolitik::Quizzes::Resources
         end
 
         resources = Quiz.search(q, operator: operator, match: match_word, misspellings: false,
-          load: false, page: params.page, per_page: params.per_page, where: build_conditions)
+          load: false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), where: build_conditions)
         
         present :quizzes, resources, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz, 
           current_user: current_user,

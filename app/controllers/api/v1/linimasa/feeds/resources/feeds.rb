@@ -16,7 +16,7 @@ class API::V1::Linimasa::Feeds::Resources::Feeds < API::V1::ApplicationResource
         query = "#{params.q}"
       end
       build_conditions = params.filter_by.present? ? team_filter(params.filter_by) : {}
-      resources        = Feed.search(query, match: :text_middle, misspellings: false, load: true, page: params.page, per_page: params.per_page, order: { created_at: :desc }, where: build_conditions)
+      resources        = Feed.search(query, match: :text_middle, misspellings: false, load: false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), order: { created_at: :desc }, where: build_conditions)
 
       present :feeds, resources, with: API::V1::Linimasa::Feeds::Entities::Feed
       present_metas_searchkick resources

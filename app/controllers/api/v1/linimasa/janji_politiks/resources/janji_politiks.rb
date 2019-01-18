@@ -21,7 +21,7 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
         build_conditions = build_conditions.merge({ cluster_id: params.cluster_id })
       end
 
-      resources = JanjiPolitik.search(query, match: :text_middle, misspellings: false, load: true, page: params.page, per_page: params.per_page, order: { created_at: :desc }, where: build_conditions)
+      resources = JanjiPolitik.search(query, match: :text_middle, misspellings: false, load: false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), order: { created_at: :desc }, where: build_conditions)
 
       present :janji_politiks, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
       present_metas_searchkick resources
@@ -38,7 +38,7 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       if params.q.present?
         query = "#{params.q}"
       end
-      resources = JanjiPolitik.search(query, match: :text_middle, misspellings: false, load: true, page: params.page, per_page: params.per_page, order: { created_at: :desc }, where: { user_id: current_user.id })
+      resources = JanjiPolitik.search(query, match: :text_middle, misspellings: false, load: false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), order: { created_at: :desc }, where: { user_id: current_user.id })
 
       present :janji_politiks, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
       present_metas_searchkick resources
@@ -49,7 +49,7 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
     paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
     get :trashes do
       authorize_admin!
-      politiks = JanjiPolitik.deleted
+      politiks  = JanjiPolitik.deleted
       resources = paginate(politiks)
       present :politiks, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
       present_metas resources
@@ -110,8 +110,8 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
     put "/:id" do
       authorize_admin!
       params[:image] = prepare_file(params[:image]) if params[:image].present?
-      q = JanjiPolitik.find params.id
-      status = q.update_attributes(janji_params)
+      q              = JanjiPolitik.find params.id
+      status         = q.update_attributes(janji_params)
       present :status, status
       present :janji_politik, q, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
     end
