@@ -90,22 +90,22 @@ RSpec.configure do |config|
 
   config.before type: :request do
     BannerInfo.create!([
-                           { id: "ade8d637-e85e-4726-8005-6cede80ea860", page_name: "pilpres", title: "Judul banner pilpres", body: "Body banner pilpres" },
-                           { id: "5d01f7ab-4c90-4199-999b-da5287d06a88", page_name: "janji politik", title: "Judul banner 'janji politik'", body: "Body banner 'janji politik'" },
-                           { id: "a22d2acd-7eda-4a7a-95a0-931abf5db8e3", page_name: "tanya", title: "Judul banner tanya", body: "Body banner tanya" },
-                           { id: "9b98ac07-3208-4d60-976e-49ace39e38a7", page_name: "kuis", title: "Judul banner kuis", body: "Body banner kuis" },
+                         { id: "ade8d637-e85e-4726-8005-6cede80ea860", page_name: "pilpres", title: "Judul banner pilpres", body: "Body banner pilpres" },
+                         { id: "5d01f7ab-4c90-4199-999b-da5287d06a88", page_name: "janji politik", title: "Judul banner 'janji politik'", body: "Body banner 'janji politik'" },
+                         { id: "a22d2acd-7eda-4a7a-95a0-931abf5db8e3", page_name: "tanya", title: "Judul banner tanya", body: "Body banner tanya" },
+                         { id: "9b98ac07-3208-4d60-976e-49ace39e38a7", page_name: "kuis", title: "Judul banner kuis", body: "Body banner kuis" },
                        ])
     Kenalan.create!([
-                        { id: "c46bae56-8c87-4f54-8328-b959d89c931f", text: 'Melakukan Verifikasi' },
-                        { id: "9bbc974c-dab4-4467-ac5f-84e8a8d56b1c", text: 'Lengkapi Biodata' },
-                        { id: "c3fded37-5b4b-4a81-aee7-ee24d845b5e8", text: 'Lengkapi Data Lapor' },
-                        { id: "231cbadc-a856-4723-93a9-bb79915dd40d", text: 'Tanya Presiden' },
-                        { id: "f2596bdb-90ba-41e9-8c39-11c891c68f1f", text: 'Ikuti Quiz' },
-                        { id: "e27b16e8-f585-448b-afbc-0219c48471d6", text: 'Kunjungi Janji Politik' },
-                        { id: "16fc11b3-c5a4-491c-81f4-cd6cdca1ed1e", text: 'Ikuti Word Stadium' },
-                        { id: "2022ad13-d602-4eba-9cf1-9ef2ea0e158d", text: 'Kontribusi Lapor' },
-                        { id: "8706f239-09ad-47b3-b8bb-a3a37439c519", text: 'Kontribusi Perhitungan' },
-                        { id: "6c5ffd3d-219a-43e0-8035-c71af1459658", text: 'Baca Pantau Bersama' }
+                      { id: "c46bae56-8c87-4f54-8328-b959d89c931f", text: 'Melakukan Verifikasi' },
+                      { id: "9bbc974c-dab4-4467-ac5f-84e8a8d56b1c", text: 'Lengkapi Biodata' },
+                      { id: "c3fded37-5b4b-4a81-aee7-ee24d845b5e8", text: 'Lengkapi Data Lapor' },
+                      { id: "231cbadc-a856-4723-93a9-bb79915dd40d", text: 'Tanya Presiden' },
+                      { id: "f2596bdb-90ba-41e9-8c39-11c891c68f1f", text: 'Ikuti Quiz' },
+                      { id: "e27b16e8-f585-448b-afbc-0219c48471d6", text: 'Kunjungi Janji Politik' },
+                      { id: "16fc11b3-c5a4-491c-81f4-cd6cdca1ed1e", text: 'Ikuti Word Stadium' },
+                      { id: "2022ad13-d602-4eba-9cf1-9ef2ea0e158d", text: 'Kontribusi Lapor' },
+                      { id: "8706f239-09ad-47b3-b8bb-a3a37439c519", text: 'Kontribusi Perhitungan' },
+                      { id: "6c5ffd3d-219a-43e0-8035-c71af1459658", text: 'Baca Pantau Bersama' }
                     ])
   end
   config.after(:all) do
@@ -120,5 +120,24 @@ Shoulda::Matchers.configure do |config|
   config.integrate do |with|
     with.test_framework :rspec
     with.library :active_record
+  end
+end
+
+def random_quiz(count = 1)
+  @quiz = create :quiz
+  @quiz.published!
+
+  [*1..count].each do |i|
+    question = create :quiz_question, quiz: @quiz
+    create :quiz_answer_team_1, quiz_question: question
+    create :quiz_answer_team_2, quiz_question: question
+  end
+end
+
+def answer_quiz(user_id, quiz)
+  quiz_participation = quiz.participate! user_id
+  quiz.quiz_questions.each do |qq|
+    QuizAnswering.create! user_id:          user_id, quiz_participation: quiz_participation, quiz: qq.quiz,
+                          quiz_question_id: qq.id, quiz_answer_id: qq.quiz_answers.last.id
   end
 end
