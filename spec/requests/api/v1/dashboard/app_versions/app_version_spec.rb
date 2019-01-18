@@ -32,10 +32,12 @@ RSpec.describe "Api::V1::AppVersion", type: :request do
         params: { 
           name: Faker::Lorem.sentence(2),
           app_type: "android",
-          force_update: true 
+          force_update: true ,
+          version_code: 1
         }
       expect(response.status).to eq(201)
       expect(json_response[:data][:app_version][:force_update]).to eq(true)
+      expect(json_response[:data][:app_version][:version_code]).to eq(1)
     end
 
     it "update" do
@@ -43,11 +45,13 @@ RSpec.describe "Api::V1::AppVersion", type: :request do
         params: { 
           name: "2.0.0",
           app_type: "android",
-          force_update: false 
+          force_update: false,
+          version_code: 2 
         }
       expect(response.status).to eq(200)
       expect(json_response[:data][:app_version][:force_update]).to eq(false)
       expect(json_response[:data][:app_version][:version]).to eq("2.0.0")
+      expect(json_response[:data][:app_version][:version_code]).to eq(2)
     end
 
     it "delete" do

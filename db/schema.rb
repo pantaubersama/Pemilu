@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_18_102608) do
+ActiveRecord::Schema.define(version: 2019_01_18_130915) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 2019_01_18_102608) do
     t.boolean "force_update", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "version_code"
   end
 
   create_table "banner_infos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

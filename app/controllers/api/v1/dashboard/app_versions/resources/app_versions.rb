@@ -29,9 +29,10 @@ class API::V1::Dashboard::AppVersions::Resources::AppVersions < API::V1::Applica
       headers AUTHORIZATION_HEADERS
     end
     params do
-      optional :name, type: String
-      optional :force_update, type: Boolean
-      optional :app_type, type: String, values: ["android", "ios"]
+      requires :name, type: String
+      requires :version_code, type: Integer
+      requires :force_update, type: Boolean
+      requires :app_type, type: String, values: ["android", "ios"]
     end
     oauth2
     post "/" do
@@ -47,8 +48,9 @@ class API::V1::Dashboard::AppVersions::Resources::AppVersions < API::V1::Applica
     end
     params do
       requires :name, type: String
-      requires :force_update, type: Boolean
-      requires :app_type, type: String, values: ["android", "ios"]
+      optional :version_code, type: Integer
+      optional :force_update, type: Boolean
+      optional :app_type, type: String, values: ["android", "ios"]
     end
     oauth2
     put "/:id" do
@@ -87,7 +89,7 @@ class API::V1::Dashboard::AppVersions::Resources::AppVersions < API::V1::Applica
 
   helpers do
     def app_params
-      permitted_params(params.except(:access_token)).permit(:name, :force_update, :app_type)
+      permitted_params(params.except(:access_token)).permit(:name, :force_update, :app_type, :version_code)
     end
   end
 
