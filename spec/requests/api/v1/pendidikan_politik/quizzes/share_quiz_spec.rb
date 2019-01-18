@@ -40,6 +40,8 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::QuizParticipations", type
 
       expect(json_response[:data][:user][:id]).to eq("1036fd3c-04ed-4949-b57c-b7dc8ff3e737")
       expect(json_response[:data][:quiz_participation][:id]).not_to eq(nil)
+      expect(json_response[:data][:quiz][:id]).to eq(@quiz.id)
+      expect(json_response[:data][:quiz][:title]).to eq(@quiz.title)
 
       expect(json_response[:data][:teams][0][:team]).to eq(
         {"avatar"=>"https://s3-ap-southeast-1.amazonaws.com/pantau-test/assets/teams/avatar_team_1.png", "id"=>1, "title"=>"Jokowi - Makruf"}

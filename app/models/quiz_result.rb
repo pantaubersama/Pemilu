@@ -14,6 +14,7 @@ class QuizResult
     display_simple.merge(answers: res)
       .merge(quiz_participation: decorate_participation)
       .merge(user: decorate_user)
+      .merge(quiz: decorate_quiz)
   end
 
   def decorate_participation
@@ -35,6 +36,17 @@ class QuizResult
       verified: @user.verified
     }
   end
+
+  def decorate_quiz
+    {
+      id: @participation.quiz.id,
+      title: @participation.quiz.title,
+      description: @participation.quiz.description,
+      image: @participation.quiz.image,
+      quiz_questions_count: @participation.quiz.quiz_questions_count
+    }
+  end
+  
   
   
 

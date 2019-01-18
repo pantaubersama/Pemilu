@@ -92,6 +92,7 @@ RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
     end
     it "no filter : user_verified_all" do
       JanjiPolitik.last.destroy
+      JanjiPolitik.reindex
       get "/linimasa/v1/janji_politiks", params: { filter_by: :user_verified_all }
       expect(JanjiPolitik.all.size).to eq(4)
       expect(json_response[:data][:janji_politiks].size).to eq(4)
