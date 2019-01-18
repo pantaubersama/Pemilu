@@ -1,5 +1,6 @@
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
+
   def created_at_in_word
     date = created_at
     {
@@ -10,6 +11,6 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def column_names
-    eval(self.class.name).column_names + ["created_at_in_word"]
+    eval(self.class.name).column_names.delete_if { |x| [:deleted_at, "deleted_at"].include?(x) } + ["created_at_in_word"]
   end
 end
