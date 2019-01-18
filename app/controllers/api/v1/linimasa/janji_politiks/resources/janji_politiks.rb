@@ -143,7 +143,7 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
 
   helpers do
     def janji_params
-      permitted_params(params.except(:access_token)).permit(:title, :body, :image)
+      permitted_params(params.except(:access_token)).permit(:id, :title, :body, :image)
     end
   end
 
