@@ -38,6 +38,10 @@ group :development, :test do
 
   gem 'guard-rspec', require: false
   # then run $ bundle exec guard init rspec
+
+  ###doc [2] set up factory_girl
+  # DEPRECATION gem 'factory_girl_rails'
+  gem 'factory_bot_rails', '~> 4.0'
 end
 
 group :development do
@@ -45,21 +49,26 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+
+  gem 'capistrano'
+  gem 'capistrano-rails'
+  gem 'capistrano3-unicorn'
+  gem 'capistrano-rvm'
+  gem 'capistrano-sidekiq'
 end
 
-group :test do
-  ###doc [2] set up factory_girl
-  # DEPRECATION gem 'factory_girl_rails'
-  gem 'factory_bot_rails', '~> 4.0'
 
+###doc [4] set up faker
+gem 'faker'
+
+group :test do
   ###doc [3] set up shoulda_matchers
   gem 'shoulda-matchers', '~> 3.1'
 
-  ###doc [4] set up faker
-  gem 'faker'
-
   ###doc [5] set up database_cleaner
   gem 'database_cleaner'
+
+  gem 'bullet'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -75,6 +84,7 @@ gem 'grape'
 gem 'grape-middleware-logger'
 gem 'grape-entity'
 gem 'hashie-forbidden_attributes'
+gem 'grape_simple_auth', '~> 0.3.0'
 
 # documentation
 gem 'grape-swagger'
@@ -89,6 +99,38 @@ gem 'rack-cors'
 
 ###doc [9] paginator
 # Then choose your preferred paginator from the following:
-gem 'kaminari'
-# Finally...
-gem 'api-pagination'
+gem 'pagy'
+gem 'api-pagination', github: "extrainteger/api-pagination"
+
+
+gem 'unicorn', group: [:staging, :production]
+gem 'twitter'
+
+###doc to safe my dick
+
+# bin/rails generate migration AddDeletedAtToClients deleted_at:datetime:index
+gem 'paranoia', '~> 2.2'
+
+# bundle exec rails generate paper_trail:install [--with-changes] [--with-associations]
+gem 'paper_trail'
+
+gem 'seed_migration'
+
+gem 'acts_as_votable', '~> 0.12.0'
+
+gem "her"
+
+gem 'searchkick', '~> 3.1.2'
+
+# logger
+gem 'wirble'
+gem 'awesome_print', require: 'ap'
+
+gem 'sidekiq'
+gem 'whenever', require: false
+
+# upload image
+gem 'carrierwave', '~> 1.0'
+gem 'mini_magick'
+gem 'fog', require: 'fog/aws'
+gem 'fog-aws'

@@ -37,6 +37,15 @@
 - `$ rails s`
 - go to [`http://localhost:3000/doc`](http://localhost:3000/doc)
 
+#### HTTP Authentication
+
+Check it out in your `.env.development`
+
+```
+Username : admin
+Password : admin
+```
+
 #### make sure all success installed
 - [`http://localhost:3000/linimasa/v1/infos`](http://localhost:3000/linimasa/v1/infos)
 - [`http://localhost:3000/pendidikan_politik/v1/infos`](http://localhost:3000/pendidikan_politik/v1/infos)

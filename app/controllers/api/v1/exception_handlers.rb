@@ -9,6 +9,9 @@ module API
               code    = 406
               message = e.message
               # Bad token
+            elsif e.class.name == 'Pagy::OverflowError'
+              code    = 406
+              message = "Out of page :("
             elsif e.class.name == 'RuntimeError' && e.message == 'Invalid base64 string'
               code    = 406
               message = '401 Unauthorized'
@@ -20,6 +23,13 @@ module API
             elsif e.is_a?(ActiveRecord::RecordInvalid) || e.is_a?(ActiveRecord::RecordNotDestroyed)
               code    = 422
               message = e.message
+              # rescue invalid token
+            elsif e.is_a?(GrapeSimpleAuth::Errors::InvalidToken)
+              code    = 401
+              message = e.message
+            elsif e.is_a?(GrapeSimpleAuth::Errors::InvalidScope)
+              code    = 401
+              message = e.message
             else
               code    = 500
               message = e.message
@@ -28,12 +38,12 @@ module API
             Rails.logger.error Rails.backtrace_cleaner.clean(e.backtrace).join("\n") if ENV['API_DEBUGGING'] == 'true'
 
             results = {
-              error: {
-                code:   code,
-                errors: [message]
-              }
+                error: {
+                    code:   code,
+                    errors: [message]
+                }
             }
-            Rack::Response.new(results.to_json, code, {"content-type" => "application/json; charset=UTF-8"}).finish
+            Rack::Response.new(results.to_json, code, { "content-type" => "application/json; charset=UTF-8" }).finish
           end
         end
       end

@@ -1,0 +1,2 @@
+class TwTimelineFeed < Feed
+end

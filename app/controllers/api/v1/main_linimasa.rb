@@ -5,11 +5,18 @@ module API
       # Default Config API
       include API::V1::Config
 
+      # Exception Handlers
+      include API::V1::ExceptionHandlers
+
       # Mounting Modules Api
-      mount API::V1::Adventures::Routes
+      # mount API::V1::Adventures::Routes
 
       # Mounting Modules Api /linimasa
-      mount API::V1::Linimasa::Infos::Routes
+      # mount API::V1::Linimasa::Infos::Routes
+      mount API::V1::Linimasa::Feeds::Routes
+      mount API::V1::Linimasa::JanjiPolitiks::Routes
+      mount API::V1::Linimasa::BannerInfos::Routes
+      mount API::V1::Linimasa::Kenalans::Routes
 
 
       # Swagger config
@@ -18,7 +25,11 @@ module API
           doc_version:             'not set',
           hide_documentation_path: true,
           mount_path:              "doc/api",
-          hide_format:             true
+          hide_format:             true,
+          info: {
+              title: "Modul Linimasa",
+              description: "Modul Linimasa"
+          }
       )
     end
   end
