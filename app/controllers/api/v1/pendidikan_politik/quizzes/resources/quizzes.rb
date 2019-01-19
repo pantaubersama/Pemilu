@@ -24,8 +24,8 @@ module API::V1::PendidikanPolitik::Quizzes::Resources
         build_conditions = if current_user.present?
           {id: {not: query.map(&:quiz_id) }}
         end
-
-        resources = Quiz.search(q, operator: operator, match: match_word, misspellings: false,
+        default_order = {created_at: {order: :desc, unmapped_type: "long"}}
+        resources = Quiz.search(q, operator: operator, match: match_word, misspellings: false, order: default_order,
           load: false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), where: build_conditions)
         
         present :quizzes, resources, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz, 
@@ -57,8 +57,9 @@ module API::V1::PendidikanPolitik::Quizzes::Resources
             {id: query.where(status: params.filter_by.to_s).map(&:quiz_id)}
           end
         end
+        default_order = {created_at: {order: :desc, unmapped_type: "long"}}
 
-        resources = Quiz.search(q, operator: operator, match: match_word, misspellings: false,
+        resources = Quiz.search(q, operator: operator, match: match_word, misspellings: false, order: default_order,
           load: false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), where: build_conditions)
         
         present :quizzes, resources, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz, 
