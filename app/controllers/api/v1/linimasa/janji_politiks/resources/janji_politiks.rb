@@ -20,8 +20,9 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       if params.cluster_id.present?
         build_conditions = build_conditions.merge({ cluster_id: params.cluster_id })
       end
+      default_order = {created_at: {order: :desc, unmapped_type: "long"}}
 
-      resources = JanjiPolitik.search(query, match: :text_middle, misspellings: false, load: false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), order: { created_at: :desc }, where: build_conditions)
+      resources = JanjiPolitik.search(query, match: :text_middle, misspellings: false, load: false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), order: default_order, where: build_conditions)
 
       present :janji_politiks, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
       present_metas_searchkick resources
@@ -38,7 +39,8 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       if params.q.present?
         query = "#{params.q}"
       end
-      resources = JanjiPolitik.search(query, match: :text_middle, misspellings: false, load: false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), order: { created_at: :desc }, where: { user_id: current_user.id })
+      default_order = {created_at: {order: :desc, unmapped_type: "long"}}
+      resources = JanjiPolitik.search(query, match: :text_middle, misspellings: false, load: false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), order: default_order, where: { user_id: current_user.id })
 
       present :janji_politiks, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
       present_metas_searchkick resources
