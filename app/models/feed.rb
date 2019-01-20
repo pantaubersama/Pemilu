@@ -1,5 +1,6 @@
 class Feed < ApplicationRecord
-  searchkick text_middle: [:all_fields]
+  searchkick  callbacks: :async, 
+              text_middle: [:all_fields]
   include Teamable
   acts_as_paranoid
   belongs_to :crowling

@@ -6,7 +6,8 @@ class Quiz < ApplicationRecord
 
   acts_as_paranoid
 
-  searchkick searchable:  [:title, :description],
+  searchkick callbacks: :async,
+             searchable:  [:title, :description],
              word_start:  [:title, :description],
              word_middle: [:title, :description],
              word_end:    [:title, :description],
