@@ -11,6 +11,15 @@ set :unicorn_roles, :web
 set :whenever_roles, :app
 set :sidekiq_roles, :app
 
+# set :sneakers_default_hooks, true
+# set :sneakers_pid, File.join(shared_path, 'tmp', 'pids', 'sneakers.pid')
+# set :sneakers_env, fetch(:rack_env, fetch(:rails_env, fetch(:stage)))
+# set :sneakers_log, File.join(shared_path, 'log', 'sneakers.log')
+set :sneakers_roles, :app
+set :sneakers_processes, 1
+set :sneakers_run_config, -> { true }
+set :sneakers_workers, ["Subscribers::User"]
+
 server "52.77.101.168", user: "ubuntu", roles: %w{web db}
 server "13.228.240.205", user: "ubuntu", roles: %w{app}
 
