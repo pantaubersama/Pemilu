@@ -55,6 +55,7 @@ group :development do
   gem 'capistrano3-unicorn'
   gem 'capistrano-rvm'
   gem 'capistrano-sidekiq'
+  gem 'capistrano-sneakers', github: 'inventionlabsSydney/capistrano-sneakers'
 end
 
 
