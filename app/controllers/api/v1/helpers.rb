@@ -23,6 +23,7 @@ module API::V1::Helpers
   end
 
   def friendly_date date
+    date      = date.in_time_zone(zone)
     zone      = ActiveSupport::TimeZone.new("Asia/Jakarta")
     now       = Time.zone.now
     time_lang = {}
