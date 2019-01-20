@@ -23,8 +23,8 @@ module API::V1::Helpers
   end
 
   def friendly_date date
-    date      = date.in_time_zone(zone)
     zone      = ActiveSupport::TimeZone.new("Asia/Jakarta")
+    date      = date.in_time_zone(zone)
     now       = Time.zone.now
     time_lang = {}
     ["en", "id"].each do |lang|
