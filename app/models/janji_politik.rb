@@ -18,23 +18,21 @@ class JanjiPolitik < ApplicationRecord
       cluster = self.user.cluster
     end
 
-    resluts = {}
-    self.column_names.each do |column|
-      resluts[column] = self.send(column.to_s)
-    end
-    resluts.merge({
-                    user:       {
-                      email:     self.user.try(:email),
-                      username:  self.user.try(:username),
-                      verified:  self.user.try(:verified),
-                      id:        self.user.try(:id),
-                      avatar:    self.user.try(:avatar),
-                      full_name: self.user.try(:full_name),
-                      about:     self.user.try(:about),
-                      cluster:   cluster,
-                    },
-                    all_fields: ["--", self.title, self.body, self.user.try(:username), self.user.try(:full_name), "--"].compact.join(' ')
-                  })
+    index_all.merge(
+      {
+        user:       {
+          id:        self.user.id,
+          email:     self.user.email,
+          username:  self.user.username,
+          verified:  self.user.verified,
+          avatar:    self.user.avatar,
+          full_name: self.user.full_name,
+          about:     self.user.about,
+          cluster:   cluster,
+        },
+        all_fields: ["--", self.title, self.body, self.user.username, self.user.full_name, "--"].compact.join(' ')
+      }
+    )
   end
 
   def should_index?

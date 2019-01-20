@@ -2,31 +2,26 @@ class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
   def created_at_in_word
-    date = created_at
+    zone      = ActiveSupport::TimeZone.new("Asia/Jakarta")
+    date      = created_at.in_time_zone(zone)
+    now       = Time.zone.now
+    time_lang = {}
+    ["en", "id"].each do |lang|
+      time_lang[lang] = if (now.to_i - date.to_i > 2.days.to_i) && (now.to_i - date.to_i < 1.year.to_i)
+                          I18n.l(date, format: "%d %b", locale: lang) unless date.nil?
+                        elsif ((now.to_i - date.to_i) > 1.year.to_i)
+                          (I18n.l(date, format: "%d %b %y", locale: lang) unless date.nil?)
+                        else
+                          (time_ago_in_words(date, { include_seconds: false, highest_measure_only: 2, locale: lang }) + "")
+                        end
+    end
     {
-      iso_8601: date,
-      en: (
-        if (Time.now.to_i - date.to_i > 2.days.to_i) && (Time.now.to_i - date.to_i < 1.year.to_i)
-          I18n.l(date, format: "%d %b", locale: :en) unless date.nil?
-        elsif (Time.now.to_i - date.to_i > 1.year.to_i)
-          (I18n.l(date, format: "%d %b %y", locale: :en) unless date.nil?)
-        else
-          (time_ago_in_words(date, { include_seconds: false, highest_measure_only: 2, locale: :en }) + "")
-        end
-      ),
-      id: (
-        if (Time.now.to_i - date.to_i > 2.days.to_i) && (Time.now.to_i - date.to_i < 1.year.to_i)
-          I18n.l(date, format: "%d %b", locale: :id) unless date.nil?
-        elsif (Time.now.to_i - date.to_i > 1.year.to_i)
-          (I18n.l(date, format: "%d %b %y", locale: :id) unless date.nil?)
-        else
-          (time_ago_in_words(date, { include_seconds: false, highest_measure_only: 2, locale: :id }) + "")
-        end
-      )
-    }
+      time_zone: "Asia/Jakarta",
+      iso_8601:  date,
+    }.merge(time_lang)
   end
 
-  def column_names
-    eval(self.class.name).column_names.delete_if { |x| [:deleted_at, "deleted_at"].include?(x) } + ["created_at_in_word"]
+  def index_all
+    attributes.except(:deleted_at).merge({created_at_in_word: self.created_at_in_word})
   end
 end
