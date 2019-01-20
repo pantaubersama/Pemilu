@@ -38,7 +38,7 @@ module API::V1::Helpers
     end
     {
       time_zone: "Asia/Jakarta",
-      iso_8601:  date.in_time_zone(zone),
+      iso_8601:  date,
     }.merge(time_lang)
   end
 

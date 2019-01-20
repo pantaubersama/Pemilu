@@ -17,11 +17,11 @@ class ApplicationRecord < ActiveRecord::Base
     end
     {
       time_zone: "Asia/Jakarta",
-      iso_8601:  date.in_time_zone(zone),
+      iso_8601:  date,
     }.merge(time_lang)
   end
 
-  def column_names
-    eval(self.class.name).column_names.delete_if { |x| [:deleted_at, "deleted_at"].include?(x) } + ["created_at_in_word"]
+  def index_all
+    attributes.except(:deleted_at).merge({created_at_in_word: self.created_at_in_word})
   end
 end

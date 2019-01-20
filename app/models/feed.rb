@@ -8,14 +8,12 @@ class Feed < ApplicationRecord
   validates_uniqueness_of :type, scope: [:source_id, :crowling_id]
 
   def search_data
-    resluts = {}
-    self.column_names.each do |column|
-      resluts[column] = self.send(column.to_s)
-    end
-    resluts.merge({
-                      team_source: self.team_source,
-                      all_fields:  ["--", self.source_text, self.account_name, self.account_username, "--"].compact.join(' ')
-                  })
+    index_all.merge(
+      {
+        team_source: self.team_source,
+        all_fields:  ["--", self.source_text, self.account_name, self.account_username, "--"].compact.join(' ')
+      }
+    )
   end
 
   def should_index?
