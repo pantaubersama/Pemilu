@@ -1,0 +1,1 @@
+Searchkick.redis = Redis.new url:  ENV["REDIS_SERVER_URL"]

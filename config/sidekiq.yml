@@ -1,3 +1,4 @@
 :concurrency: 30
 :queues:
   - timeline
+  - searchkick
