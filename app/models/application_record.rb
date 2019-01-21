@@ -22,6 +22,10 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def index_all
-    attributes.except(:deleted_at).merge({created_at_in_word: self.created_at_in_word})
+    results = {}
+    (self.attributes.keys.delete_if { |x| [:deleted_at, "deleted_at"].include?(x) } + ["created_at_in_word"]).each do |column|
+      results[column] = self.send(column.to_s)
+    end
+    results
   end
 end
