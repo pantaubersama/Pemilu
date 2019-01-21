@@ -1,6 +1,7 @@
 class JanjiPolitik < ApplicationRecord
 
-  searchkick text_middle: [:all_fields]
+  searchkick  callbacks: :async, 
+              text_middle: [:all_fields]
   acts_as_paranoid
   has_paper_trail
   mount_uploader :image, AssetPictureUploader

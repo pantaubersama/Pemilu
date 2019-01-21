@@ -55,6 +55,7 @@ group :development do
   gem 'capistrano3-unicorn'
   gem 'capistrano-rvm'
   gem 'capistrano-sidekiq'
+  gem 'capistrano-sneakers'
 end
 
 
@@ -134,3 +135,7 @@ gem 'carrierwave', '~> 1.0'
 gem 'mini_magick'
 gem 'fog', require: 'fog/aws'
 gem 'fog-aws'
+
+gem 'sneakers'
+gem 'json'
+gem 'redis'

@@ -6,7 +6,12 @@ class Question < ApplicationRecord
   validates :user_id, presence: true
 
   include Reportable
-  searchkick searchable: [:body], word_start: [:body], word_middle: [:body], word_end: [:body], word: [:body]
+  searchkick  callbacks: :async,
+              searchable: [:body], 
+              word_start: [:body], 
+              word_middle: [:body], 
+              word_end: [:body], 
+              word: [:body]
 
   include API::V1::Helpers
 
