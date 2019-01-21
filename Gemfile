@@ -136,6 +136,10 @@ gem 'mini_magick'
 gem 'fog', require: 'fog/aws'
 gem 'fog-aws'
 
+# sub
 gem 'sneakers'
 gem 'json'
 gem 'redis'
+
+# pub
+gem "bunny"
