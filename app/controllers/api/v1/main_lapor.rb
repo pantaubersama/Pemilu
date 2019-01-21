@@ -8,11 +8,8 @@ module API
       # Exception Handlers
       include API::V1::ExceptionHandlers
 
-      # Mounting Modules Api
-      mount API::V1::Adventures::Routes
-
-      # Mounting Modules Api /linimasa
-      mount API::V1::Lapor::Infos::Routes
+      # Mounting Modules Api /violation_reports
+      mount API::V1::Lapor::ViolationReports::Routes
 
 
       # Swagger config
@@ -22,6 +19,7 @@ module API
           hide_documentation_path: true,
           mount_path:              "doc/api",
           hide_format:             true,
+          array_use_braces:        true,
           info: {
               title: "Modul Lapor",
               description: "Modul Lapor"
