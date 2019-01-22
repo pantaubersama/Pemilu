@@ -12,7 +12,15 @@ module Teamable
 
 
   def team_text
-    [1, "1"].include?(team) ? "Jokowi - Ma'ruf" : "Prabowo - Sandi"
+    if [1, "1"].include?(team)
+      "Jokowi - Ma'ruf"
+    elsif [2, "2"].include?(team)
+      "Prabowo - Sandi"
+    elsif [3, "3"].include?(team)
+      "KPU"
+    elsif [4, "4"].include?(team)
+      "Bawaslu"
+    end
   end
 
   def team_source
