@@ -8,7 +8,7 @@ RSpec.describe "Api::V1::Linimasa::Crowlings", type: :request do
            headers: stub_admin_auth_headers
       expect(json_response[:data][:crowling][:keywords]).to eq("rizagalih")
       expect(json_response[:data][:crowling][:team]).to eq({
-                                                               "avatar" => "https://s3-ap-southeast-1.amazonaws.com/pantau-test/assets/teams/avatar_team_1.png",
+                                                               "avatar" => "https://s3-ap-southeast-1.amazonaws.com/pantau-bersama/assets/teams/avatar_team_1.jpg",
                                                                "id"     => 1,
                                                                "title"  => "Jokowi - Ma'ruf"
                                                            })

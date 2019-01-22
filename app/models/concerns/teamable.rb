@@ -27,7 +27,7 @@ module Teamable
     {
         id:     team,
         title:  team_text,
-        avatar: "https://s3-ap-southeast-1.amazonaws.com/pantau-test/assets/teams/avatar_team_#{team}.png",
+        avatar: "https://s3-ap-southeast-1.amazonaws.com/pantau-bersama/assets/teams/avatar_team_#{team}.jpg",
     }
   end
 

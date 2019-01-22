@@ -14,12 +14,12 @@ RSpec.describe QuizAnswer, type: :model do
       expect(@quiz_question.quiz_answers.last.team).to eq(2)
 
       expect(@quiz_question.quiz_answers.first.team_source).to eq({
-                                                                      :avatar => "https://s3-ap-southeast-1.amazonaws.com/pantau-test/assets/teams/avatar_team_1.png",
+                                                                      :avatar => "https://s3-ap-southeast-1.amazonaws.com/pantau-bersama/assets/teams/avatar_team_1.jpg",
                                                                       :id     => 1,
                                                                       :title  => "Jokowi - Ma'ruf"
                                                                   })
       expect(@quiz_question.quiz_answers.last.team_source).to eq({
-                                                                     :avatar => "https://s3-ap-southeast-1.amazonaws.com/pantau-test/assets/teams/avatar_team_2.png",
+                                                                     :avatar => "https://s3-ap-southeast-1.amazonaws.com/pantau-bersama/assets/teams/avatar_team_2.jpg",
                                                                      :id     => 2,
                                                                      :title  => "Prabowo - Sandi"
                                                                  })
