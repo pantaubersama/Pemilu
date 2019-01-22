@@ -51,7 +51,7 @@ class QuizResult
   
 
   def team_text team
-    [1, "1"].include?(team) ? "Jokowi - Makruf" : "Prabowo - Sandi"
+    [1, "1"].include?(team) ? "Jokowi - Ma'ruf" : "Prabowo - Sandi"
   end
 
   def team_source team

@@ -84,7 +84,7 @@ RSpec.describe "Api::V1::Linimasa::Feeds", type: :request do
       expect(json_response[:data][:feeds].last[:team]).to eq({
                                                                  "avatar" => "https://s3-ap-southeast-1.amazonaws.com/pantau-test/assets/teams/avatar_team_1.png",
                                                                  "id"     => 1,
-                                                                 "title"  => "Jokowi - Makruf"
+                                                                 "title"  => "Jokowi - Ma'ruf"
                                                              })
       expect(response.status).to eq(200)
     end
@@ -113,7 +113,7 @@ RSpec.describe "Api::V1::Linimasa::Feeds", type: :request do
       expect(json_response[:data][:feed][:team]).to eq({
                                                          "avatar" => "https://s3-ap-southeast-1.amazonaws.com/pantau-test/assets/teams/avatar_team_1.png",
                                                          "id"     => 1,
-                                                         "title"  => "Jokowi - Makruf"
+                                                         "title"  => "Jokowi - Ma'ruf"
                                                        })
       expect(response.status).to eq(200)
     end
