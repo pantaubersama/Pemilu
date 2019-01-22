@@ -5,7 +5,7 @@ class API::V1::Dashboard::Linimasa::Resources::Crowlings < API::V1::ApplicationR
     desc "Tambah Username", headers: AUTHORIZATION_HEADERS
     params do
       requires :keywords, type: String, desc: "twitter username ex: @namakukingkong"
-      requires :team, type: Integer, values: [1, 2]
+      requires :team, type: Integer, values: [1, 2, 3, 4]
     end
     oauth2
     post "username" do
@@ -64,6 +64,5 @@ class API::V1::Dashboard::Linimasa::Resources::Crowlings < API::V1::ApplicationR
       res = Crowling.find params[:id]
       present :crowling, res, with: API::V1::Linimasa::Crowlings::Entities::Crowling
     end
-    
   end
 end

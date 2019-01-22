@@ -282,10 +282,10 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Quizzes", type: :request 
       expect(json_response[:data][:quiz_participation][:id]).not_to eq(nil)
 
       expect(json_response[:data][:teams][0][:team]).to eq(
-                                                          { "avatar" => "https://s3-ap-southeast-1.amazonaws.com/pantau-test/assets/teams/avatar_team_1.png", "id" => 1, "title" => "Jokowi - Ma'ruf" }
+                                                          { "avatar" => "https://s3-ap-southeast-1.amazonaws.com/pantau-bersama/assets/teams/avatar_team_1.png", "id" => 1, "title" => "Jokowi - Ma'ruf" }
                                                         )
       expect(json_response[:data][:teams][1][:team]).to eq(
-                                                          { "avatar" => "https://s3-ap-southeast-1.amazonaws.com/pantau-test/assets/teams/avatar_team_2.png", "id" => 2, "title" => "Prabowo - Sandi" }
+                                                          { "avatar" => "https://s3-ap-southeast-1.amazonaws.com/pantau-bersama/assets/teams/avatar_team_2.png", "id" => 2, "title" => "Prabowo - Sandi" }
                                                         )
     end
 
