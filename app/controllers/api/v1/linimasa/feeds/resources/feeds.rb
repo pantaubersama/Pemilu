@@ -6,7 +6,7 @@ class API::V1::Linimasa::Feeds::Resources::Feeds < API::V1::ApplicationResource
     desc "List feed pilpres", headers: OPTIONAL_AUTHORIZATION_HEADERS
     optional_oauth2
     params do
-      use :filter, filter_by: ["", "team_all", "team_id_1", "team_id_2"]
+      use :filter, filter_by: ["", "team_all", "team_id_1", "team_id_2", "team_id_3", "team_id_4"]
       optional :q, type: String
     end
     paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]

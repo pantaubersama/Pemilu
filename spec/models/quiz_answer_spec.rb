@@ -16,7 +16,7 @@ RSpec.describe QuizAnswer, type: :model do
       expect(@quiz_question.quiz_answers.first.team_source).to eq({
                                                                       :avatar => "https://s3-ap-southeast-1.amazonaws.com/pantau-test/assets/teams/avatar_team_1.png",
                                                                       :id     => 1,
-                                                                      :title  => "Jokowi - Makruf"
+                                                                      :title  => "Jokowi - Ma'ruf"
                                                                   })
       expect(@quiz_question.quiz_answers.last.team_source).to eq({
                                                                      :avatar => "https://s3-ap-southeast-1.amazonaws.com/pantau-test/assets/teams/avatar_team_2.png",

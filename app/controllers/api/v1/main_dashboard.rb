@@ -26,6 +26,7 @@ module API
           hide_documentation_path: true,
           mount_path:              "doc/api",
           hide_format:             true,
+          array_use_braces:        true,
           info: {
               title: "Modul Dashboard",
               description: "Modul Dashboard"

@@ -2,6 +2,11 @@
 ## Pemilu 
 #### Modules : Lini Masa, Pendidikan Politik, Lapor, Hitung
 
+##### Depencencies
+- Redis
+- Elasticsearch
+- RabbitMQ
+
 ##### Setup
 - `git clone git@git.extrainteger.com:pantau-group/API/pemilu.git`
 - setup your database (postgresql)
@@ -45,6 +50,14 @@ Check it out in your `.env.development`
 Username : admin
 Password : admin
 ```
+
+#### Running Sneakers
+
+In your machine : `rake sneakers:run`
+
+#### Running Rspec
+
+In your machine : `rspec`
 
 #### make sure all success installed
 - [`http://localhost:3000/linimasa/v1/infos`](http://localhost:3000/linimasa/v1/infos)

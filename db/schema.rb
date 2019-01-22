@@ -193,7 +193,48 @@ ActiveRecord::Schema.define(version: 2019_01_18_130915) do
     t.string "whodunnit"
     t.text "object"
     t.datetime "created_at"
+    t.text "object_changes"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+  end
+
+  create_table "violation_report_details", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "report_id", null: false
+    t.string "location", null: false
+    t.datetime "occurrence_time", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["report_id"], name: "index_violation_report_details_on_report_id"
+  end
+
+  create_table "violation_report_evidences", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "detail_id", null: false
+    t.string "file", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["detail_id"], name: "index_violation_report_evidences_on_detail_id"
+  end
+
+  create_table "violation_report_parties", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "type", null: false
+    t.uuid "detail_id", null: false
+    t.string "name", null: false
+    t.text "address", null: false
+    t.string "telephone_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["detail_id"], name: "index_violation_report_parties_on_detail_id"
+    t.index ["type"], name: "index_violation_report_parties_on_type"
+  end
+
+  create_table "violation_report_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "reporter_id", null: false
+    t.uuid "dimension_id", null: false
+    t.string "title", null: false
+    t.text "description", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dimension_id"], name: "index_violation_report_reports_on_dimension_id"
+    t.index ["reporter_id"], name: "index_violation_report_reports_on_reporter_id"
   end
 
   create_table "votes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -210,4 +251,7 @@ ActiveRecord::Schema.define(version: 2019_01_18_130915) do
     t.index ["voter_id", "voter_type", "vote_scope"], name: "index_votes_on_voter_id_and_voter_type_and_vote_scope"
   end
 
+  add_foreign_key "violation_report_details", "violation_report_reports", column: "report_id"
+  add_foreign_key "violation_report_evidences", "violation_report_details", column: "detail_id"
+  add_foreign_key "violation_report_parties", "violation_report_details", column: "detail_id"
 end

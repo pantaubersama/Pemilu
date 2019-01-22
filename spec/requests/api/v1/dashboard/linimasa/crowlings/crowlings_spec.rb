@@ -10,7 +10,7 @@ RSpec.describe "Api::V1::Linimasa::Crowlings", type: :request do
       expect(json_response[:data][:crowling][:team]).to eq({
                                                                "avatar" => "https://s3-ap-southeast-1.amazonaws.com/pantau-test/assets/teams/avatar_team_1.png",
                                                                "id"     => 1,
-                                                               "title"  => "Jokowi - Makruf"
+                                                               "title"  => "Jokowi - Ma'ruf"
                                                            })
       expect(json_response[:data][:crowling][:created_at].present?).to eq(true)
       expect(json_response[:data][:crowling][:id].present?).to eq(true)

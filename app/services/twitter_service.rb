@@ -16,14 +16,14 @@ class TwitterService
     if crowling.feeds.present?
       options = { since_id: @crowling.feeds.order(source_id: :DESC).first.source_id }
     end
-    @results = @twitter.user_timeline(options.merge({ count: 200, screen_name: crowling.keywords }))
+    @results = @twitter.user_timeline(options.merge({ count: 200, screen_name: crowling.keywords, tweet_mode: "extended" }))
   end
 
   def create!
     @results.each do |tw|
       cr             = @crowling.feeds.new
       cr.source_id   = tw.id
-      cr.source_text = tw.full_text
+      cr.source_text = JSON.parse(tw.to_json)["full_text"] || tw.full_text
       cr.team        = @crowling.team
       cr.type        = :TwTimelineFeed
 
