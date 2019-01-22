@@ -12,7 +12,7 @@ module Teamable
 
 
   def team_text
-    [1, "1"].include?(team) ? "Jokowi - Makruf" : "Prabowo - Sandi"
+    [1, "1"].include?(team) ? "Jokowi - Ma'ruf" : "Prabowo - Sandi"
   end
 
   def team_source
