@@ -70,6 +70,8 @@ GEM
       uniform_notifier (~> 1.11)
     bunny (2.13.0)
       amq-protocol (~> 2.3, >= 2.3.0)
+    bunny-mock (1.7.0)
+      bunny (>= 1.7)
     byebug (10.0.2)
     capistrano (3.11.0)
       airbrussh (>= 1.0.0)
@@ -577,6 +579,7 @@ DEPENDENCIES
   bootsnap (>= 1.1.0)
   bullet
   bunny
+  bunny-mock
   byebug
   capistrano
   capistrano-rails
