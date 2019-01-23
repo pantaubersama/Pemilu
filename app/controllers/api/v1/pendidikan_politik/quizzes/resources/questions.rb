@@ -34,21 +34,10 @@ module API::V1::PendidikanPolitik::Quizzes::Resources
       oauth2
       post "/:id/questions" do
         quiz = ::Quiz.published.find params[:id]
-        #error! "Not found", 404 if quiz.nil?
-
-        #question = quiz.quiz_questions.find params[:question_id]
-        #error! "Not found", 404 if question.nil?
-
-        #answer = question.quiz_answers.find params[:answer_id]
-        #error! "Not found", 404 if question.nil?
 
         quiz_participation = quiz.participate! current_user.id
         QuizAnswering.create! user_id:          current_user.id, quiz_participation: quiz_participation, quiz: quiz,
                               quiz_question_id: params.question_id, quiz_answer_id: params.answer_id
-
-        # if QuizAnswering.where(user_id: current_user.id, quiz_participation: participation).size == quiz.quiz_questions_count
-        #   participation.finished!
-        # end
 
         present :quiz_participation, quiz_participation.reload, with: API::V1::PendidikanPolitik::Quizzes::Entities::QuizParticipation
         present :meta, quiz, with: API::V1::PendidikanPolitik::Quizzes::Entities::MetaQuiz, current_user: current_user
