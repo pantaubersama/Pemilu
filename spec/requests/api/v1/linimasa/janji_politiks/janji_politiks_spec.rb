@@ -57,6 +57,32 @@ RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
       expect(response.status).to eq(200)
     end
   end
+  describe "[GET] Endpoint /janji_politiks/user/:id" do
+    before do
+      3.times do
+        create :janji_politik, user_id: "1036fd3c-04ed-4949-b57c-b7dc8ff3e737"
+      end
+      2.times do
+        create :janji_politik, user_id: "c9242c5a-805b-4ef5-b3a7-2a7f25785cc8"
+      end
+      JanjiPolitik.reindex
+    end
+    it "should returns 200 with valid params when success" do
+      get "/linimasa/v1/janji_politiks/user/1036fd3c-04ed-4949-b57c-b7dc8ff3e737", headers: stub_auth_headers(@access_token)
+      expect(json_response[:data][:janji_politiks].size).to eq(3)
+      expect(json_response[:data][:janji_politiks].first[:body]).to eq("Pada 2019, di wacanakan bunker anti bencana siap di resmikan.")
+      expect(json_response[:data][:janji_politiks].first[:title]).to eq("Pengadaan Bunker Anti Bencana")
+      expect(json_response[:data][:janji_politiks].first[:creator][:id]).to eq("1036fd3c-04ed-4949-b57c-b7dc8ff3e737")
+      expect(json_response[:data][:janji_politiks].first[:creator][:email]).to eq("namakukingkong@gmail.com")
+      expect(json_response[:data][:janji_politiks].first[:creator][:full_name]).to eq("Joan Weeks")
+      expect(response.status).to eq(200)
+    end
+    it "should returns 200 with valid params when success" do
+      get "/linimasa/v1/janji_politiks/user/c9242c5a-805b-4ef5-b3a7-2a7f25785cc8", headers: stub_auth_headers(@access_token)
+      expect(json_response[:data][:janji_politiks].size).to eq(2)
+      expect(response.status).to eq(200)
+    end
+  end
 
   describe "[GET] Endpoint /janji_politiks [using filter]" do
     before do
@@ -166,7 +192,7 @@ RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
     end
     it "paginate searchkick page 1" do
       13.times do
-        FactoryBot.create :janji_politik, title: Faker::Lorem.sentences(2), body: Faker::Lorem.sentences(4)
+        FactoryBot.create :janji_politik, title: Faker::Lorem.sentence(2), body: Faker::Lorem.sentence(4)
       end
       JanjiPolitik.reindex
       # total record = 13
@@ -181,7 +207,7 @@ RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
 
     it "paginate searchkick page 2" do
       13.times do
-        FactoryBot.create :janji_politik, title: Faker::Lorem.sentences(2), body: Faker::Lorem.sentences(4)
+        FactoryBot.create :janji_politik, title: Faker::Lorem.sentence(2), body: Faker::Lorem.sentence(4)
       end
       JanjiPolitik.reindex
       # total record = 13
@@ -196,7 +222,7 @@ RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
 
     it "paginate searchkick page 3" do
       13.times do
-        FactoryBot.create :janji_politik, title: Faker::Lorem.sentences(2), body: Faker::Lorem.sentences(4)
+        FactoryBot.create :janji_politik, title: Faker::Lorem.sentence(2), body: Faker::Lorem.sentence(4)
       end
       JanjiPolitik.reindex
       # total record = 13
@@ -211,7 +237,7 @@ RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
 
     it "paginate searchkick page 4" do
       13.times do
-        FactoryBot.create :janji_politik, title: Faker::Lorem.sentences(2), body: Faker::Lorem.sentences(4)
+        FactoryBot.create :janji_politik, title: Faker::Lorem.sentence(2), body: Faker::Lorem.sentence(4)
       end
       JanjiPolitik.reindex
       # total record = 13
