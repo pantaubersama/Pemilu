@@ -24,6 +24,9 @@ class TwitterService
       cr             = @crowling.feeds.new
       cr.source_id   = tw.id
       cr.source_text = JSON.parse(tw.to_json)["full_text"] || tw.full_text
+      if tw.media.present?
+        cr.source_media = tw.media.map { |media| media.media_url_https.to_s }
+      end
       cr.team        = @crowling.team
       cr.type        = :TwTimelineFeed
 
