@@ -20,7 +20,7 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       if params.cluster_id.present?
         build_conditions = build_conditions.merge({ cluster_id: params.cluster_id })
       end
-      default_order = {created_at: {order: :desc, unmapped_type: "long"}}
+      default_order = { created_at: { order: :desc, unmapped_type: "long" } }
 
       resources = JanjiPolitik.search(query, match: :text_middle, misspellings: false, load: false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), order: default_order, where: build_conditions)
 
@@ -39,8 +39,26 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       if params.q.present?
         query = "#{params.q}"
       end
-      default_order = {created_at: {order: :desc, unmapped_type: "long"}}
-      resources = JanjiPolitik.search(query, match: :text_middle, misspellings: false, load: false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), order: default_order, where: { user_id: current_user.id })
+      default_order = { created_at: { order: :desc, unmapped_type: "long" } }
+      resources     = JanjiPolitik.search(query, match: :text_middle, misspellings: false, load: false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), order: default_order, where: { user_id: current_user.id })
+
+      present :janji_politiks, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
+      present_metas_searchkick resources
+    end
+    desc "List janji politiks by user id", headers: OPTIONAL_AUTHORIZATION_HEADERS
+    optional_oauth2
+    params do
+      requires :id, type: String, desc: "user ID"
+      optional :q, type: String
+    end
+    paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
+    get "user/:id" do
+      query = "*"
+      if params.q.present?
+        query = "#{params.q}"
+      end
+      default_order = { created_at: { order: :desc, unmapped_type: "long" } }
+      resources     = JanjiPolitik.search(query, match: :text_middle, misspellings: false, load: false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), order: default_order, where: { user_id: params.id })
 
       present :janji_politiks, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
       present_metas_searchkick resources

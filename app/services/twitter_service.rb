@@ -46,7 +46,6 @@ class TwitterService
         next
       end
     end
-
   end
 end
 

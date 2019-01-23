@@ -44,10 +44,10 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::QuizParticipations", type
       expect(json_response[:data][:quiz][:title]).to eq(@quiz.title)
 
       expect(json_response[:data][:teams][0][:team]).to eq(
-        {"avatar"=>"https://s3-ap-southeast-1.amazonaws.com/pantau-bersama/assets/teams/avatar_team_1.jpg", "id"=>1, "title"=>"Jokowi - Ma'ruf"}
+        {"avatar"=>"https://s3-ap-southeast-1.amazonaws.com/pantau-bersama/assets/teams/avatar_team_1.jpg", "id"=>1, "title"=>"Tim Jokowi - Ma'ruf"}
       )
       expect(json_response[:data][:teams][1][:team]).to eq(
-        {"avatar"=>"https://s3-ap-southeast-1.amazonaws.com/pantau-bersama/assets/teams/avatar_team_2.jpg", "id"=>2, "title"=>"Prabowo - Sandi"}
+        {"avatar"=>"https://s3-ap-southeast-1.amazonaws.com/pantau-bersama/assets/teams/avatar_team_2.jpg", "id"=>2, "title"=>"Tim Prabowo - Sandi"}
       )
     end
 

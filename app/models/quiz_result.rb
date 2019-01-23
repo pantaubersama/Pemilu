@@ -50,9 +50,9 @@ class QuizResult
 
   def team_text team
     if [1, "1"].include?(team)
-      "Jokowi - Ma'ruf"
+      "Tim Jokowi - Ma'ruf"
     elsif [2, "2"].include?(team)
-      "Prabowo - Sandi"
+      "Tim Prabowo - Sandi"
     elsif [3, "3"].include?(team)
       "KPU"
     elsif [4, "4"].include?(team)

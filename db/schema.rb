@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_18_130915) do
+ActiveRecord::Schema.define(version: 2019_01_23_053045) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 2019_01_18_130915) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.text "source_media"
     t.index ["deleted_at"], name: "index_feeds_on_deleted_at"
     t.index ["type", "source_id", "crowling_id"], name: "index_feeds_on_type_and_source_id_and_crowling_id", unique: true
   end
