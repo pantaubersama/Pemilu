@@ -70,6 +70,10 @@ module API::V1::Helpers
       { team: 1 }
     when "team_id_2"
       { team: 2 }
+    when "team_id_3"
+      { team: 3 }
+    when "team_id_4"
+      { team: 4 }
     when "team_all"
       {}
     else
