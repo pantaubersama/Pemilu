@@ -42,6 +42,8 @@ group :development, :test do
   ###doc [2] set up factory_girl
   # DEPRECATION gem 'factory_girl_rails'
   gem 'factory_bot_rails', '~> 4.0'
+
+  gem 'bunny-mock'
 end
 
 group :development do

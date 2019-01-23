@@ -6,5 +6,6 @@ module Api::V1::PendidikanPolitik::Questions
 
     mount API::V1::PendidikanPolitik::Questions::Resources::Questions
     mount API::V1::PendidikanPolitik::Questions::Resources::Me
+    mount API::V1::Users::Resources::Questions
   end
 end
