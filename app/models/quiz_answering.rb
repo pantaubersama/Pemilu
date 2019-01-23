@@ -16,7 +16,13 @@ class QuizAnswering < ApplicationRecord
   def set_finished
     if QuizAnswering.where(user_id: user_id, quiz_participation_id: quiz_participation_id).size == quiz.quiz_questions_count
       quiz_participation.finished!
+      give_achievement
     end
+  end
+
+  def give_achievement
+    total = QuizParticipation.where(user_id: user_id, status: :finished).count
+    Publishers::QuizBadge.publish({user_id: user_id, badge_code: "kuis", total: total})
   end
 
 end

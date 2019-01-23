@@ -20,6 +20,12 @@ class Question < ApplicationRecord
   scope :in_folder, -> { where.not(question_folder_id: nil) }
   scope :not_in_folder, -> { where(question_folder_id: nil) }
 
+  after_create :give_achievement
+
+  def give_achievement
+    total = Question.where(user_id: user_id).count
+    Publishers::QuestionBadge.publish({user_id: user_id, badge_code: "tanya", total: total})
+  end
 
   def should_index?
     deleted_at.nil? && question_folder_id.nil?

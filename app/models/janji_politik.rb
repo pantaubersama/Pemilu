@@ -8,6 +8,13 @@ class JanjiPolitik < ApplicationRecord
 
   validates :title, :body, presence: true
 
+  after_create :give_achievement
+
+  def give_achievement
+    total = JanjiPolitik.where(user_id: user_id).count
+    Publishers::JanjiBadge.publish({user_id: user_id, badge_code: "janji", total: total})
+  end
+
   def user
     @user ||= User.find(self.user_id)
   end
