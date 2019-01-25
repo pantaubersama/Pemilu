@@ -14,5 +14,4 @@ class API::V1::Linimasa::Feeds::Entities::Feed < API::V1::ApplicationEntity
     expose :account_username, as: :username
     expose :account_profile_image_url, as: :profile_image_url
   end
-  expose :created_at, as: :created_at_in_word, format_with: :friendly_date
 end

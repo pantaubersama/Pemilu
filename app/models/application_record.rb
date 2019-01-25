@@ -23,7 +23,7 @@ class ApplicationRecord < ActiveRecord::Base
 
   def index_all
     results = {}
-    (self.attributes.keys.delete_if { |x| [:deleted_at, "deleted_at"].include?(x) } + ["created_at_in_word"]).each do |column|
+    (self.attributes.keys.delete_if { |x| [:deleted_at, "deleted_at"].include?(x) } ).each do |column|
       results[column] = self.send(column.to_s)
     end
     results
