@@ -316,6 +316,8 @@ GEM
     grape_simple_auth (0.3.0)
       grape (~> 1.1.0)
       httparty (~> 0.16.3)
+    groupdate (4.1.1)
+      activesupport (>= 4.2)
     guard (2.15.0)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
@@ -600,6 +602,7 @@ DEPENDENCIES
   grape-swagger
   grape-swagger-rails
   grape_simple_auth (~> 0.3.0)
+  groupdate
   guard-rspec
   hashie-forbidden_attributes
   her
