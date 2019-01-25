@@ -13,4 +13,18 @@ RSpec.describe "Api::V1::Dashboard::Home", type: :request do
     end
   end
 
+  describe "question graph" do
+    it "success" do
+      get "/dashboard/v1/home/questions", headers: stub_admin_auth_headers(@access_token)
+      expect(response.status).to eq(200)
+    end
+  end
+
+  describe "report graph" do
+    it "success" do
+      get "/dashboard/v1/home/reports", headers: stub_admin_auth_headers(@access_token)
+      expect(response.status).to eq(200)
+    end
+  end
+
 end

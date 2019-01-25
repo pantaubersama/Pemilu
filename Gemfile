@@ -145,3 +145,5 @@ gem 'redis'
 
 # pub
 gem "bunny"
+
+gem 'groupdate'

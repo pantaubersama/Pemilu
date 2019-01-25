@@ -4,6 +4,6 @@ module API::V1::Dashboard::Home
     formatter :json, ::API::SuccessFormatter
     error_formatter :json, ::API::ErrorFormatter
 
-    mount API::V1::Dashboard::Home::Resources::Statistics
+    mount API::V1::Dashboard::Home::Resources::Summary
   end
 end
