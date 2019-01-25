@@ -17,6 +17,7 @@ module API
       mount API::V1::Dashboard::Quizzes::Routes
       mount API::V1::Dashboard::Questions::Routes
       mount API::V1::Dashboard::AppVersions::Routes
+      mount API::V1::Dashboard::Home::Routes
 
 
       # Swagger config
