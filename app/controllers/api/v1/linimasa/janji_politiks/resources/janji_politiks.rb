@@ -45,6 +45,7 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       present :janji_politiks, resources, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
       present_metas_searchkick resources
     end
+
     desc "List janji politiks by user id", headers: OPTIONAL_AUTHORIZATION_HEADERS
     optional_oauth2
     params do
@@ -78,11 +79,11 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
     desc "Detail trash politiks", headers: AUTHORIZATION_HEADERS
     oauth2
     params do
-      requires :id
+      requires :id, type: String
     end
-    get "trash/:id" do
+    get "/trash/:id" do
       resource = JanjiPolitik.deleted.find(params.id)
-      present :politiks, resource, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
+      present :politiks, resource
     end
 
     desc "Create janji politiks", headers: AUTHORIZATION_HEADERS
@@ -122,6 +123,7 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
       headers AUTHORIZATION_HEADERS
     end
     params do
+      requires :id, type: String
       optional :title, type: String
       optional :body, type: String
       optional :image, type: File
@@ -153,7 +155,7 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
     desc "Detail janji politiks", headers: OPTIONAL_AUTHORIZATION_HEADERS
     optional_oauth2
     params do
-      requires :id
+      requires :id, type: String
     end
     get "/:id" do
       resource = JanjiPolitik.find(params.id)

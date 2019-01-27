@@ -6,7 +6,7 @@ RSpec.describe "Api::V1::Dashboard::QuestionsFolder", type: :request do
     @folder = FactoryBot.create :question_folder
     @question = FactoryBot.create :question, question_folder_id: @folder.id
     the_q = FactoryBot.create :question
-    stub_find_user
+    stub_user_model
   end
   
   describe "Authorized" do
