@@ -22,7 +22,12 @@ module ImageProcessor
       tim1_percentage = result[:teams].select{|x| x[:team][:id] == 1}.last[:percentage]
       tim2_percentage = result[:teams].select{|x| x[:team][:id] == 2}.last[:percentage]
 
-      if tim1_percentage > tim2_percentage
+      if tim1_percentage.to_i == tim2_percentage.to_i
+        selected = [1, 2].sample
+        @team_name = result[:teams].select{|x| x[:team][:id] == selected}.last[:team][:title]
+        @team_percentage = selected == 1 ? tim1_percentage : tim2_percentage
+        @team_image = selected == 1 ? avatar_team_1 : avatar_team_2
+      elsif tim1_percentage > tim2_percentage
         @team_name = result[:teams].select{|x| x[:team][:id] == 1}.last[:team][:title]
         @team_percentage = tim1_percentage
         @team_image = avatar_team_1
