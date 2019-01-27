@@ -4,7 +4,7 @@ RSpec.describe "Api::V1::AppVersion", type: :request do
 
   before do
     @access_token = SecureRandom.hex
-    stub_find_user
+    stub_user_model
     5.times do
       FactoryBot.create :app_version, app_type: "android"
       FactoryBot.create :app_version, app_type: "ios"

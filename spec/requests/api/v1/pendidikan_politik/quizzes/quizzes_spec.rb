@@ -7,7 +7,7 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Quizzes", type: :request 
     5.times do
       FactoryBot.create :question
     end
-    stub_find_user
+    stub_user_model
   end
 
   describe "List quiz" do

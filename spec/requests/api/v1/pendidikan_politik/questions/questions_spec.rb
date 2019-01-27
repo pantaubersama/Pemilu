@@ -6,7 +6,7 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Question", type: :request
     5.times do
       FactoryBot.create :question
     end
-    stub_find_user
+    stub_user_model
     Question.reindex
   end
 

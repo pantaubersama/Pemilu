@@ -27,7 +27,7 @@ RSpec.describe Question, type: :model do
 
   describe "Could be liked" do
     before do
-      stub_find_user
+      stub_user_model
       @question = FactoryBot.create :question
       @current_user = User.find "c9242c5a-805b-4ef5-b3a7-2a7f25785cc8"
     end
@@ -42,7 +42,7 @@ RSpec.describe Question, type: :model do
 
   describe "Could be reported" do
     before do
-      stub_find_user
+      stub_user_model
       @question = FactoryBot.create :question
       @current_user = User.find "c9242c5a-805b-4ef5-b3a7-2a7f25785cc8"
     end

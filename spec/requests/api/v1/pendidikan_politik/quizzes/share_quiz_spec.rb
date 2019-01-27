@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Api::V1::PendidikanPolitik::Resources::QuizParticipations", type: :request do
   before do
     @access_token = SecureRandom.hex(32)
-    stub_find_user
+    stub_user_model
   end
 
   describe "Share" do

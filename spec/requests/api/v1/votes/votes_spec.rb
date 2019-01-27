@@ -5,7 +5,7 @@ RSpec.describe "Api::V1::Votes::Resources::Votes", type: :request do
     @access_token = SecureRandom.hex
     FactoryBot.create :question, user_id: "c9242c5a-805b-4ef5-b3a7-2a7f25785cc8"
     @question = Question.last
-    stub_find_user
+    stub_user_model
     @folder = FactoryBot.create :question_folder
   end
   
@@ -45,7 +45,7 @@ RSpec.describe "Api::V1::Votes::Resources::Votes", type: :request do
 
   describe "[Delete] Endpoint /" do
     before do
-      stub_find_user
+      stub_user_model
     end
     it "should success unlike" do
       @user = User.find "1036fd3c-04ed-4949-b57c-b7dc8ff3e737"
