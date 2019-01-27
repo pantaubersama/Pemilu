@@ -1,23 +1,12 @@
-class User
-
-  # Available methods :
-  #
-  # .find(id)
-  # .full(id)
-  # .all.fetch
-  # .where(ids: [1,2,3].join(",")).fetch
-  #
-  #
-
-  include Her::Model
-  parse_root_in_json true, format: :active_model_serializers
-
-  def self.full i
-    get_raw(:full, id: i) do |parsed, response|
-      parsed[:data][:user]
-    end
+require 'elasticsearch/model'
+class UserMethods < Hashie::Mash
+  def self.class
+    self
   end
 
+  def self.primary_key
+    "id"
+  end
   def self.base_class
     self
   end
@@ -25,7 +14,6 @@ class User
   def self.name
     "User"
   end
-
   def _read_attribute attr
     self.send attr
   end
@@ -33,5 +21,23 @@ class User
   def self.polymorphic_name
     "User"
   end
+end
+class User < Hash
+  extend ActiveModel::Naming
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
 
+  def self.find(query)
+    response = __elasticsearch__.search(
+      {
+        query: {
+          multi_match: {
+            query:  query,
+            fields: ['id']
+          }
+        }
+      }
+    ).first._source
+    UserMethods.new(response)
+  end
 end

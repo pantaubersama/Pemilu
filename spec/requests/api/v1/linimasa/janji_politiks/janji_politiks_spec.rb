@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Api::V1::Linimasa::JanjiPolitiks", type: :request do
   before do
-    stub_find_user
+    stub_user_model
     @access_token = SecureRandom.hex
   end
   describe "[GET] Endpoint /janji_politiks" do

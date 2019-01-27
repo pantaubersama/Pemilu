@@ -130,6 +130,9 @@ gem 'wirble'
 gem 'awesome_print', require: 'ap'
 
 gem 'sidekiq'
+gem 'elasticsearch-model'
+gem 'elasticsearch-rails'
+gem 'elasticsearch-persistence'
 gem 'whenever', require: false
 
 # upload image
@@ -145,3 +148,5 @@ gem 'redis'
 
 # pub
 gem "bunny"
+
+gem 'groupdate'

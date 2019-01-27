@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Api::V1::Dashboard::QuestionsFolder", type: :request do
   before do
     @access_token = SecureRandom.hex
-    stub_find_user
+    stub_user_model
     @q = FactoryBot.create :question_folder
   end
   

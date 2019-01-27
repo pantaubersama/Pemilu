@@ -6,7 +6,7 @@ RSpec.describe "Api::V1::Users::Resources::Questions", type: :request do
     5.times do
       FactoryBot.create :question, user_id: "c9242c5a-805b-4ef5-b3a7-2a7f25785cc8"
     end
-    stub_find_user
+    stub_user_model
   end
 
   describe "User question" do
