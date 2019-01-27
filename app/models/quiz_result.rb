@@ -23,7 +23,8 @@ class QuizResult
       created_at_in_word: @participation.created_at_in_word,
       id:                 @participation.id,
       status:             @participation.status,
-      participated_at:    @participation.created_at_in_word
+      participated_at:    @participation.created_at_in_word,
+      image_result:       @participation.image_result,
     }
   end
 

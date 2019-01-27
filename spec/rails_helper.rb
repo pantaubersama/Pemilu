@@ -8,6 +8,8 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'rspec/rails'
 require 'webmock/rspec'
 require 'bunny-mock'
+require "sidekiq/testing"
+
 BunnyMock::use_bunny_queue_pop_api = true
 WebMock.disable_net_connect!(allow_localhost: true)
 # Add additional requires below this line. Rails is not loaded until this point!
@@ -144,4 +146,15 @@ def answer_quiz(user_id, quiz)
     QuizAnswering.create! user_id:          user_id, quiz_participation: quiz_participation, quiz: qq.quiz,
                           quiz_question_id: qq.id, quiz_answer_id: qq.quiz_answers.last.id
   end
+end
+
+RSpec::Sidekiq.configure do |config|
+  # Clears all job queues before each example
+  config.clear_all_enqueued_jobs = true # default => true
+
+  # Whether to use terminal colours when outputting messages
+  config.enable_terminal_colours = true # default => true
+
+  # Warn when jobs are not enqueued to Redis but to a job array
+  config.warn_when_jobs_not_processed_by_sidekiq = true # default => true
 end
