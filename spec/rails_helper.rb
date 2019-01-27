@@ -8,8 +8,14 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'rspec/rails'
 require 'webmock/rspec'
 require 'bunny-mock'
+require 'elasticsearch/model'
+require 'elasticsearch/persistence'
 BunnyMock::use_bunny_queue_pop_api = true
 WebMock.disable_net_connect!(allow_localhost: true)
+
+unless defined?(ELASTICSEARCH_URL)
+  ELASTICSEARCH_URL = ENV['ELASTICSEARCH_URL'] || "localhost:#{(ENV['TEST_CLUSTER_PORT'] || 9200)}"
+end
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -69,7 +75,8 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include JSONResponseReader, type: :request
   config.include AuthorizationRequestStubber, type: :request
-  config.include HerStubber
+  #config.include HerStubber
+  config.include ElasticModelStubber
 
   # start by truncating all the tables but then use the faster transaction strategy the rest of the time.
   config.before(:suite) do
@@ -89,7 +96,6 @@ RSpec.configure do |config|
   end
 
   config.before(:each, search: true) do |example|
-    byebug
   end
 
   config.before type: :request do
@@ -115,6 +121,7 @@ RSpec.configure do |config|
   config.after(:all) do
     if Rails.env.test?
       FileUtils.rm_rf(Dir["#{Rails.root}/public/uploads"])
+      delete_all_indices!
     end
   end
 end
@@ -144,4 +151,13 @@ def answer_quiz(user_id, quiz)
     QuizAnswering.create! user_id:          user_id, quiz_participation: quiz_participation, quiz: qq.quiz,
                           quiz_question_id: qq.id, quiz_answer_id: qq.quiz_answers.last.id
   end
+end
+def delete_all_indices!
+  client = Elasticsearch::Model.client
+  ActiveRecord::Base.descendants.each do |model|
+    begin
+      client.indices.delete(index: model.index_name) if model.__elasticsearch__.index_exists?
+    rescue
+    end
+  end and true
 end

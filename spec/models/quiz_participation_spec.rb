@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe QuizParticipation, type: :model do
   before do
-    stub_find_user
+    stub_user_model
     @user = User.find "c9242c5a-805b-4ef5-b3a7-2a7f25785cc8"
     @quiz = FactoryBot.create :quiz
   end
