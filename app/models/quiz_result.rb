@@ -86,8 +86,20 @@ class QuizResult
 
   def display_overview
     display_simple.merge(meta_quizzes)
+      .merge(decorate_quiz_preference)
       .merge(user: decorate_user)
   end
+
+  def decorate_quiz_preference
+    quiz_preference = QuizPreference.where(user_id: @user.id).order("created_at desc").first
+    {
+      quiz_preference: {
+        id: quiz_preference.try(:id),
+        image_result: quiz_preference.try(:image_result)
+      }
+    }
+  end
+  
 
   def meta_quizzes
     {

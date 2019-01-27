@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_27_104619) do
+ActiveRecord::Schema.define(version: 2019_01_27_141002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -149,6 +149,13 @@ ActiveRecord::Schema.define(version: 2019_01_27_104619) do
     t.index ["deleted_at"], name: "index_quiz_participations_on_deleted_at"
     t.index ["quiz_id"], name: "index_quiz_participations_on_quiz_id"
     t.index ["user_id"], name: "index_quiz_participations_on_user_id"
+  end
+
+  create_table "quiz_preferences", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.string "image_result"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "quiz_questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

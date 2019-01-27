@@ -7,5 +7,7 @@ class QuizResultImageJob < ApplicationJob
     q.image_result = File.open(r.result_path)
     q.save
     r.remove_tmp_image
+
+    TotalQuizResultImageJob.perform_later(q.user_id)
   end
 end
