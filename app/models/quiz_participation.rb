@@ -2,6 +2,7 @@ class QuizParticipation < ApplicationRecord
   include Userable
   
   acts_as_paranoid
+  mount_uploader :image_result, ResultUploader
 
   enum status: [ :in_progress, :finished ]
 
