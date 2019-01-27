@@ -90,6 +90,7 @@ RSpec.configure do |config|
     JanjiPolitik.reindex
     Question.reindex
     Quiz.reindex
+    ViolationReport::Report.reindex
 
     # and disable callbacks
     Searchkick.disable_callbacks
@@ -101,9 +102,6 @@ RSpec.configure do |config|
     Searchkick.callbacks(true) do
       example.run
     end
-  end
-
-  config.before(:each, search: true) do |example|
   end
 
   config.before type: :request do

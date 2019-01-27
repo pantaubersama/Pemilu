@@ -10,14 +10,14 @@ module AuthorizationRequestStubber
 
   DEFAULT_RESPONSE_HEADERS = { 'Content-Type' => 'application/json' }.freeze
 
-  def stub_credentials_request(access_token:, is_admin:, is_eligible:)
+  def stub_credentials_request(access_token:, user: nil, is_admin:, is_eligible:)
     stub_request(:get, "#{AUTH_BASE_URL}#{VERIFY_ENDPOINT}?access_token=#{access_token}").
         with(headers: DEFAULT_REQUEST_HEADERS).
         to_return(
             status:  200,
             body:    {
                          "data": {
-                             "info":       {
+                             "info": user&.to_h || {
                                  "id":           "1036fd3c-04ed-4949-b57c-b7dc8ff3e737",
                                  "email":        "namakukingkong@gmail.com",
                                  "full_name":   "Joan Weeks",
@@ -45,8 +45,8 @@ module AuthorizationRequestStubber
         )
   end
 
-  def stub_auth_headers(access_token = SecureRandom.hex)
-    stub_credentials_request(access_token: access_token, is_admin: false, is_eligible: false)
+  def stub_auth_headers(access_token = SecureRandom.hex, user: nil)
+    stub_credentials_request(access_token: access_token, user: user, is_admin: false, is_eligible: false)
     { 'Authorization' => access_token }
   end
 

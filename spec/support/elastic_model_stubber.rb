@@ -1,4 +1,5 @@
 module ElasticModelStubber
+  extend self
 
   USER_ALAM     = {
     "id":        "1036fd3c-04ed-4949-b57c-b7dc8ff3e737",
@@ -73,10 +74,17 @@ module ElasticModelStubber
     "about":     nil
   }.freeze
 
+  def repository
+    @repository ||= Repository.new(index_name: :users, klass: User)
+  end
+
   def stub_user_model
-    repository = Repository.new(index_name: :users, klass: User)
     repository.create(USER_ALAM)
     repository.create(USER_HELMY)
     repository.create(USER_HANIF)
+  end
+
+  def stub_user_record(user)
+    repository.create(user)
   end
 end

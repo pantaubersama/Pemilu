@@ -5,22 +5,38 @@ class API::V1::Lapor::ViolationReports::Resources::Reports < API::V1::Applicatio
     params :id! do
       requires :id, type: String, desc: 'Violation report ID'
     end
-
-    def report
-      @report ||= ViolationReport::Report.find(params.id)
-    end
   end
 
-  resource :lapor do
-    # GET /v1/lapor
+  resource :reports do
+    # GET /v1/reports
     desc 'List violation reports'
+    params do
+      optional :q, type: String, desc: 'Search keyword'
+      optional :cluster_id, type: String, desc: 'Filter by cluster ID'
+      optional :verification, type: Symbol, values: %i[verified unverified], desc: 'Reporter verification status'
+    end
+    paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
     get do
-      reports = paginate(ViolationReport::Report.recent)
+      conditions = {}
+      conditions['reporter.cluster.id'] = params.cluster_id if params.cluster_id.present?
+      conditions['reporter.verified'] = params.verification == :verified if params.verification.present?
+
+      reports = ViolationReport::Report.search(
+        params.q.presence || '*',
+        match: :text_middle,
+        misspellings: false,
+        load: false,
+        page: params.page || 1,
+        per_page: params.per_page || Pagy::VARS[:items],
+        order: { created_at: { order: :desc, unmapped_type: 'long' } },
+        where: conditions
+      )
+
       present :reports, reports, with: ReportEntity
-      present_metas reports
+      present_metas_searchkick reports
     end
 
-    # GET /v1/lapor/{id}
+    # GET /v1/reports/{id}
     desc 'Detail violation report'
     params do
       use :id!
@@ -29,7 +45,7 @@ class API::V1::Lapor::ViolationReports::Resources::Reports < API::V1::Applicatio
       present :report, report, with: ReportEntity, type: :full
     end
 
-    # POST /v1/lapor
+    # POST /v1/reports
     desc 'Create violation report' do
       headers AUTHORIZATION_HEADERS
     end
@@ -55,7 +71,7 @@ class API::V1::Lapor::ViolationReports::Resources::Reports < API::V1::Applicatio
       DESCRIPTION
     end
     post do
-      report = ViolationReport::Report.create!( # DEV
+      report = ViolationReport::Report.create!(
         reporter_id: current_user.id,
         dimension_id: params.dimension_id,
         title: params.title,
@@ -81,7 +97,7 @@ class API::V1::Lapor::ViolationReports::Resources::Reports < API::V1::Applicatio
       present :report, report, with: ReportEntity, type: :full
     end
 
-    # DELETE /v1/lapor/{id}
+    # DELETE /v1/reports/{id}
     desc 'Delete violation report' do
       headers AUTHORIZATION_HEADERS
     end
@@ -90,8 +106,15 @@ class API::V1::Lapor::ViolationReports::Resources::Reports < API::V1::Applicatio
       use :id!
     end
     delete ':id' do
+      error!('Forbidden', 403) unless current_user.is_admin || current_user.id == report.reporter_id
       report.destroy!
       present :success, true
+    end
+  end
+
+  helpers do
+    def report
+      ViolationReport::Report.find params.id
     end
   end
 end
