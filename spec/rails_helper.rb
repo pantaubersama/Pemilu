@@ -85,6 +85,12 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with(:truncation)
     DatabaseCleaner.strategy = :transaction
 
+    # reindex models
+    Feed.reindex
+    JanjiPolitik.reindex
+    Question.reindex
+    Quiz.reindex
+
     # and disable callbacks
     Searchkick.disable_callbacks
 
