@@ -1,11 +1,29 @@
 class API::V1::Dashboard::Quizzes::Resources::Quizzes < API::V1::ApplicationResource
   helpers API::V1::Helpers
+  helpers API::V1::SharedParams
 
   before do
     authorize_admin!
   end
 
   resource "quizzes" do
+
+    desc "All" do
+      detail "All quiz"
+      headers AUTHORIZATION_HEADERS
+    end
+    paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
+    params do
+      optional :q, type: String
+    end
+    oauth2
+    get "/" do
+      q = Quiz.all.order("created_at desc")
+      q = q.where("lower(title) like ?", params.q.downcase + "%") if params.q.present?
+      resources = paginate(q)
+      present :quizzes, resources, with: API::V1::Dashboard::Quizzes::Entities::Quiz
+      present_metas resources
+    end
 
     desc "Trash" do
       detail "Trash quiz"
@@ -14,7 +32,7 @@ class API::V1::Dashboard::Quizzes::Resources::Quizzes < API::V1::ApplicationReso
     paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
     oauth2
     get "/trash" do
-      q = Quiz.only_deleted
+      q = Quiz.only_deleted.order("created_at desc")
       resources = paginate(q)
       present :quizzes, resources, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz
       present_metas resources
@@ -103,6 +121,16 @@ class API::V1::Dashboard::Quizzes::Resources::Quizzes < API::V1::ApplicationReso
       status = q.archived!
       present :status, q.archived?
       present :quiz, q, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz
+    end
+
+    desc "Detail quiz" do
+      detail "Detail quiz"
+      headers AUTHORIZATION_HEADERS
+    end
+    oauth2
+    get "/:id" do
+      quiz = ::Quiz.find params.id
+      present :quiz, quiz, with: API::V1::Dashboard::Quizzes::Entities::Quiz
     end
 
   end
