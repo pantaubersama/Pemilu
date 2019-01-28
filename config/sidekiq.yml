@@ -2,3 +2,4 @@
 :queues:
   - timeline
   - searchkick
+  - default

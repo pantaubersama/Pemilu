@@ -23,8 +23,8 @@ module API::V1::PendidikanPolitik::Quizzes::Resources
         present result
       end
 
-      desc "Quiz total result" do
-        detail "Quiz total result. Need user ID"
+      desc "Share Quiz total result" do
+        detail "Share Quiz total result. Need user ID"
       end
       params do
         requires :user_id, type: String

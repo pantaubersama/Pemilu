@@ -12,11 +12,16 @@ class QuizAnswering < ApplicationRecord
   after_create :set_finished
 
   private
+  
+  def generate_result_image
+    QuizResultImageJob.perform_later quiz_participation_id
+  end
 
   def set_finished
     if QuizAnswering.where(user_id: user_id, quiz_participation_id: quiz_participation_id).size == quiz.quiz_questions_count
       quiz_participation.finished!
       give_achievement
+      generate_result_image
     end
   end
 
