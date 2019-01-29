@@ -1,11 +1,29 @@
 class API::V1::Dashboard::Quizzes::Resources::Quizzes < API::V1::ApplicationResource
   helpers API::V1::Helpers
+  helpers API::V1::SharedParams
 
   before do
     authorize_admin!
   end
 
   resource "quizzes" do
+
+    desc "All" do
+      detail "All quiz"
+      headers AUTHORIZATION_HEADERS
+    end
+    paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
+    params do
+      optional :q, type: String
+    end
+    oauth2
+    get "/" do
+      q = Quiz.all.order("created_at desc")
+      q = q.where("lower(title) like ?", params.q.downcase + "%") if params.q.present?
+      resources = paginate(q)
+      present :quizzes, resources, with: API::V1::Dashboard::Quizzes::Entities::Quiz
+      present_metas resources
+    end
 
     desc "Trash" do
       detail "Trash quiz"
@@ -14,7 +32,7 @@ class API::V1::Dashboard::Quizzes::Resources::Quizzes < API::V1::ApplicationReso
     paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
     oauth2
     get "/trash" do
-      q = Quiz.only_deleted
+      q = Quiz.only_deleted.order("created_at desc")
       resources = paginate(q)
       present :quizzes, resources, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz
       present_metas resources
@@ -35,6 +53,32 @@ class API::V1::Dashboard::Quizzes::Resources::Quizzes < API::V1::ApplicationReso
       q = Quiz.new quiz_params
       q.status = "draft"
       status = q.save!
+      present :status, status
+      present :quiz, q, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz
+    end
+
+    desc "Create quiz full with questions and answers" do
+      detail "Create quiz full with questions and answers"
+      headers AUTHORIZATION_HEADERS
+    end
+    params do
+      requires :title, type: String
+      requires :description, type: String
+      requires :image, type: File
+      requires :status, type: String, values: ["draft", "published"]
+      requires :questions, type: Array do
+        requires :content, type: String, desc: 'Content'
+      end
+      requires :answers, type: Array do
+        requires :team_1_answer, type: String, desc: 'Team 1 answer'
+        requires :team_2_answer, type: String, desc: 'Team 2 answer'
+      end
+    end
+    oauth2
+    post "/full" do
+      q = Quiz.new quiz_full_params
+      status = q.save!
+      q.create_full_quiz(params.questions, params.answers)
       present :status, status
       present :quiz, q, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz
     end
@@ -105,6 +149,16 @@ class API::V1::Dashboard::Quizzes::Resources::Quizzes < API::V1::ApplicationReso
       present :quiz, q, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz
     end
 
+    desc "Detail quiz" do
+      detail "Detail quiz"
+      headers AUTHORIZATION_HEADERS
+    end
+    oauth2
+    get "/:id" do
+      quiz = ::Quiz.find params.id
+      present :quiz, quiz, with: API::V1::Dashboard::Quizzes::Entities::Quiz
+    end
+
   end
 
   # permitted params
@@ -112,6 +166,11 @@ class API::V1::Dashboard::Quizzes::Resources::Quizzes < API::V1::ApplicationReso
     def quiz_params
       permitted_params(params.except(:access_token)).permit(:title, :description, :image)
     end
+
+    def quiz_full_params
+      permitted_params(params.except(:access_token)).permit(:title, :description, :status, :image => {}, questions: [], answers: [])
+    end
+    
   end
 
 end
