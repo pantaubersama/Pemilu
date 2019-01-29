@@ -146,7 +146,7 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
     delete do
       authorize_eligible_user!
       resources = JanjiPolitik.find_by(id: params.id, user_id: current_user.id)
-      unless resources.delete
+      unless resources.destroy!
         error!(resources.errors.full_messages.join(", "), 422)
       end
       response = { message: "Janji Politik id `#{params.id}` berhasil dihapus" }
