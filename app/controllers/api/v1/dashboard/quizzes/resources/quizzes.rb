@@ -57,6 +57,32 @@ class API::V1::Dashboard::Quizzes::Resources::Quizzes < API::V1::ApplicationReso
       present :quiz, q, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz
     end
 
+    desc "Create quiz full with questions and answers" do
+      detail "Create quiz full with questions and answers"
+      headers AUTHORIZATION_HEADERS
+    end
+    params do
+      requires :title, type: String
+      requires :description, type: String
+      requires :image, type: File
+      requires :status, type: String, values: ["draft", "published"]
+      requires :questions, type: Array do
+        requires :content, type: String, desc: 'Content'
+      end
+      requires :answers, type: Array do
+        requires :team_1_answer, type: String, desc: 'Team 1 answer'
+        requires :team_2_answer, type: String, desc: 'Team 2 answer'
+      end
+    end
+    oauth2
+    post "/full" do
+      q = Quiz.new quiz_full_params
+      status = q.save!
+      q.create_full_quiz(params.questions, params.answers)
+      present :status, status
+      present :quiz, q, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz
+    end
+
     desc "Update quiz" do
       detail "Update quiz"
       headers AUTHORIZATION_HEADERS
@@ -140,6 +166,11 @@ class API::V1::Dashboard::Quizzes::Resources::Quizzes < API::V1::ApplicationReso
     def quiz_params
       permitted_params(params.except(:access_token)).permit(:title, :description, :image)
     end
+
+    def quiz_full_params
+      permitted_params(params.except(:access_token)).permit(:title, :description, :status, :image => {}, questions: [], answers: [])
+    end
+    
   end
 
 end
