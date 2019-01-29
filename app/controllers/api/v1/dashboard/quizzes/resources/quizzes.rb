@@ -77,6 +77,7 @@ class API::V1::Dashboard::Quizzes::Resources::Quizzes < API::V1::ApplicationReso
     oauth2
     post "/full" do
       q = Quiz.new quiz_full_params
+      q.image = params.image
       status = q.save!
       q.create_full_quiz(params.questions, params.answers)
       present :status, status
