@@ -6,11 +6,13 @@ Searchkick.client_options = {
                     { request: { timeout: 250 } }
 }
 
-elastic_auth_config         = {
-  host:              ENV['ELASTICSEARCH_AUTH_URL'],
-  retry_on_failure:  true,
-  transport_options: {
-    request: { timeout: 250 }
-  }
-}
-Elasticsearch::Model.client = Elasticsearch::Client.new(elastic_auth_config)
+# elastic_auth_config         = {
+#   host:              ENV['ELASTICSEARCH_AUTH_URL'],
+#   retry_on_failure:  true,
+#   transport_options: {
+#     request: { timeout: 250 }
+#   }
+# }
+# Elasticsearch::Model.client = Elasticsearch::Client.new(elastic_auth_config)
+
+$elastic_model_client = Elasticsearch::Client.new(url: ENV['ELASTICSEARCH_AUTH_URL'], log: true)
