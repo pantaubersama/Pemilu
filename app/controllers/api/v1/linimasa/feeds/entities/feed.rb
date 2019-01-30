@@ -5,7 +5,9 @@ class API::V1::Linimasa::Feeds::Entities::Feed < API::V1::ApplicationEntity
   end
   expose :source do
     expose :source_id, as: :id
-    expose :source_text, as: :text
+    expose :source_text, as: :text do |feed|
+      CGI::unescapeHTML(feed.source_text)
+    end
     expose :source_media, as: :media
   end
   expose :account do
