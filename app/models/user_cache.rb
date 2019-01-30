@@ -10,7 +10,7 @@ class UserCache
   end
 
   def self.find id
-    user = UserRepository.new.find(id)
+    user = UserRepository.new(client: $elastic_model_client).find(id)
     ParseResponse.new(user.attributes)
   end
 end
