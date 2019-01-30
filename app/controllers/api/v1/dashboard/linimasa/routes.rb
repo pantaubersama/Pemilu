@@ -12,7 +12,7 @@ module API
           mount API::V1::Dashboard::Linimasa::Kenalans::Routes
 
           mount API::V1::Lapor::ViolationReports::Resources::Reports
-          mount API::V1::Lapor::ViolationReports::Resources::Reports
+          # mount API::V1::Lapor::ViolationReports::Resources::Reports
         end
       end
     end

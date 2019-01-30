@@ -1,6 +1,10 @@
 class API::V1::Dashboard::Linimasa::Kenalans::Resources::Kenalans < API::V1::ApplicationResource
   helpers API::V1::Helpers
 
+  before do
+    authorize_admin!
+  end
+
   resource "kenalans" do
     desc "List Kenalans", headers: AUTHORIZATION_HEADERS
     oauth2
