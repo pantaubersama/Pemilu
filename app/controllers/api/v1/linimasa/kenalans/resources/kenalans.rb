@@ -12,12 +12,15 @@ class API::V1::Linimasa::Kenalans::Resources::Kenalans < API::V1::ApplicationRes
         uk_response  = { action_at: nil,
                          is_action: false }
         if user_kenalan.present?
-          uk_response = { action_at: user_kenalan.action_at,
-                          is_action: user_kenalan.is_action }
+          uk_response = {
+            action_at: user_kenalan.action_at,
+            is_action: user_kenalan.is_action
+          }
         end
         responses << {
-            id:   kenalan.id,
-            text: kenalan.text
+          id:   kenalan.id,
+          link: kenalan.link,
+          text: kenalan.text
         }.merge(uk_response)
       end
 
@@ -41,8 +44,9 @@ class API::V1::Linimasa::Kenalans::Resources::Kenalans < API::V1::ApplicationRes
                           is_action: user_kenalan.is_action }
         end
         responses << {
-            id:   kenalan.id,
-            text: kenalan.text
+          id:   kenalan.id,
+          link: kenalan.link,
+          text: kenalan.text
         }.merge(uk_response)
       end
 

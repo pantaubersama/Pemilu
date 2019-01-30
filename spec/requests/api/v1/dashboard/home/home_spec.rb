@@ -4,6 +4,10 @@ RSpec.describe "Api::V1::Dashboard::Home", type: :request do
   before do
     @access_token = SecureRandom.hex
     stub_user_model
+    Quiz.reindex
+    Question.reindex
+    JanjiPolitik.reindex
+    Feed.reindex
   end
   
   describe "statistics" do

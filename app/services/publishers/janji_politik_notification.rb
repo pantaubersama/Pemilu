@@ -7,7 +7,7 @@ module Publishers
       #  - message:
       #         - {count: 100, notif_type: :janji_politik, event_type: :report }
 
-      push exchange, message, :notification
+      push exchange, message
     end
   end
 end

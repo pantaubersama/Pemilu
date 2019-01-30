@@ -85,6 +85,12 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with(:truncation)
     DatabaseCleaner.strategy = :transaction
 
+    # reindex models
+    Feed.reindex
+    JanjiPolitik.reindex
+    Question.reindex
+    Quiz.reindex
+
     # and disable callbacks
     Searchkick.disable_callbacks
 
@@ -106,6 +112,11 @@ RSpec.configure do |config|
                          { id: "5d01f7ab-4c90-4199-999b-da5287d06a88", page_name: "janji politik", title: "Judul banner 'janji politik'", body: "Body banner 'janji politik'" },
                          { id: "a22d2acd-7eda-4a7a-95a0-931abf5db8e3", page_name: "tanya", title: "Judul banner tanya", body: "Body banner tanya" },
                          { id: "9b98ac07-3208-4d60-976e-49ace39e38a7", page_name: "kuis", title: "Judul banner kuis", body: "Body banner kuis" },
+                         {id: "f84a0010-b981-4d1c-8bb0-9e599eac1c12", page_name: "lapor", title: "Lapor", body:"Lapor"},
+                         {id: "c89eea96-4616-46a6-a25b-040e5ecf2dfd", page_name: "debat", title: "Debat", body:"Debat"},
+                         {id: "650a3d88-2f0e-403d-a94f-45ed878779a7", page_name: "tantangan", title: "Tantangan", body:"Tantangan"},
+                         {id: "90495b56-414d-4865-9765-867ecfb14966", page_name: "perhitungan", title: "Perhitungan", body:"Perhitungan"},
+                         {id: "8880dbe8-3324-4f7a-b3f6-8e97af355def", page_name: "my_input", title: "My Input", body:"My Input"},
                        ])
     Kenalan.create!([
                       { id: "c46bae56-8c87-4f54-8328-b959d89c931f", text: 'Melakukan Verifikasi' },

@@ -44,9 +44,6 @@ RSpec.describe "Api::V1::Votes::Resources::Votes", type: :request do
   end
 
   describe "[Delete] Endpoint /" do
-    before do
-      stub_user_model
-    end
     it "should success unlike" do
       @user = User.find "1036fd3c-04ed-4949-b57c-b7dc8ff3e737"
       @question.liked_by @user

@@ -112,6 +112,21 @@ class API::V1::Dashboard::Quizzes::Resources::Questions < API::V1::ApplicationRe
 
   end
 
+  resource "quizzes" do
+    desc "Quiz question" do
+      detail "Quiz question"
+      headers AUTHORIZATION_HEADERS
+    end
+    oauth2
+    get "/:id/questions" do
+      quiz = ::Quiz.find params[:id]
+
+      error! "Not found", 404 if quiz.nil?
+      
+      present :questions, quiz.quiz_questions, with: API::V1::Dashboard::Questions::Entities::Question
+    end
+  end
+
   # permitted params
   helpers do
     def questions_params
