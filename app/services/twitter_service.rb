@@ -33,8 +33,10 @@ class TwitterService
       cr.account_id                = tw.user.id
       cr.account_name              = tw.user.name
       cr.account_username          = tw.user.screen_name
-      url                          = tw.user.profile_image_url
-      profile_picture              = URI.join("https://pbs.twimg.com", (url.path.split("/").reverse.drop(1).reverse + [(url.path.split("/").last.split("_").reverse.drop(1).reverse + ["200x200.jpg"]).join("_")]).join("/"))
+      url                          = URI.parse("https://pbs.twimg.com/profile_images/501884182545457152/iSqdvLul_200x200.oke") #tw.user.profile_image_url
+      files                        = url.path.split("/").last.split("_")
+      ext                          = files.last.split(".").last
+      profile_picture              = URI.join("https://pbs.twimg.com", (url.path.split("/").reverse.drop(1).reverse + [(files.reverse.drop(1).reverse + ["200x200.#{ext}"]).join("_")]).join("/"))
       cr.account_profile_image_url = profile_picture
 
       cr.created_at = tw.created_at
