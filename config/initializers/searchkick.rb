@@ -2,8 +2,8 @@ Searchkick.redis          = Redis.new url: ENV["REDIS_SERVER_URL"]
 Searchkick.client_options = {
   url:              ENV['ELASTICSEARCH_URL'],
   retry_on_failure: true,
-  transport_options:
-                    { request: { timeout: 250 } }
+  transport_options: { request: { timeout: 250 } },
+  log: ENV['LOG_SEARCH'] == 'true'
 }
 
 # elastic_auth_config         = {
@@ -15,4 +15,7 @@ Searchkick.client_options = {
 # }
 # Elasticsearch::Model.client = Elasticsearch::Client.new(elastic_auth_config)
 
-$elastic_model_client = Elasticsearch::Client.new(url: ENV['ELASTICSEARCH_AUTH_URL'], log: true)
+$auth_elasticsearch_client = Elasticsearch::Client.new(
+  url: ENV['ELASTICSEARCH_AUTH_URL'],
+  log: ENV['LOG_SEARCH'] == 'true'
+)

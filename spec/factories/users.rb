@@ -1,7 +1,5 @@
 FactoryBot.define do
   factory :user do
-    to_create { |instance| ElasticModelStubber.stub_user_record instance }
-
     id { SecureRandom.uuid }
     email { Faker::Internet.email }
     full_name { Faker::Name.name }
