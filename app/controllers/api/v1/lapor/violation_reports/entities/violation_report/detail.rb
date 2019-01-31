@@ -1,4 +1,5 @@
 class API::V1::Lapor::ViolationReports::Entities::ViolationReport::Detail < Grape::Entity
+  expose :id
   expose :location
   expose :occurrence_time
   expose :reportee, using: API::V1::Lapor::ViolationReports::Entities::ViolationReport::Party

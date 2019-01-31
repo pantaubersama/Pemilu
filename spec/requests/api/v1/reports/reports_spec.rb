@@ -1,42 +1,51 @@
 require 'rails_helper'
 
-RSpec.describe "Api::V1::Reports::Resources::Reports", type: :request do
-  before do
-    @access_token = SecureRandom.hex
-    FactoryBot.create :question
-    @question = Question.last
-    @folder = FactoryBot.create :question_folder
+describe API::V1::Reports::Resources::Reports do
+  describe 'POST /v1/reports' do
+    it 'reports question' do
+      expect { report question }.to change { question.reload.cached_scoped_report_votes_down }.by(1)
+      expect(response).to have_http_status(:created)
+      expect(json_response).to match(data: a_hash_including(vote: a_hash_including(status: true, text: 'Success')))
+    end
+
+    it 'cannot report reported question by the same person' do
+      report question
+      expect { report question }.not_to change { question.reload.cached_scoped_report_votes_down }
+      expect(response).to have_http_status(:created)
+      expect(json_response).to match(data: a_hash_including(vote: a_hash_including(status: false)))
+    end
+
+    it 'cannot report foldered question' do
+      question.update! question_folder: create(:question_folder)
+      expect { report question }.not_to change { question.reload.cached_scoped_report_votes_down }
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it 'reports violation report' do
+      expect { report violation_report }.to change { violation_report.reload.cached_scoped_report_votes_down }.by(1)
+      expect(response).to have_http_status(:created)
+      expect(json_response).to match(data: a_hash_including(vote: a_hash_including(status: true)))
+    end
+
+    it 'cannot report reported violation report by the same person' do
+      violation_report.reported_by user
+      expect { report violation_report }.not_to change { violation_report.reload.cached_scoped_report_votes_down }
+      expect(response).to have_http_status(:created)
+      expect(json_response).to match(data: a_hash_including(vote: a_hash_including(status: false)))
+    end
+
+    it 'rejects unlisted class_name' do
+      report double(id: SecureRandom.hex)
+      expect(response).to have_http_status(:not_acceptable)
+    end
+
+    let(:user) { create :user }
+    let(:question) { create :question }
+    let(:violation_report) { create :violation_report }
+
+    def report(reportable)
+      params = { id: reportable.id, class_name: reportable.class.name }
+      post '/pendidikan_politik/v1/reports', headers: stub_auth_headers(user: user), params: params
+    end
   end
-  
-
-  describe "[POST] Endpoint /" do
-    it "should success like" do
-      post "/pendidikan_politik/v1/reports", headers: stub_auth_headers(@access_token),
-        params: {id: @question.id, class_name: "Question"}
-      expect(response.status).to eq(201)
-      expect(json_response[:data][:vote][:status]).to eq(true)
-
-      # report again
-      post "/pendidikan_politik/v1/reports", headers: stub_auth_headers(@access_token),
-        params: {id: @question.id, class_name: "Question"}
-      expect(response.status).to eq(201)
-      expect(json_response[:data][:vote][:status]).to eq(false)
-    end
-
-    it "should fail" do
-      post "/pendidikan_politik/v1/reports", headers: stub_auth_headers(@access_token),
-        params: {id: @question.id, class_name: "Questions"}
-      expect(response.status).to eq(500)
-    end
-
-    it "is in folder" do
-      @question.question_folder = @folder
-      @question.save!
-      post "/pendidikan_politik/v1/reports", headers: stub_auth_headers(@access_token),
-        params: {id: @question.id, class_name: "Question"}
-      expect(response.status).to eq(404)
-    end
-
-  end
-
 end

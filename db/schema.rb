@@ -243,6 +243,20 @@ ActiveRecord::Schema.define(version: 2019_01_29_074742) do
     t.text "description", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "cached_votes_total", default: 0
+    t.integer "cached_votes_score", default: 0
+    t.integer "cached_votes_up", default: 0
+    t.integer "cached_votes_down", default: 0
+    t.integer "cached_weighted_score", default: 0
+    t.integer "cached_weighted_total", default: 0
+    t.float "cached_weighted_average", default: 0.0
+    t.integer "cached_scoped_report_votes_total", default: 0
+    t.integer "cached_scoped_report_votes_score", default: 0
+    t.integer "cached_scoped_report_votes_up", default: 0
+    t.integer "cached_scoped_report_votes_down", default: 0
+    t.integer "cached_weighted_report_score", default: 0
+    t.integer "cached_weighted_report_total", default: 0
+    t.float "cached_weighted_report_average", default: 0.0
     t.index ["dimension_id"], name: "index_violation_report_reports_on_dimension_id"
     t.index ["reporter_id"], name: "index_violation_report_reports_on_reporter_id"
   end

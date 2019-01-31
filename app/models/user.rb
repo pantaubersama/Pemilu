@@ -20,7 +20,7 @@ class ParseResponse < Hashie::Mash
   end
 
   def self.polymorphic_name
-    "User"
+    'User'
   end
 end
 class User < UserCache

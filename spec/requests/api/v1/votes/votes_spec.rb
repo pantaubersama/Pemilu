@@ -1,74 +1,62 @@
 require 'rails_helper'
 
-RSpec.describe "Api::V1::Votes::Resources::Votes", type: :request do
-  before do
-    @access_token = SecureRandom.hex
-    FactoryBot.create :question, user_id: "c9242c5a-805b-4ef5-b3a7-2a7f25785cc8"
-    @question = Question.last
-    stub_user_model
-    @folder = FactoryBot.create :question_folder
-  end
-  
-
-  describe "[POST] Endpoint /" do
-    it "should success like" do
-      post "/pendidikan_politik/v1/votes", headers: stub_auth_headers(@access_token),
-        params: {id: @question.id, class_name: "Question"}
-      expect(response.status).to eq(201)
-      expect(json_response[:data][:vote][:status]).to eq(true)
-
-      # vote again
-      post "/pendidikan_politik/v1/votes", headers: stub_auth_headers(@access_token),
-        params: {id: @question.id, class_name: "Question"}
-      expect(response.status).to eq(201)
-      expect(json_response[:data][:vote][:status]).to eq(false)
-
-      get "/pendidikan_politik/v1/questions/#{@question.id}"
-      expect(json_response[:data][:question][:like_count]).to eq(1)
+describe API::V1::Votes::Resources::Votes do
+  describe 'POST /v1/votes' do
+    it 'likes question' do
+      expect { like question }.to change { question.reload.cached_votes_up }.by(1)
+      expect(response).to have_http_status(:created)
+      expect(json_response).to match(data: a_hash_including(vote: a_hash_including(status: true)))
     end
 
-    it "should fail" do
-      post "/pendidikan_politik/v1/votes", headers: stub_auth_headers(@access_token),
-        params: {id: @question.id, class_name: "Questions"}
-      expect(response.status).to eq(500)
+    it 'cannot like liked question by the same person' do
+      question.liked_by user
+      expect { like question }.not_to change { question.reload.cached_votes_up }
+      expect(response).to have_http_status(:created)
+      expect(json_response).to match(data: a_hash_including(vote: a_hash_including(status: false)))
     end
 
-    it "is in folder" do
-      @question.question_folder = @folder
-      @question.save!
-      post "/pendidikan_politik/v1/votes", headers: stub_auth_headers(@access_token),
-        params: {id: @question.id, class_name: "Question"}
-      expect(response.status).to eq(404)
+    it 'rejects unlisted class_name' do
+      params = { id: SecureRandom.uuid, class_name: 'UnlistedModel' }
+      post '/pendidikan_politik/v1/votes', headers: stub_auth_headers(user: user), params: params
+      expect(response).to have_http_status(:not_acceptable)
     end
 
+    it 'cannot like foldered question' do
+      like foldered_question
+      expect(response).to have_http_status(:not_found)
+    end
+
+    def like(question)
+      params = { id: question.id, class_name: 'Question' }
+      post '/pendidikan_politik/v1/votes', headers: stub_auth_headers(user: user), params: params
+    end
   end
 
-  describe "[Delete] Endpoint /" do
-    it "should success unlike" do
-      @user = User.find "1036fd3c-04ed-4949-b57c-b7dc8ff3e737"
-      @question.liked_by @user
-      delete "/pendidikan_politik/v1/votes", headers: stub_auth_headers(@access_token),
-        params: {id: @question.id, class_name: "Question"}
-      expect(response.status).to eq(200)
-      expect(json_response[:data][:vote][:status]).to eq(true)
-
-      # unvote again
-      delete "/pendidikan_politik/v1/votes", headers: stub_auth_headers(@access_token),
-        params: {id: @question.id, class_name: "Question"}
-      expect(response.status).to eq(404)
-
-      get "/pendidikan_politik/v1/questions/#{@question.id}"
-      expect(json_response[:data][:question][:like_count]).to eq(0)
+  describe 'DELETE /v1/votes' do
+    it 'unlikes question' do
+      question.liked_by user
+      expect { unlike question }.to change { question.reload.cached_votes_up }.by(-1)
+      expect(response).to have_http_status(:ok)
+      expect(json_response).to match(data: a_hash_including(vote: a_hash_including(status: true)))
     end
 
-    it "is in folder" do
-      @question.question_folder = @folder
-      @question.save!
-      delete "/pendidikan_politik/v1/votes", headers: stub_auth_headers(@access_token),
-        params: {id: @question.id, class_name: "Question"}
-      expect(response.status).to eq(404)
+    it 'cannot unlike unliked question' do
+      expect { unlike question }.not_to change { question.reload.cached_votes_up }
+      expect(response).to have_http_status(:not_found)
     end
 
+    it 'cannot unlike foldered question' do
+      unlike foldered_question
+      expect(response).to have_http_status(:not_found)
+    end
+
+    def unlike(question)
+      params = { id: question.id, class_name: 'Question' }
+      delete '/pendidikan_politik/v1/votes', headers: stub_auth_headers(user: user), params: params
+    end
   end
 
+  let(:user) { create :user }
+  let(:question) { create :question, user_id: user.id }
+  let(:foldered_question) { create :foldered_question, user_id: user.id }
 end
