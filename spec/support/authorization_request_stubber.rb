@@ -17,7 +17,7 @@ module AuthorizationRequestStubber
             status:  200,
             body:    {
                          "data": {
-                             "info": user&.to_h || {
+                             "info": user ? user.attributes : {
                                  "id":           "1036fd3c-04ed-4949-b57c-b7dc8ff3e737",
                                  "email":        "namakukingkong@gmail.com",
                                  "full_name":   "Joan Weeks",
