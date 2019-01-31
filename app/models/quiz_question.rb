@@ -5,4 +5,12 @@ class QuizQuestion < ApplicationRecord
   has_many :quiz_answers
 
   validates :quiz_id, presence: true
+  
+  after_create :reindex_quiz
+  after_destroy :reindex_quiz
+
+  def reindex_quiz
+    quiz.reindex
+  end
+
 end

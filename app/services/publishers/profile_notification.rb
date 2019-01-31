@@ -13,14 +13,14 @@ module Publishers
       #         - { reciver_id: UUID, notif_type: :profile, event_type: :badge_tany, badge_title: "badge_1"a }
       #         - { reciver_id: UUID, notif_type: :profile, event_type: :badge_kuis, badge_title: "badge_1" }
       #         - { reciver_id: UUID, notif_type: :profile, event_type: :badge_lapor, badge_title: "badge_1" }
-      #         - { reciver_id: UUID, notif_type: :profile, event_type: :janji_politi, badge_title: "badge_1"k }
+      #         - { reciver_id: UUID, notif_type: :profile, event_type: :janji_politi, badge_title: "badge_1" }
       #         - { reciver_id: UUID, notif_type: :profile, event_type: :tanya_interaksi, badge_title: "badge_1" }
       #         - { reciver_id: UUID, notif_type: :profile, event_type: :badge_profile, badge_title: "badge_1" }
       #         - { reciver_id: UUID, notif_type: :profile, event_type: :badge_relawan, badge_title: "badge_1" }
       #         - { reciver_id: UUID, notif_type: :profile, event_type: :pantau_bersama, badge_title: "badge_1" }
 
       # grab the fanout exchange
-      push exchange, message, :notification
+      push exchange, message
     end
   end
 end

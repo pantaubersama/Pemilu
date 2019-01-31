@@ -12,7 +12,7 @@ class API::V1::Linimasa::BannerInfos::Resources::BannerInfos < API::V1::Applicat
     desc "Get banner by page name", headers: OPTIONAL_AUTHORIZATION_HEADERS
     optional_oauth2
     params do
-      requires :page_name, type: String, values: ["pilpres", "janji politik", "tanya", "kuis"]
+      requires :page_name, type: String, values: ["pilpres", "janji politik", "tanya", "kuis","lapor", "debat", "tantangan", "perhitungan","my_input"]
     end
     get :show do
       banner = nil
@@ -24,6 +24,16 @@ class API::V1::Linimasa::BannerInfos::Resources::BannerInfos < API::V1::Applicat
         banner = BannerInfo.find("a22d2acd-7eda-4a7a-95a0-931abf5db8e3")
       elsif params.page_name.eql?("kuis")
         banner = BannerInfo.find("9b98ac07-3208-4d60-976e-49ace39e38a7")
+      elsif params.page_name.eql?("lapor")
+        banner = BannerInfo.find("f84a0010-b981-4d1c-8bb0-9e599eac1c12")
+      elsif params.page_name.eql?("debat")
+        banner = BannerInfo.find("c89eea96-4616-46a6-a25b-040e5ecf2dfd")
+      elsif params.page_name.eql?("tantangan")
+        banner = BannerInfo.find("650a3d88-2f0e-403d-a94f-45ed878779a7")
+      elsif params.page_name.eql?("perhitungan")
+        banner = BannerInfo.find("90495b56-414d-4865-9765-867ecfb14966")
+      elsif params.page_name.eql?("my_input")
+        banner = BannerInfo.find("8880dbe8-3324-4f7a-b3f6-8e97af355def")
       end
       error!("Record banner info tidak ditemukan", 422) unless banner
       present :banner_info, banner, with: API::V1::Dashboard::BannerInfos::Entities::BannerInfo

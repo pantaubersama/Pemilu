@@ -6,7 +6,7 @@ module Publishers
       #  - exchange: "pemilu.pilpres"
       #  - message:
       #         - {count: 100, notif_type: :feed, event_type: :report }
-      push exchange, message, :notification
+      push exchange, message
     end
   end
 end

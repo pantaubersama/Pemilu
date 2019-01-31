@@ -27,13 +27,17 @@ class TwitterService
       if tw.media.present?
         cr.source_media = tw.media.map { |media| media.media_url_https.to_s }
       end
-      cr.team        = @crowling.team
-      cr.type        = :TwTimelineFeed
+      cr.team = @crowling.team
+      cr.type = :TwTimelineFeed
 
       cr.account_id                = tw.user.id
       cr.account_name              = tw.user.name
       cr.account_username          = tw.user.screen_name
-      cr.account_profile_image_url = tw.user.profile_image_url.to_s
+      url                          = tw.user.profile_image_url
+      files                        = url.path.split("/").last.split("_")
+      ext                          = files.last.split(".").last
+      profile_picture              = URI.join("https://pbs.twimg.com", (url.path.split("/").reverse.drop(1).reverse + [(files.reverse.drop(1).reverse + ["200x200.#{ext}"]).join("_")]).join("/"))
+      cr.account_profile_image_url = profile_picture
 
       cr.created_at = tw.created_at
       begin
@@ -51,4 +55,3 @@ class TwitterService
     end
   end
 end
-

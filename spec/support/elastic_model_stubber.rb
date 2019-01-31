@@ -79,9 +79,10 @@ module ElasticModelStubber
   end
 
   def stub_user_model
-    repository.create(USER_ALAM)
-    repository.create(USER_HELMY)
-    repository.create(USER_HANIF)
+    repository = UserRepository.new
+    repository.save(UserCache.new(USER_ALAM.without("_index", "_type", "_id", "_score", "sort")))
+    repository.save(UserCache.new(USER_HELMY.without("_index", "_type", "_id", "_score", "sort")))
+    repository.save(UserCache.new(USER_HANIF.without("_index", "_type", "_id", "_score", "sort")))
   end
 
   def stub_user_record(user)

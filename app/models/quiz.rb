@@ -44,6 +44,14 @@ class Quiz < ApplicationRecord
   def is_published
     published?
   end
+
+  def create_full_quiz(q, a)
+    q.each_with_index do |question, idx|
+      q = QuizQuestion.create content: question.content, quiz_id: self.id
+      QuizAnswer.create team: 1, content: a[idx].team_1_answer, quiz_question_id: q.id
+      QuizAnswer.create team: 2, content: a[idx].team_2_answer, quiz_question_id: q.id
+    end
+  end
   
 
 end

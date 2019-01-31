@@ -6,7 +6,7 @@ module Publishers
     def self.push routing_key, message
       connetion.start
       channel = @@connection.create_channel
-      queue = channel.queue(routing_key, durable: true)
+      queue   = channel.queue(routing_key, durable: true)
       queue.publish(message.to_json, persistent: true)
 
       connetion.close
@@ -16,9 +16,9 @@ module Publishers
       @@connection
     end
 
-    def self.connection=(conn=nil)
+    def self.connection=(conn = nil)
       @@connection = conn
     end
-    
+
   end
 end

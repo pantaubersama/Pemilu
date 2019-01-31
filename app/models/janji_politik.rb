@@ -1,8 +1,8 @@
 class JanjiPolitik < ApplicationRecord
-
+  acts_as_paranoid
   searchkick callbacks:   :async,
              text_middle: [:all_fields]
-  acts_as_paranoid
+
   has_paper_trail
   mount_uploader :image, AssetPictureUploader
 
@@ -17,6 +17,10 @@ class JanjiPolitik < ApplicationRecord
 
   def user
     User.find(user_id)
+  end
+
+  def should_index?
+    deleted_at.nil?
   end
 
   def search_data
@@ -43,9 +47,5 @@ class JanjiPolitik < ApplicationRecord
         all_fields: ["--", self.title, self.body, set_user.username, set_user.full_name, "--"].compact.join(' ')
       }
     )
-  end
-
-  def should_index?
-    deleted_at.nil?
   end
 end
