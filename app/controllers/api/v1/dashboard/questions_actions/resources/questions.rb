@@ -12,16 +12,16 @@ class API::V1::Dashboard::QuestionsActions::Resources::Questions < API::V1::Appl
     end
     params do
       requires :id, type: String, desc: "Question ID"
-      requires :body, type: String, desc: "Questions"
+      optional :body, type: String, desc: "Questions"
     end
     oauth2
     put "/:id" do
-      question = Question.find params.id
+      question = Question.not_in_folder.find_by id: params[:id]
       error! "Not found" unless question.present?
-      status = question.update_attributes({name: params.name})
+      status = question.update_attributes({body: params[:body]})
       present :status, status
-      present :questions, resources, with: API::V1::PendidikanPolitik::Questions::Entities::Question			
+      present :questions, question, with: API::V1::PendidikanPolitik::Questions::Entities::Question
     end
-	end
+  end
 
 end
