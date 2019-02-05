@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Question, type: :model do
+  it_behaves_like 'a likeable record', factory: :question, cache_columns: true
+  it_behaves_like 'a reportable record', factory: :question, cache_columns: true
+
   describe "Should validate" do
     it "min length" do
       a = Question.new body: "a"
@@ -22,36 +25,6 @@ RSpec.describe Question, type: :model do
     it "with valid params" do
       a = Question.new body: "Non cupidatat cupidatat ex sint occaecat in nulla.", user_id: "c9242c5a-805b-4ef5-b3a7-2a7f25785cc8"
       expect(a).to be_valid 
-    end
-  end
-
-  describe "Could be liked" do
-    before do
-      stub_user_model
-      @question = FactoryBot.create :question
-      @current_user = User.find "c9242c5a-805b-4ef5-b3a7-2a7f25785cc8"
-    end
-    it "once" do
-      @question.liked_by @current_user
-      expect(@question.vote_registered?).to eq true
-
-      @question.liked_by @current_user
-      expect(@question.vote_registered?).to eq false
-    end
-  end
-
-  describe "Could be reported" do
-    before do
-      stub_user_model
-      @question = FactoryBot.create :question
-      @current_user = User.find "c9242c5a-805b-4ef5-b3a7-2a7f25785cc8"
-    end
-    it "once" do
-      @question.reported_by @current_user
-      expect(@question.vote_registered?).to eq true
-
-      @question.reported_by @current_user
-      expect(@question.vote_registered?).to eq false
     end
   end
 end

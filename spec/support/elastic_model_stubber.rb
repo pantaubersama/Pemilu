@@ -1,5 +1,4 @@
 module ElasticModelStubber
-
   USER_ALAM     = {
     "id":        "1036fd3c-04ed-4949-b57c-b7dc8ff3e737",
     "email":     "namakukingkong@gmail.com",
@@ -74,9 +73,6 @@ module ElasticModelStubber
   }.freeze
 
   def stub_user_model
-    repository = UserRepository.new
-    repository.save(UserCache.new(USER_ALAM.without("_index", "_type", "_id", "_score", "sort")))
-    repository.save(UserCache.new(USER_HELMY.without("_index", "_type", "_id", "_score", "sort")))
-    repository.save(UserCache.new(USER_HANIF.without("_index", "_type", "_id", "_score", "sort")))
+    [USER_ALAM, USER_HELMY, USER_HANIF].each { |attrs| User.new(attrs).save! }
   end
 end

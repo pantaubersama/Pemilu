@@ -1,4 +1,6 @@
 module HerStubber
+  extend self
+
   def stub_api_for(klass)
     klass.use_api (api = Her::API.new)
 
@@ -97,21 +99,29 @@ module HerStubber
     "about":     nil
   }.freeze
 
-  def stub_find_user
-    stub_api_for(User) do |stub|
-      stub.get("#{AUTH_BASE_URL}/v1/users/c9242c5a-805b-4ef5-b3a7-2a7f25785cc8") do |env|
-        [
-          200,
-          {},
-          { data: USER_HELMY }.to_json
-        ]
+  def stub_find_user(user = nil)
+    if user
+      stub_api_for(User) do |stub|
+        stub.get("#{AUTH_BASE_URL}/v1/users/#{user.id}") do |_env|
+          [200, {}, { data: user.attributes }.to_json]
+        end
       end
-      stub.get("#{AUTH_BASE_URL}/v1/users/1036fd3c-04ed-4949-b57c-b7dc8ff3e737") do |env|
-        [
-          200,
-          {},
-          { data: USER_ALAM }.to_json
-        ]
+    else
+      stub_api_for(User) do |stub|
+        stub.get("#{AUTH_BASE_URL}/v1/users/c9242c5a-805b-4ef5-b3a7-2a7f25785cc8") do |env|
+          [
+            200,
+            {},
+            { data: USER_HELMY }.to_json
+          ]
+        end
+        stub.get("#{AUTH_BASE_URL}/v1/users/1036fd3c-04ed-4949-b57c-b7dc8ff3e737") do |env|
+          [
+            200,
+            {},
+            { data: USER_ALAM }.to_json
+          ]
+        end
       end
     end
   end

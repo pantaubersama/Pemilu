@@ -1,27 +1,17 @@
-class ParseResponse < Hashie::Mash
-  def self.class
-    self
+class User < Hashie::Mash
+  include Shared::NonActiveRecordVoter
+
+  def self.repository
+    UserRepository.new
   end
 
-  def self.primary_key
-    "id"
+  def self.find(id)
+    repository.find(id)
   end
 
-  def self.base_class
-    self
-  end
+  alias_method :attributes, :to_hash
 
-  def self.name
-    "User"
+  def save!
+    self.class.repository.save self, refresh: true
   end
-
-  def _read_attribute attr
-    self.send attr
-  end
-
-  def self.polymorphic_name
-    "User"
-  end
-end
-class User < UserCache
 end
