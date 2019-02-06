@@ -95,4 +95,71 @@ RSpec.describe "Api::V1::Dashboard::Quizzes", type: :request do
     end
   end
 
+  describe "[GET] list all questions" do
+    before do
+      5.times do
+        FactoryBot.create :question
+      end
+      FactoryBot.create :question, status: "archived"
+      Question.reindex
+    end
+    it "List questions" do
+      get "/dashboard/v1/questions", headers: stub_admin_auth_headers(@access_token)
+      expect(json_response[:data][:questions].size).to eq(6)
+      expect(response.status).to eq(200)
+    end
+  end
+
+  describe "pagination" do
+    before do
+      8.times do
+        FactoryBot.create :question
+      end
+      folder = FactoryBot.create :question_folder
+      5.times do
+        FactoryBot.create :question, status: "archived", question_folder_id: folder.id
+      end
+      Question.reindex
+    end
+    it "paginate searchkick page 1" do
+      get "/dashboard/v1/questions", headers: stub_admin_auth_headers(@access_token),
+        params: {page: 1, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:questions].size).to eq(5)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(1)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+
+    it "paginate searchkick page 2" do
+      get "/dashboard/v1/questions", headers: stub_admin_auth_headers(@access_token),
+        params: {page: 2, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:questions].size).to eq(5)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(2)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+
+    it "paginate searchkick page 3" do
+      get "/dashboard/v1/questions", headers: stub_admin_auth_headers(@access_token),
+        params: {page: 3, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:questions].size).to eq(3)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+
+    it "paginate searchkick page 4" do
+      get "/dashboard/v1/questions", headers: stub_admin_auth_headers(@access_token),
+        params: {page: 4, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:questions].size).to eq(0)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(4)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+  end
+
 end
