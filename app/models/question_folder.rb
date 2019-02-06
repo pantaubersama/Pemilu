@@ -10,7 +10,7 @@ class QuestionFolder < ApplicationRecord
 
   def add_questions ids
     qs = Question.where(id: ids)
-    qs.update_all(question_folder_id: self.id)
+    qs.update_all(question_folder_id: self.id, status: "archived")
     QuestionFolder.reset_counters(self.id, :questions)
     qs.reindex
   end

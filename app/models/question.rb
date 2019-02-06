@@ -2,6 +2,8 @@ class Question < ApplicationRecord
   acts_as_paranoid
   acts_as_votable
 
+  enum status: [:active, :archived]
+
   validates_length_of :body, minimum: 3, maximum: 260
   validates :user_id, presence: true
 
@@ -17,8 +19,8 @@ class Question < ApplicationRecord
 
   belongs_to :question_folder, optional: true, counter_cache: true
 
-  scope :in_folder, -> { where.not(question_folder_id: nil) }
-  scope :not_in_folder, -> { where(question_folder_id: nil) }
+  scope :in_folder, -> { archived }
+  scope :not_in_folder, -> { active }
 
   after_create :give_achievement
 
@@ -28,7 +30,7 @@ class Question < ApplicationRecord
   end
 
   def should_index?
-    deleted_at.nil? && question_folder_id.nil?
+    deleted_at.nil? && active?
   end
 
   def search_data

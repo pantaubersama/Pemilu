@@ -4,7 +4,7 @@ RSpec.describe "Api::V1::Dashboard::QuestionsFolder", type: :request do
   before do
     @access_token = SecureRandom.hex
     @folder = FactoryBot.create :question_folder
-    @question = FactoryBot.create :question, question_folder_id: @folder.id
+    @question = FactoryBot.create :question, question_folder_id: @folder.id, status: "archived"
     the_q = FactoryBot.create :question
     stub_user_model
   end
