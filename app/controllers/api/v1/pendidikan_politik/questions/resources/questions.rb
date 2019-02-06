@@ -23,8 +23,8 @@ module API::V1::PendidikanPolitik::Questions::Resources
         default_order = {created_at: {order: :desc, unmapped_type: "long"}}
         build_order = params.order_by.present? && params.direction.present? ? { params.order_by.to_sym => { order: params.direction.to_sym, unmapped_type: "long"  } } : default_order
 
-        default_conditions = {}
-        build_conditions = params.filter_by.present? ? question_filter(params.filter_by) : default_conditions
+        default_conditions = {status: "active"}
+        build_conditions = params.filter_by.present? ? default_conditions.merge(question_filter(params.filter_by)) : default_conditions
 
         resources = Question.search(q, operator: operator, match: match_word, misspellings: false,
           load: false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), order: build_order, where: build_conditions)

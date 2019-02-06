@@ -30,7 +30,7 @@ class Question < ApplicationRecord
   end
 
   def should_index?
-    deleted_at.nil? && active?
+    deleted_at.nil?
   end
 
   def search_data
@@ -40,6 +40,7 @@ class Question < ApplicationRecord
       body:               self.body,
       created_at:         self.created_at,
       created_at_in_word: self.created_at_in_word,
+      status:             self.status,
       user:               {
         email:     self.user.email,
         username:  self.user.username,
