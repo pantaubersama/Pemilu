@@ -123,7 +123,7 @@ class API::V1::Dashboard::Quizzes::Resources::Questions < API::V1::ApplicationRe
 
       error! "Not found", 404 if quiz.nil?
       
-      present :questions, quiz.quiz_questions, with: API::V1::Dashboard::Questions::Entities::Question
+      present :questions, quiz.quiz_questions, with: API::V1::Dashboard::Quizzes::Entities::Question
     end
   end
 
