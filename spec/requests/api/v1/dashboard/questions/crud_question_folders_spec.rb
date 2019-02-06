@@ -25,6 +25,18 @@ RSpec.describe "Api::V1::Dashboard::QuestionsFolder", type: :request do
     end
   end
 
+  describe "search" do
+    it "success" do
+      FactoryBot.create :question_folder, name: "Gondes 123"
+      get "/dashboard/v1/question_folders", 
+        params: {
+          name: "gondes"
+        },
+        headers: stub_admin_auth_headers(@access_token)
+      expect(json_response[:data][:question_folders].size).to  eq(1)
+    end
+  end
+
   describe "trash" do
     it "success" do
       q = FactoryBot.create :question_folder
