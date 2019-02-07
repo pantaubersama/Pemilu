@@ -37,6 +37,7 @@ class Question < ApplicationRecord
     {
       id:                 self.id,
       cached_votes_up:    self.cached_votes_up,
+      report_count:       self.report_count,
       body:               self.body,
       created_at:         self.created_at,
       created_at_in_word: self.created_at_in_word,
