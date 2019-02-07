@@ -18,8 +18,6 @@ class Quiz < ApplicationRecord
   has_many :quiz_questions
   has_many :quiz_participations
 
-  after_commit :broadcast_new_quiz
-
   def search_data
     {
       id:                   self.id,
