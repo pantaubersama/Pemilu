@@ -8,7 +8,7 @@
 - RabbitMQ
 
 ##### Setup
-- `git clone git@git.extrainteger.com:pantau-group/API/pemilu.git`
+- `git clone git@github.com:pantaubersama/Pemilu.git`
 - setup your database (postgresql)
 - create env variable files (.env.development , .env.test)
     - `.env.development`
