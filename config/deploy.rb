@@ -2,7 +2,7 @@
 lock "~> 3.11.0"
 
 set :application, "pantau_pemilu_staging"
-set :repo_url, "git@git.extrainteger.com:pantau-group/API/pemilu.git"
+set :repo_url, "git@github.com:pantaubersama/Pemilu.git"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp

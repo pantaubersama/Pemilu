@@ -25,9 +25,13 @@ class API::V1::Dashboard::Questions::Resources::QuestionFolders < API::V1::Appli
       headers AUTHORIZATION_HEADERS
     end
     paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
+    params do
+      optional :name, type: String
+    end
     oauth2
     get "/" do
       q = QuestionFolder.all
+      q = q.where("lower(name) like ?", '%' + params.name.downcase + '%') if params.name.present?
       resources = paginate(q)
       present :question_folders, resources, with: API::V1::Dashboard::Questions::Entities::QuestionFolder
       present_metas resources
