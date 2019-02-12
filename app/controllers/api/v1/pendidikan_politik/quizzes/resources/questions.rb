@@ -40,7 +40,7 @@ module API::V1::PendidikanPolitik::Quizzes::Resources
                               quiz_question_id: params.question_id, quiz_answer_id: params.answer_id
 
         present :quiz_participation, quiz_participation.reload, with: API::V1::PendidikanPolitik::Quizzes::Entities::QuizParticipation
-        present :meta, quiz, with: API::V1::PendidikanPolitik::Quizzes::Entities::MetaQuiz, current_user: current_user
+        present :meta, quiz, with: API::V1::PendidikanPolitik::Quizzes::Entities::MetaQuiz, current_user: current_user, quiz_participation_id: quiz_participation.id
       end
     end
   end
