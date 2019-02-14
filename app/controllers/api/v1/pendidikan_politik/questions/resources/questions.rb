@@ -11,8 +11,9 @@ module API::V1::PendidikanPolitik::Questions::Resources
       paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
       params do
         use :searchkick_search, default_m: :word_start, default_o: "and"
-        use :order, order_by: [:created_at, :cached_votes_up], default_order_by: :created_at, default_order: :desc
+        use :order, order_by: [:created_at, :cached_votes_up, :report_count], default_order_by: :created_at, default_order: :desc
         use :filter, filter_by: %i(user_verified_all user_verified_true user_verified_false)
+        optional :full_name, type:String, desc: "User Fullname"
       end
       optional_oauth2
       get "/" do
@@ -25,6 +26,7 @@ module API::V1::PendidikanPolitik::Questions::Resources
 
         default_conditions = {status: "active"}
         build_conditions = params.filter_by.present? ? default_conditions.merge(question_filter(params.filter_by)) : default_conditions
+        build_conditions = params.full_name.present? ? build_conditions.merge("user.full_name": params.full_name) : build_conditions
 
         resources = Question.search(q, operator: operator, match: match_word, misspellings: false,
           load: false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), order: build_order, where: build_conditions)
@@ -75,7 +77,7 @@ module API::V1::PendidikanPolitik::Questions::Resources
         q = Question.not_in_folder.find_by id: params[:id], user_id: current_user.id
 
         error!("ID not found : #{params.id}", 404) unless q
-        
+
         del = q.destroy!
 
         present :question, q, with: API::V1::PendidikanPolitik::Questions::Entities::Question
