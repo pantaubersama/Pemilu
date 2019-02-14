@@ -6,7 +6,7 @@ class Quiz < ApplicationRecord
 
   acts_as_paranoid
 
-  searchkick callbacks: :async,
+  searchkick callbacks:   :async,
              searchable:  [:title, :description],
              word_start:  [:title, :description],
              word_middle: [:title, :description],
@@ -52,6 +52,13 @@ class Quiz < ApplicationRecord
       QuizAnswer.create team: 2, content: a[idx].team_2_answer, quiz_question_id: q.id
     end
   end
-  
+
+  private
+
+  def broadcast_new_quiz
+    if [:published, "published"].include?(status)
+      Publishers::QuizNotification.publish "pemilu.quiz", { quiz_id: id, notif_type: :quiz, event_type: :quiz_created }
+    end
+  end
 
 end

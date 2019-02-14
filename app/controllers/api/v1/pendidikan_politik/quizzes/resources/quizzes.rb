@@ -15,23 +15,23 @@ module API::V1::PendidikanPolitik::Quizzes::Resources
       end
       optional_oauth2
       get "/" do
-        q = params.q.nil? || params.q.empty? ? "*" : params.q
-        operator = params.o.nil? || params.o.empty? ? "and" : params.o
+        q          = params.q.nil? || params.q.empty? ? "*" : params.q
+        operator   = params.o.nil? || params.o.empty? ? "and" : params.o
         match_word = params.m.nil? || params.m.empty? ? :word_start : params.m.to_sym
 
-        query = current_user.present? ? QuizParticipation.where(user_id: current_user.id) : nil
+        query            = current_user.present? ? QuizParticipation.where(user_id: current_user.id) : nil
         build_conditions = {}
         build_conditions = if current_user.present?
-          {id: {not: query.map(&:quiz_id) }}
-        end
-        default_order = {created_at: {order: :desc, unmapped_type: "long"}}
-        resources = Quiz.search(q, operator: operator, match: match_word, misspellings: false, order: default_order,
-          load: false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), where: build_conditions)
-        
-        present :quizzes, resources, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz, 
-          current_user: current_user,
-          index_version: true,
-          quiz_participations: (query.map{|q| [q.quiz_id, q.status]} if query) 
+                             { id: { not: query.map(&:quiz_id) } }
+                           end
+        default_order    = { created_at: { order: :desc, unmapped_type: "long" } }
+        resources        = Quiz.search(q, operator: operator, match: match_word, misspellings: false, order: default_order,
+                                       load:        false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), where: build_conditions)
+
+        present :quizzes, resources, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz,
+                current_user:              current_user,
+                index_version:             true,
+                quiz_participations:       (query.map { |q| [q.quiz_id, q.status] } if query)
         present_metas_searchkick resources
       end
 
@@ -46,27 +46,27 @@ module API::V1::PendidikanPolitik::Quizzes::Resources
       end
       oauth2
       get "/participated" do
-        q = params.q.nil? || params.q.empty? ? "*" : params.q
-        operator = params.o.nil? || params.o.empty? ? "and" : params.o
+        q          = params.q.nil? || params.q.empty? ? "*" : params.q
+        operator   = params.o.nil? || params.o.empty? ? "and" : params.o
         match_word = params.m.nil? || params.m.empty? ? :word_start : params.m.to_sym
 
-        query = current_user.present? ? QuizParticipation.where(user_id: current_user.id) : nil
+        query            = current_user.present? ? QuizParticipation.where(user_id: current_user.id) : nil
         build_conditions = {}
         build_conditions = if current_user.present? && params.filter_by.present?
-          if params.filter_by.to_sym != :all
-            {id: query.where(status: params.filter_by.to_s).map(&:quiz_id)}
-          end
-        end
-        default_order = {created_at: {order: :desc, unmapped_type: "long"}}
+                             if params.filter_by.to_sym != :all
+                               { id: query.where(status: params.filter_by.to_s).map(&:quiz_id) }
+                             end
+                           end
+        default_order    = { created_at: { order: :desc, unmapped_type: "long" } }
 
         resources = Quiz.search(q, operator: operator, match: match_word, misspellings: false, order: default_order,
-          load: false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), where: build_conditions)
-        
-        present :quizzes, resources, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz, 
-          current_user: current_user,
-          index_version: true,
-          quiz_participations: (query.map{|q| [q.quiz_id, q.status]} if query) 
-          present_metas_searchkick resources
+                                load:        false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), where: build_conditions)
+
+        present :quizzes, resources, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz,
+                current_user:              current_user,
+                index_version:             true,
+                quiz_participations:       (query.map { |q| [q.quiz_id, q.status] } if query)
+        present_metas_searchkick resources
       end
 
       desc "Detail quiz" do
