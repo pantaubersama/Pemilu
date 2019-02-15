@@ -9,10 +9,10 @@ class Question < ApplicationRecord
 
   include Reportable
   searchkick  callbacks: :async,
-              searchable: [:body], 
-              word_start: [:body], 
-              word_middle: [:body], 
-              word_end: [:body], 
+              searchable: [:body],
+              word_start: [:body],
+              word_middle: [:body],
+              word_end: [:body],
               word: [:body]
 
   include API::V1::Helpers
@@ -35,6 +35,7 @@ class Question < ApplicationRecord
 
   def search_data
     {
+      share_url:          self.share_url,
       id:                 self.id,
       cached_votes_up:    self.cached_votes_up,
       report_count:       self.report_count,
@@ -61,6 +62,10 @@ class Question < ApplicationRecord
 
   def user
     User.find self.user_id
+  end
+
+  def share_url
+    ENV["SHARE_DOMAIN"] + "/share/tanya/" + id
   end
 
 end

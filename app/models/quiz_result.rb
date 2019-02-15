@@ -71,6 +71,7 @@ class QuizResult
 
   def display_simple
     {
+      share_url: share_url,
       teams: [
                {
                  team:       team_source(1),
@@ -99,7 +100,7 @@ class QuizResult
       }
     }
   end
-  
+
 
   def meta_quizzes
     {
@@ -110,6 +111,10 @@ class QuizResult
         }
       }
     }
+  end
+
+  def share_url
+    ENV["SHARE_DOMAIN"] + "/share/kecenderungan/" + @user.id
   end
 
 
