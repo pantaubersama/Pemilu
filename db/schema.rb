@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_06_170528) do
+ActiveRecord::Schema.define(version: 2019_02_15_092240) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 2019_02_06_170528) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.integer "feeds_count", default: 0
     t.index ["deleted_at"], name: "index_crowlings_on_deleted_at"
   end
 
@@ -182,7 +183,7 @@ ActiveRecord::Schema.define(version: 2019_02_06_170528) do
     t.index ["deleted_at"], name: "index_quizzes_on_deleted_at"
   end
 
-  create_table "seed_migration_data_migrations", id: :serial, force: :cascade do |t|
+  create_table "seed_migration_data_migrations", id: :integer, default: nil, force: :cascade do |t|
     t.string "version"
     t.integer "runtime"
     t.datetime "migrated_on"
@@ -204,6 +205,7 @@ ActiveRecord::Schema.define(version: 2019_02_06_170528) do
     t.string "whodunnit"
     t.text "object"
     t.datetime "created_at"
+    t.text "object_changes"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
