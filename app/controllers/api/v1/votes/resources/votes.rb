@@ -19,7 +19,7 @@ module API::V1::Votes::Resources
       post "/" do
         question_must_not_in_folder!
         votable.liked_by current_user
-        if votable.class.name.eql?("Question")
+        if votable.class.name.eql?("Question") && current_user.id != votable.user.id
           get_upvotes = votable.reload.get_upvotes.size
           if get_upvotes < 5
             Publishers::QuestionNotification.publish("pemilu.question", { question_id: votable.id, receiver_id: votable.user.id, user_action_id: current_user.id, notif_type: :question, event_type: :upvote })
