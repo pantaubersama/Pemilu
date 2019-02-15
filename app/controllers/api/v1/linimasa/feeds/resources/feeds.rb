@@ -8,6 +8,7 @@ class API::V1::Linimasa::Feeds::Resources::Feeds < API::V1::ApplicationResource
     params do
       use :filter, filter_by: ["", "team_all", "team_id_1", "team_id_2", "team_id_3", "team_id_4"]
       optional :q, type: String
+      optional :username, type: String
     end
     paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
     get :pilpres do
@@ -18,6 +19,9 @@ class API::V1::Linimasa::Feeds::Resources::Feeds < API::V1::ApplicationResource
 
       default_order    = { created_at: { order: :desc, unmapped_type: "long" } }
       build_conditions = params.filter_by.present? ? team_filter(params.filter_by) : {}
+      if params.username.present?
+        build_conditions = build_conditions.merge({account_username: params.username})
+      end
       resources        = Feed.search(query, match: :text_middle, misspellings: false, load: false, page: (params.page || 1), per_page: (params.per_page || Pagy::VARS[:items]), order: default_order, where: build_conditions)
 
       present :feeds, resources, with: API::V1::Linimasa::Feeds::Entities::Feed
