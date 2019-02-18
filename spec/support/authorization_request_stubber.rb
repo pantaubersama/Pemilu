@@ -10,7 +10,7 @@ module AuthorizationRequestStubber
 
   DEFAULT_RESPONSE_HEADERS = { 'Content-Type' => 'application/json' }.freeze
 
-  def stub_credentials_request(access_token:, user: nil, is_admin:, is_eligible:, username: nil)
+  def stub_credentials_request(access_token:, user: nil, is_admin:, is_eligible:)
     stub_request(:get, "#{AUTH_BASE_URL}#{VERIFY_ENDPOINT}?access_token=#{access_token}").
       with(headers: DEFAULT_REQUEST_HEADERS).
       to_return(
@@ -21,7 +21,6 @@ module AuthorizationRequestStubber
                        "id":           "1036fd3c-04ed-4949-b57c-b7dc8ff3e737",
                        "email":        "namakukingkong@gmail.com",
                        "full_name":    "Joan Weeks",
-                       "username":     username,
                        "uid":          "6",
                        "provider":     "identitas",
                        "is_admin":     is_admin,
@@ -48,11 +47,6 @@ module AuthorizationRequestStubber
 
   def stub_auth_headers(access_token = SecureRandom.hex, user: nil)
     stub_credentials_request(access_token: access_token, user: user, is_admin: false, is_eligible: false)
-    { 'Authorization' => access_token }
-  end
-
-  def stub_surveymanual_auth_headers(access_token = SecureRandom.hex, user: nil)
-    stub_credentials_request(access_token: access_token, user: user, is_admin: true, is_eligible: false, username: :surveymanual)
     { 'Authorization' => access_token }
   end
 

@@ -23,7 +23,7 @@ describe API::V1::Dashboard::Votes::Resources::Votes do
     def like(question)
       params = { id: question.id, class_name: 'Question', vote_count: 10 }
       user.update(username: :surveymanual, is_admin: true)
-      post '/dashboard/v1/votes', headers: stub_surveymanual_auth_headers(user: user), params: params
+      post '/dashboard/v1/votes', headers: stub_auth_headers(user: user), params: params
     end
   end
 
