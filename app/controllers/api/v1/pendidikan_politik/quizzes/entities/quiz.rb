@@ -32,5 +32,7 @@ module API::V1::PendidikanPolitik::Quizzes::Entities
       end
     end
 
+    expose :share_url
+
   end
 end

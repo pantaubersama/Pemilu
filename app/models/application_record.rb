@@ -23,6 +23,7 @@ class ApplicationRecord < ActiveRecord::Base
 
   def index_all
     results = {}
+    results = { share_url: share_url } if self.respond_to? :share_url
     (self.attributes.keys.delete_if { |x| [:deleted_at, "deleted_at"].include?(x) } ).each do |column|
       results[column] = self.send(column.to_s)
     end

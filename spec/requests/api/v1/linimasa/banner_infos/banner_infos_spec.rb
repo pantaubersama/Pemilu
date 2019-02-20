@@ -4,7 +4,7 @@ RSpec.describe "Api::V1::Linimasa::BannerInfos", type: :request do
   describe "[GET] Endpoint /banner_infos" do
     it "should returns 200 with valid params when success" do
       get "/linimasa/v1/banner_infos"
-      expect(json_response[:data][:banner_infos].size).to eq(9)
+      expect(json_response[:data][:banner_infos].size).to eq(10)
       expect(response.status).to eq(200)
     end
   end
@@ -70,6 +70,13 @@ RSpec.describe "Api::V1::Linimasa::BannerInfos", type: :request do
       expect(json_response[:data][:banner_info][:page_name]).to eq("my_input")
       expect(json_response[:data][:banner_info][:title]).to eq("My Input")
       expect(json_response[:data][:banner_info][:body]).to eq("My Input")
+      expect(response.status).to eq(200)
+    end
+    it "should returns 200 with valid params when success" do
+      get "/linimasa/v1/banner_infos/show", params: {page_name: "rekapitulasi"}
+      expect(json_response[:data][:banner_info][:page_name]).to eq("rekapitulasi")
+      expect(json_response[:data][:banner_info][:title]).to eq("rekapitulasi")
+      expect(json_response[:data][:banner_info][:body]).to eq("rekapitulasi")
       expect(response.status).to eq(200)
     end
 

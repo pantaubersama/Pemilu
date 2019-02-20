@@ -71,6 +71,7 @@ class QuizResult
 
   def display_simple
     {
+      share_url: display_share_url,
       teams: [
                {
                  team:       team_source(1),
@@ -99,7 +100,7 @@ class QuizResult
       }
     }
   end
-  
+
 
   def meta_quizzes
     {
@@ -110,6 +111,22 @@ class QuizResult
         }
       }
     }
+  end
+
+  def display_share_url
+    if @display_answer
+      share_url_participation
+    else
+      @participation.present? ? share_url_participation : share_url
+    end
+  end
+
+  def share_url
+    ENV["SHARE_DOMAIN"] + "/share/kecenderungan/" + @user.id
+  end
+
+  def share_url_participation
+    ENV["SHARE_DOMAIN"] + "/share/hasilkuis/" + @participation.id
   end
 
 

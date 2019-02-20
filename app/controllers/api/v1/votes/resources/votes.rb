@@ -18,13 +18,19 @@ module API::V1::Votes::Resources
       oauth2
       post "/" do
         question_must_not_in_folder!
+        send_notif = true
+        if votable.votes_for.any? { |v| v.voter_id == current_user.id }
+          send_notif = false
+        end
         votable.liked_by current_user
-        if votable.class.name.eql?("Question")
-          get_upvotes = votable.reload.get_upvotes.size
-          if get_upvotes < 5
-            Publishers::QuestionNotification.publish("pemilu.question", { question_id: votable.id, receiver_id: votable.user.id, user_action_id: current_user.id, notif_type: :question, event_type: :upvote })
-          elsif [10, 30, 70, 100, 500, 1000].include?(get_upvotes)
-            Publishers::QuestionNotification.publish("pemilu.question", { question_id: votable.id, count: get_upvotes, notif_type: :question, event_type: :upvote_report })
+        if send_notif
+          if votable.class.name.eql?("Question") && current_user.id != votable.user.id
+            get_upvotes = votable.reload.get_upvotes.size
+            if get_upvotes < 5
+              Publishers::QuestionNotification.publish("pemilu.question", { question_id: votable.id, receiver_id: votable.user.id, user_action_id: current_user.id, notif_type: :question, event_type: :upvote })
+            elsif [10, 30, 70, 100, 500, 1000].include?(get_upvotes)
+              Publishers::QuestionNotification.publish("pemilu.question", { question_id: votable.id, count: get_upvotes, notif_type: :question, event_type: :upvote_report })
+            end
           end
         end
         present :vote, { status: votable.vote_registered? }, with: API::V1::Votes::Entities::VoteRegistered
@@ -41,7 +47,7 @@ module API::V1::Votes::Resources
       delete "/" do
         error!('Not found', 404) unless votable.votes_for.exists?(voter_id: current_user.id)
         question_must_not_in_folder!
-        status = votable.unliked_by(current_user)
+        status = votable.downvote_from(current_user)
         present :vote, { status: status }, with: API::V1::Votes::Entities::Unvote
       end
     end

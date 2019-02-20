@@ -7,5 +7,6 @@ module API::V1::PendidikanPolitik::Quizzes::Entities
     expose :image_result
     # expose :created_at, as: :participated_at, format_with: :friendly_date
     expose :created_at_in_word, as: :participated_at
+    expose :share_url
   end
 end
