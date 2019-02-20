@@ -115,7 +115,7 @@ class QuizResult
 
   def display_share_url
     if @display_answer
-      share_url
+      share_url_participation
     else
       @participation.present? ? share_url_participation : share_url
     end
