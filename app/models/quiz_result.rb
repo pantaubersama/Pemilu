@@ -114,8 +114,14 @@ class QuizResult
   end
 
   def display_share_url
-    if @display_answer
-      share_url_participation
+    # result = ::QuizResult.new(answers, current_user, participation, true).display
+    # result = ::QuizResult.new(answers, current_user, participations, true).display_overview
+    if @participation.present?
+      if @participation.is_a? Array
+        share_url
+      else
+        share_url_participation
+      end
     else
       @participation.present? ? share_url_participation : share_url
     end
