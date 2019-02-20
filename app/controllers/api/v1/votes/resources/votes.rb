@@ -26,7 +26,7 @@ module API::V1::Votes::Resources
         if send_notif
           if votable.class.name.eql?("Question") && current_user.id != votable.user.id
             get_upvotes = votable.reload.get_upvotes.size
-            if get_upvotes < 5
+            if get_upvotes <= 5
               Publishers::QuestionNotification.publish("pemilu.question", { question_id: votable.id, receiver_id: votable.user.id, user_action_id: current_user.id, notif_type: :question, event_type: :upvote })
             elsif [10, 30, 70, 100, 500, 1000].include?(get_upvotes)
               Publishers::QuestionNotification.publish("pemilu.question", { question_id: votable.id, count: get_upvotes, notif_type: :question, event_type: :upvote_report })
