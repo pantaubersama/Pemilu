@@ -183,7 +183,7 @@ ActiveRecord::Schema.define(version: 2019_02_15_092240) do
     t.index ["deleted_at"], name: "index_quizzes_on_deleted_at"
   end
 
-  create_table "seed_migration_data_migrations", id: :integer, default: nil, force: :cascade do |t|
+  create_table "seed_migration_data_migrations", id: :serial, force: :cascade do |t|
     t.string "version"
     t.integer "runtime"
     t.datetime "migrated_on"
