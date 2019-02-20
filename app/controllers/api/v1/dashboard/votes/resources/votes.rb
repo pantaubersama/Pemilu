@@ -22,11 +22,10 @@ module API::V1::Dashboard::Votes::Resources
       post "/" do
         authorize_voter!
         question_must_not_in_folder!
-        unixtimestamp = Time.zone.now
         if params.vote_count < 1
           params.vote_count = 1
         end
-        [*1..params.vote_count].map { |index| votable.liked_by current_user, :vote_scope => "voter_#{unixtimestamp}_#{index}" }
+        [*1..params.vote_count].map { |i| votable.vote_by voter: current_user, :duplicate => true }
         present :vote, { status: votable.vote_registered? }, with: API::V1::Votes::Entities::VoteRegistered
       end
     end
