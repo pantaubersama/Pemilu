@@ -19,6 +19,7 @@ module API
       mount API::V1::Dashboard::AppVersions::Routes
       mount API::V1::Dashboard::Home::Routes
       mount API::V1::Dashboard::QuestionsActions::Routes
+      mount API::V1::Dashboard::Votes::Routes
 
 
       # Swagger config

@@ -115,6 +115,7 @@ RSpec.configure do |config|
                          {id: "650a3d88-2f0e-403d-a94f-45ed878779a7", page_name: "tantangan", title: "Tantangan", body:"Tantangan"},
                          {id: "90495b56-414d-4865-9765-867ecfb14966", page_name: "perhitungan", title: "Perhitungan", body:"Perhitungan"},
                          {id: "8880dbe8-3324-4f7a-b3f6-8e97af355def", page_name: "my_input", title: "My Input", body:"My Input"},
+                         { id: "1f4d3106-f0a3-4ede-a271-441b788f6a6e", page_name: "rekapitulasi", title: "rekapitulasi", body:"rekapitulasi" },
                        ])
     Kenalan.create!([
                       { id: "c46bae56-8c87-4f54-8328-b959d89c931f", text: 'Melakukan Verifikasi' },

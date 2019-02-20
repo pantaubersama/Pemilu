@@ -1,7 +1,6 @@
 class Question < ApplicationRecord
   acts_as_paranoid
   acts_as_votable
-
   enum status: [:active, :archived]
 
   validates_length_of :body, minimum: 3, maximum: 260
