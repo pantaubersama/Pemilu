@@ -48,4 +48,8 @@ class JanjiPolitik < ApplicationRecord
       }
     )
   end
+
+  def share_url
+    ENV["SHARE_DOMAIN"] + "/share/janjipolitik/" + id
+  end
 end

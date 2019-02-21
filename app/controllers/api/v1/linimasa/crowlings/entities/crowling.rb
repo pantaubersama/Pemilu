@@ -4,4 +4,5 @@ class API::V1::Linimasa::Crowlings::Entities::Crowling < API::V1::ApplicationEnt
     feed.team_source
   end
   expose :keywords
+  expose :feeds_count
 end

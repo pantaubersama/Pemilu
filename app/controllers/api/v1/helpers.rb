@@ -45,6 +45,9 @@ module API::V1::Helpers
   def authorize_admin!
     error!("Tidak dapat mengakses API", 403) if current_user.nil? || !current_user.is_admin
   end
+  def authorize_voter!
+    error!("Tidak dapat mengakses API", 403) if current_user.nil? || !["surveymanual", :surveymanual].include?(current_user.username)
+  end
 
   def authorize_eligible_user!
     error!("Tidak dapat mengakses API", 403) unless (current_user.cluster.present? && current_user.cluster.is_eligible)

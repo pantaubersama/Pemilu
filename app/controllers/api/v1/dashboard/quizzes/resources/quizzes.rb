@@ -80,6 +80,9 @@ class API::V1::Dashboard::Quizzes::Resources::Quizzes < API::V1::ApplicationReso
       q.image = params.image
       status = q.save!
       q.create_full_quiz(params.questions, params.answers)
+
+      q.broadcast_new_quiz if params.status == "published"
+
       present :status, status
       present :quiz, q, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz
     end
@@ -121,7 +124,11 @@ class API::V1::Dashboard::Quizzes::Resources::Quizzes < API::V1::ApplicationReso
     oauth2
     post "/:id/publish" do
       q = Quiz.find params.id
+      status_was = q.status
       status = q.published!
+
+      q.broadcast_new_quiz if q.status == "published" && status_was == "draft"
+
       present :status, q.published?
       present :quiz, q, with: API::V1::PendidikanPolitik::Quizzes::Entities::Quiz
     end
@@ -171,7 +178,7 @@ class API::V1::Dashboard::Quizzes::Resources::Quizzes < API::V1::ApplicationReso
     def quiz_full_params
       permitted_params(params.except(:access_token)).permit(:title, :description, :status, :image => {}, questions: [], answers: [])
     end
-    
+
   end
 
 end

@@ -20,6 +20,7 @@ class Quiz < ApplicationRecord
 
   def search_data
     {
+      share_url:            self.share_url,
       id:                   self.id,
       title:                self.title,
       description:          self.description,
@@ -53,7 +54,11 @@ class Quiz < ApplicationRecord
     end
   end
 
-  private
+  def share_url
+    ENV["SHARE_DOMAIN"] + "/share/kuis/" + id
+  end
+
+  # private
 
   def broadcast_new_quiz
     if [:published, "published"].include?(status)

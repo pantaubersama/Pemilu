@@ -83,7 +83,7 @@ class API::V1::Linimasa::JanjiPolitiks::Resources::JanjiPolitiks < API::V1::Appl
     end
     get "/trash/:id" do
       resource = JanjiPolitik.deleted.find(params.id)
-      present :politiks, resource
+      present :politiks, resource, with: API::V1::Linimasa::JanjiPolitiks::Entities::JanjiPolitik
     end
 
     desc "Create janji politiks", headers: AUTHORIZATION_HEADERS

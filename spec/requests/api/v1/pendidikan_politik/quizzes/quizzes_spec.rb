@@ -291,7 +291,6 @@ RSpec.describe "Api::V1::PendidikanPolitik::Resources::Quizzes", type: :request 
 
     it "Quiz summary" do
       get "/pendidikan_politik/v1/quizzes/#{@quiz.id}/summary", headers: stub_auth_headers(@access_token)
-
       expect(json_response[:data][:user][:id]).to eq("1036fd3c-04ed-4949-b57c-b7dc8ff3e737")
       expect(json_response[:data][:quiz_participation][:id]).not_to eq(nil)
 
