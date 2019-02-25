@@ -23,8 +23,24 @@ class Question < ApplicationRecord
 
   after_create :give_achievement
 
+  ## temperatures
+  include Temperatures::Hotness
+
+  hotness_config do
+    {
+      upvote: 1,
+      downvote: 1
+    }
+  end
+
+  heat_config do
+    {
+      c: 1
+    }
+  end
+
   def give_achievement
-    total = Question.where(user_id: user_id).count
+    total = Question.where(user_id: user_id).count(:all)
     Publishers::QuestionBadge.publish({user_id: user_id, badge_code: "tanya", total: total})
   end
 
@@ -50,7 +66,10 @@ class Question < ApplicationRecord
         avatar:    self.user.avatar,
         full_name: self.user.full_name,
         about:     self.user.about,
-      }
+      },
+      temperature:                self.temperature,
+      last_temperature_at:        self.last_temperature_at,
+      epoch_last_temperature_at:  self.last_temperature_at.to_i
     }
   end
 

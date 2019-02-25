@@ -9,7 +9,7 @@ RSpec.describe "Api::V1::Dashboard::Home", type: :request do
     JanjiPolitik.reindex
     Feed.reindex
   end
-  
+
   describe "statistics" do
     it "success" do
       get "/dashboard/v1/home/statistics", headers: stub_admin_auth_headers(@access_token)

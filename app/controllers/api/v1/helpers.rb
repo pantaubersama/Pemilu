@@ -66,6 +66,14 @@ module API::V1::Helpers
     end
   end
 
+  def question_order(o, d)
+    if o.to_s == "hot_score"
+      { _script: Question.hot_score_es(d) }
+    else
+      { o.to_sym => { order: d.to_sym, unmapped_type: "long"  } }
+    end
+  end
+
   def team_filter(x)
     #team_all team_id_1 team_id_2
     case x

@@ -11,7 +11,7 @@ module API::V1::PendidikanPolitik::Questions::Resources
       paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
       params do
         use :searchkick_search, default_m: :word_start, default_o: "and"
-        use :order, order_by: [:created_at, :cached_votes_up, :report_count], default_order_by: :created_at, default_order: :desc
+        use :order, order_by: [:created_at, :cached_votes_up, :report_count, :hot_score], default_order_by: :created_at, default_order: :desc
         use :filter, filter_by: %i(user_verified_all user_verified_true user_verified_false)
         optional :full_name, type:String, desc: "User Fullname"
       end
@@ -22,7 +22,7 @@ module API::V1::PendidikanPolitik::Questions::Resources
         match_word = params.m.nil? || params.m.empty? ? :word_start : params.m.to_sym
 
         default_order = {created_at: {order: :desc, unmapped_type: "long"}}
-        build_order = params.order_by.present? && params.direction.present? ? { params.order_by.to_sym => { order: params.direction.to_sym, unmapped_type: "long"  } } : default_order
+        build_order = params.order_by.present? && params.direction.present? ? question_order(params.order_by, params.direction) : default_order
 
         default_conditions = {status: "active"}
         build_conditions = params.filter_by.present? ? default_conditions.merge(question_filter(params.filter_by)) : default_conditions

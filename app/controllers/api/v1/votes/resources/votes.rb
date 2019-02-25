@@ -33,6 +33,9 @@ module API::V1::Votes::Resources
             end
           end
         end
+        if votable.vote_registered?
+          votable.increase_temperature(Question.hotness_variables[:upvote])
+        end
         present :vote, { status: votable.vote_registered? }, with: API::V1::Votes::Entities::VoteRegistered
       end
 
@@ -48,6 +51,9 @@ module API::V1::Votes::Resources
         error!('Not found', 404) unless votable.votes_for.exists?(voter_id: current_user.id)
         question_must_not_in_folder!
         status = votable.downvote_from(current_user)
+        if votable.vote_registered?
+          votable.decrease_temperature(Question.hotness_variables[:downvote])
+        end
         present :vote, { status: status }, with: API::V1::Votes::Entities::Unvote
       end
     end

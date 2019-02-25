@@ -2,6 +2,8 @@ include ::API::V1::Helpers
 
 module API::V1::PendidikanPolitik::Questions::Entities
   class Question < API::V1::ApplicationEntity
+    expose :temperature
+    expose :last_temperature_at
     expose :id
     expose :body, documentation: {type: String, desc: "Question body"}
     # expose :created_at, if: lambda { |c,o| o[:index_version].present? }
