@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_26_093124) do
+ActiveRecord::Schema.define(version: 2019_02_26_124809) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -291,6 +291,16 @@ ActiveRecord::Schema.define(version: 2019_02_26_093124) do
     t.datetime "created_at"
     t.text "object_changes"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+  end
+
+  create_table "villages", force: :cascade do |t|
+    t.bigint "code"
+    t.bigint "district_code"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["district_code"], name: "index_villages_on_district_code"
+    t.index ["id"], name: "index_villages_on_id", unique: true
   end
 
   create_table "violation_report_details", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
