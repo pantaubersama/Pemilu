@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_26_052245) do
+ActiveRecord::Schema.define(version: 2019_02_26_060002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -79,6 +79,8 @@ ActiveRecord::Schema.define(version: 2019_02_26_052245) do
     t.integer "dapilOwner"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "maxAlokasiKursi"
+    t.integer "minAlokasiKursi"
     t.index ["id"], name: "index_dapils_on_id", unique: true
     t.index ["idPro"], name: "index_dapils_on_idPro"
     t.index ["idVersi"], name: "index_dapils_on_idVersi"
