@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_26_085250) do
+ActiveRecord::Schema.define(version: 2019_02_26_093124) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -97,6 +97,16 @@ ActiveRecord::Schema.define(version: 2019_02_26_085250) do
     t.index ["idVersi"], name: "index_dapils_on_idVersi"
     t.index ["idWilayah"], name: "index_dapils_on_idWilayah"
     t.index ["parent"], name: "index_dapils_on_parent"
+  end
+
+  create_table "districts", id: :serial, force: :cascade do |t|
+    t.integer "code"
+    t.integer "regency_code"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["id"], name: "index_districts_on_id", unique: true
+    t.index ["regency_code"], name: "index_districts_on_regency_code"
   end
 
   create_table "feeds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
