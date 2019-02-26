@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2019_02_26_124809) do
+=======
+ActiveRecord::Schema.define(version: 2019_02_26_083619) do
+>>>>>>> 4ead18e64df496286d562d3b5f84c9021bdb8a09
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -32,6 +36,17 @@ ActiveRecord::Schema.define(version: 2019_02_26_124809) do
     t.string "header_image"
     t.string "image"
     t.string "page_name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "candidates", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.string "gender"
+    t.integer "political_party_id"
+    t.integer "electoral_district_id"
+    t.integer "serial_number"
+    t.string "original_filename"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
