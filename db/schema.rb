@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_25_080940) do
+ActiveRecord::Schema.define(version: 2019_02_26_052245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -44,6 +44,46 @@ ActiveRecord::Schema.define(version: 2019_02_25_080940) do
     t.datetime "deleted_at"
     t.integer "feeds_count", default: 0
     t.index ["deleted_at"], name: "index_crowlings_on_deleted_at"
+  end
+
+  create_table "dapil_wilayahs", id: :serial, force: :cascade do |t|
+    t.integer "idDapil"
+    t.integer "idWilayah"
+    t.string "namaWilayah"
+    t.integer "urutanWilayahDapil"
+    t.boolean "flagInclude"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["id"], name: "index_dapil_wilayahs_on_id", unique: true
+    t.index ["idDapil"], name: "index_dapil_wilayahs_on_idDapil"
+    t.index ["idWilayah"], name: "index_dapil_wilayahs_on_idWilayah"
+  end
+
+  create_table "dapils", id: :serial, force: :cascade do |t|
+    t.string "nama"
+    t.integer "tingkat"
+    t.string "jumlahPenduduk"
+    t.integer "idWilayah"
+    t.integer "totalAlokasiKursi"
+    t.integer "idVersi"
+    t.integer "noDapil"
+    t.boolean "statusCoterminous"
+    t.integer "idPro"
+    t.integer "parent"
+    t.integer "alokasiKursi"
+    t.integer "sisaPenduduk"
+    t.integer "peringkatPenduduk"
+    t.integer "alokasiSisaKursi"
+    t.decimal "stdDev"
+    t.decimal "mean"
+    t.integer "dapilOwner"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["id"], name: "index_dapils_on_id", unique: true
+    t.index ["idPro"], name: "index_dapils_on_idPro"
+    t.index ["idVersi"], name: "index_dapils_on_idVersi"
+    t.index ["idWilayah"], name: "index_dapils_on_idWilayah"
+    t.index ["parent"], name: "index_dapils_on_parent"
   end
 
   create_table "feeds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
