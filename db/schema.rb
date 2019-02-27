@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
+ActiveRecord::Schema.define(version: 2019_02_26_124809) do
+=======
 ActiveRecord::Schema.define(version: 2019_02_26_083619) do
+>>>>>>> 4ead18e64df496286d562d3b5f84c9021bdb8a09
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -99,6 +103,16 @@ ActiveRecord::Schema.define(version: 2019_02_26_083619) do
     t.index ["parent"], name: "index_dapils_on_parent"
   end
 
+  create_table "districts", id: :serial, force: :cascade do |t|
+    t.integer "code"
+    t.integer "regency_code"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["id"], name: "index_districts_on_id", unique: true
+    t.index ["regency_code"], name: "index_districts_on_regency_code"
+  end
+
   create_table "feeds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "source_id", null: false
     t.text "source_text", null: false
@@ -141,6 +155,15 @@ ActiveRecord::Schema.define(version: 2019_02_26_083619) do
     t.string "description"
     t.string "acronym"
     t.string "logo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "provinces", id: :serial, force: :cascade do |t|
+    t.integer "code", null: false
+    t.string "name"
+    t.integer "level"
+    t.string "domain_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -248,7 +271,18 @@ ActiveRecord::Schema.define(version: 2019_02_26_083619) do
     t.index ["deleted_at"], name: "index_quizzes_on_deleted_at"
   end
 
-  create_table "seed_migration_data_migrations", id: :serial, force: :cascade do |t|
+  create_table "regencies", id: :serial, force: :cascade do |t|
+    t.integer "province_id", null: false
+    t.integer "code", null: false
+    t.string "name"
+    t.integer "level"
+    t.string "domain_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["province_id"], name: "index_regencies_on_province_id"
+  end
+
+  create_table "seed_migration_data_migrations", id: :integer, default: nil, force: :cascade do |t|
     t.string "version"
     t.integer "runtime"
     t.datetime "migrated_on"
@@ -272,6 +306,16 @@ ActiveRecord::Schema.define(version: 2019_02_26_083619) do
     t.datetime "created_at"
     t.text "object_changes"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+  end
+
+  create_table "villages", force: :cascade do |t|
+    t.bigint "code"
+    t.bigint "district_code"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["district_code"], name: "index_villages_on_district_code"
+    t.index ["id"], name: "index_villages_on_id", unique: true
   end
 
   create_table "violation_report_details", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
