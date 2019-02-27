@@ -12,7 +12,8 @@ module Parser
           name: row['namaWilayah'],
           level: row['tingkatWilayah'].to_i,
           domain_name: row['domainName'],
-          id_wilayah: row['idWilayah'].to_i
+          id_wilayah: row['idWilayah'].to_i,
+          id_parent: row['idParent'].to_i
         }
         Regency.create! data
       end
