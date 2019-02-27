@@ -20,14 +20,17 @@ module Parser
     end
 
     def self.insert_district
-      file = File.open(Rails.root.join('lib', 'data', 'districts_version_2.csv'))
+      file = File.read("#{ENV['SCRAPER_PATH_2']}/daftar_kecamatan_pileg2019.csv")
       csv = CSV.parse(file, headers: true)
       csv.each do |row|
         data = {
-          id: row['code'].to_i,
-          code: row['code'].to_i,
-          regency_code: row['regency_code'].to_i,
-          name: row['name']
+          id: row['kodeKec'].to_i,
+          code: row['kodeKec'].to_i,
+          regency_code: row['kodeKab'].to_i,
+          name: row['namaKec'],
+          id_parent: row['idParent'].to_i,
+          id_wilayah: row['idWilayah'].to_i,
+          level: row['tingkatWilayah'].to_i
         }
         District.create! data
       end
