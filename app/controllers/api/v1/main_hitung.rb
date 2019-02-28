@@ -8,11 +8,8 @@ module API
       # Exception Handlers
       include API::V1::ExceptionHandlers
 
-      # Mounting Modules Api
-      mount API::V1::Adventures::Routes
-
-      # Mounting Modules Api /linimasa
       mount API::V1::Hitung::Infos::Routes
+      mount API::V1::Hitung::RealCounts::Routes
 
 
       # Swagger config
