@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :regency do
-    province { nil }
+    province_id { nil }
     code { 1 }
     name { "MyString" }
     level { 1 }

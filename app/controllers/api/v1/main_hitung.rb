@@ -13,6 +13,10 @@ module API
 
       # Mounting Modules Api /linimasa
       mount API::V1::Hitung::Infos::Routes
+      mount API::V1::Hitung::Provinces::Routes
+      mount API::V1::Hitung::Regencies::Routes
+      mount API::V1::Hitung::Districts::Routes
+      mount API::V1::Hitung::Villages::Routes
 
 
       # Swagger config
