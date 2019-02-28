@@ -174,6 +174,13 @@ def delete_all_indices!
   end and true
 end
 
+def populate_region
+  FactoryBot.create :province, id: 92, code: 92, name: "ACEH", level: 1, id_wilayah: 81877
+  FactoryBot.create :regency, id: 9271, province_id: 92, code: 9271, name: "KOTA SORONG", level: 2, id_wilayah: 83289, id_parent: 81877
+  FactoryBot.create :district, id: 927110, regency_code: 9271, code: 927110, name: "MALADUM MES", id_parent: 83289, id_wilayah: 928196, level: 3
+  FactoryBot.create :village, id: 9271101004, code: 9271101004, district_code: 927110, name: "Tanjung Kasuari"
+end
+
 RSpec::Sidekiq.configure do |config|
   # Clears all job queues before each example
   config.clear_all_enqueued_jobs = true # default => true

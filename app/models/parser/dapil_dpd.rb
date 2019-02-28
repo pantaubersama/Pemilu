@@ -18,6 +18,7 @@ module Parser
       data = {
         id: row[0].to_i,
         nama: row[1],
+        idWilayah: row[2].to_i,
         tingkat: 3,
       }
 
