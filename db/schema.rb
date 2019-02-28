@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_15_092240) do
+ActiveRecord::Schema.define(version: 2019_02_25_080940) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -113,6 +113,8 @@ ActiveRecord::Schema.define(version: 2019_02_15_092240) do
     t.float "cached_weighted_report_average", default: 0.0
     t.uuid "question_folder_id"
     t.integer "status", default: 0
+    t.decimal "temperature", precision: 18, scale: 10
+    t.datetime "last_temperature_at"
     t.index ["deleted_at"], name: "index_questions_on_deleted_at"
     t.index ["user_id"], name: "index_questions_on_user_id"
   end
