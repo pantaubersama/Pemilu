@@ -175,10 +175,10 @@ def delete_all_indices!
 end
 
 def populate_region
-  Province.find_or_create_by id: 92, code: 92, name: "ACEH", level: 1, id_wilayah: 81877
-  Regency.find_or_create_by id: 9271, province_id: 92, code: 9271, name: "KOTA SORONG", level: 2, id_wilayah: 83289, id_parent: 81877
-  District.find_or_create_by id: 927110, regency_code: 9271, code: 927110, name: "MALADUM MES", id_parent: 83289, id_wilayah: 928196, level: 3
-  Village.find_or_create_by id: 9271101004, code: 9271101004, district_code: 927110, name: "Tanjung Kasuari"
+  FactoryBot.create :province, id: 92, code: 92, name: "ACEH", level: 1, id_wilayah: 81877
+  FactoryBot.create :regency, id: 9271, province_id: 92, code: 9271, name: "KOTA SORONG", level: 2, id_wilayah: 83289, id_parent: 81877
+  FactoryBot.create :district, id: 927110, regency_code: 9271, code: 927110, name: "MALADUM MES", id_parent: 83289, id_wilayah: 928196, level: 3
+  FactoryBot.create :village, id: 9271101004, code: 9271101004, district_code: 927110, name: "Tanjung Kasuari"
 end
 
 RSpec::Sidekiq.configure do |config|
