@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_27_081720) do
+ActiveRecord::Schema.define(version: 2019_02_28_041245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -128,6 +128,20 @@ ActiveRecord::Schema.define(version: 2019_02_27_081720) do
     t.text "source_media"
     t.index ["deleted_at"], name: "index_feeds_on_deleted_at"
     t.index ["type", "source_id", "crowling_id"], name: "index_feeds_on_type_and_source_id_and_crowling_id", unique: true
+  end
+
+  create_table "hitung_real_counts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "tps"
+    t.bigint "province_code"
+    t.bigint "regency_code"
+    t.bigint "district_code"
+    t.bigint "village_code"
+    t.integer "status", default: 0
+    t.decimal "latitude", precision: 18, scale: 10
+    t.decimal "longitude", precision: 18, scale: 10
+    t.uuid "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "janji_politiks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -284,7 +298,7 @@ ActiveRecord::Schema.define(version: 2019_02_27_081720) do
     t.index ["province_id"], name: "index_regencies_on_province_id"
   end
 
-  create_table "seed_migration_data_migrations", id: :integer, default: nil, force: :cascade do |t|
+  create_table "seed_migration_data_migrations", id: :serial, force: :cascade do |t|
     t.string "version"
     t.integer "runtime"
     t.datetime "migrated_on"
