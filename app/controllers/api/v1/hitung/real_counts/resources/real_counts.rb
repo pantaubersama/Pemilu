@@ -94,7 +94,7 @@ module API::V1::Hitung::RealCounts::Resources
       end
       oauth2
       post "/:id/publish" do
-        hitung = ::Hitung::RealCount.find params.id
+        hitung = ::Hitung::RealCount.find_by id: params.id, user_id: current_user.id
         status = hitung.published!
 
         present :status, status
@@ -107,7 +107,7 @@ module API::V1::Hitung::RealCounts::Resources
       end
       oauth2
       post "/:id/draft" do
-        hitung = ::Hitung::RealCount.find params.id
+        hitung = ::Hitung::RealCount.find_by id: params.id, user_id: current_user.id
         status = hitung.draft!
 
         present :status, status
