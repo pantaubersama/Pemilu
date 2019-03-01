@@ -96,4 +96,9 @@ module API::V1::Helpers
     { quiz_participations: { status: x.to_s } }
   end
 
+  def check_real_count_ownership! cu, fk
+    owned_real_counts = ::Hitung::RealCount.where(user_id: cu.id).map(&:id)
+    error! "Anda bukan pemilik perhitungan ini", 404 unless owned_real_counts.include? fk
+  end
+
 end
