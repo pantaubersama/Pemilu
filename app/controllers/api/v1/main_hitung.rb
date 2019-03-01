@@ -9,19 +9,21 @@ module API
       include API::V1::ExceptionHandlers
 
       mount API::V1::Hitung::Infos::Routes
-      mount API::V1::Hitung::RealCounts::Routes
-      mount API::V1::Hitung::Images::Routes
-      mount API::V1::Hitung::Calculation::Routes
       mount API::V1::Hitung::Provinces::Routes
       mount API::V1::Hitung::Regencies::Routes
       mount API::V1::Hitung::Districts::Routes
       mount API::V1::Hitung::Villages::Routes
       mount API::V1::Hitung::Dapils::Routes
 
+      mount API::V1::Hitung::RealCounts::Routes
+      mount API::V1::Hitung::Images::Routes
+      mount API::V1::Hitung::FormC1::Routes
+      mount API::V1::Hitung::Counter::Routes
 
 
       # Swagger config
       add_swagger_documentation(
+          array_use_braces: true,
           api_version:             'not set',
           doc_version:             'not set',
           hide_documentation_path: true,
