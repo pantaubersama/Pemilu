@@ -10,7 +10,7 @@ RSpec.describe "Api::V1::Hitung::Images", type: :request do
 
   describe "Upload file" do
     it "success" do
-      post "/hitung/v1/calculation/images/", headers: stub_auth_headers(@access_token),
+      post "/hitung/v1/images/", headers: stub_auth_headers(@access_token),
         params: {
           image_type: "suasana_tps",
           file: @file,
@@ -20,7 +20,7 @@ RSpec.describe "Api::V1::Hitung::Images", type: :request do
     end
 
     it "should fail" do
-      post "/hitung/v1/calculation/images/", headers: stub_auth_headers(@access_token),
+      post "/hitung/v1/images/", headers: stub_auth_headers(@access_token),
         params: {
           image_type: "suasana_tps",
           file: @file,
@@ -37,12 +37,12 @@ RSpec.describe "Api::V1::Hitung::Images", type: :request do
     end
 
     it "success" do
-      delete "/hitung/v1/calculation/images/#{@image1.id}", headers: stub_auth_headers(@access_token)
+      delete "/hitung/v1/images/#{@image1.id}", headers: stub_auth_headers(@access_token)
       expect(response.status).to eq(200)
     end
 
     it "should fail" do
-      delete "/hitung/v1/calculation/images/#{@image2.id}", headers: stub_auth_headers(@access_token)
+      delete "/hitung/v1/images/#{@image2.id}", headers: stub_auth_headers(@access_token)
       expect(response.status).to eq(404)
     end
   end

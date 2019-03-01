@@ -10,7 +10,7 @@ RSpec.describe "Api::V1::Hitung::FormC1", type: :request do
 
   describe "Create form C1 presiden" do
     it "success" do
-      put "/hitung/v1/calculation/form_c1/", headers: stub_auth_headers(@access_token),
+      put "/hitung/v1/form_c1/", headers: stub_auth_headers(@access_token),
         params: {
           hitung_real_count_id: @hitung1.id,
           form_c1_type: "presiden",
@@ -54,7 +54,7 @@ RSpec.describe "Api::V1::Hitung::FormC1", type: :request do
     end
 
     it "should fail" do
-      put "/hitung/v1/calculation/form_c1/", headers: stub_auth_headers(@access_token),
+      put "/hitung/v1/form_c1/", headers: stub_auth_headers(@access_token),
         params: {
           hitung_real_count_id: @hitung2.id,
           form_c1_type: "presiden",
