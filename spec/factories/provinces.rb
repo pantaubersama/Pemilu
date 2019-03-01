@@ -4,5 +4,6 @@ FactoryBot.define do
     name { "MyString" }
     level { 1 }
     domain_name { "MyString" }
+    id_wilayah { 1 }
   end
 end
