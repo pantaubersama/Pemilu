@@ -16,8 +16,7 @@ module API::V1::Hitung::Images::Resources
       end
       oauth2
       post "/" do
-        owned_real_counts = ::Hitung::RealCount.where(user_id: current_user.id).map(&:id)
-        error! "Anda bukan pemilik perhitungan ini", 404 unless owned_real_counts.include? params.hitung_real_count_id
+        check_real_count_ownership! current_user, params.hitung_real_count_id
 
         parameters = {
           image_type: params.image_type, hitung_real_count_id: params.hitung_real_count_id
@@ -38,8 +37,7 @@ module API::V1::Hitung::Images::Resources
       delete "/:id" do
         img = ::Hitung::Image.find params.id
 
-        owned_real_counts = ::Hitung::RealCount.where(user_id: current_user.id).map(&:id)
-        error! "Anda bukan pemilik gambar ini", 404 unless owned_real_counts.include? img.hitung_real_count_id
+        check_real_count_ownership! current_user, img.hitung_real_count_id
 
         img.remove_file
         status = img.destroy!

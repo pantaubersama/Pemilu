@@ -35,6 +35,7 @@ RSpec.describe "Api::V1::Hitung::Images", type: :request do
       @image1 = FactoryBot.create :hitung_image, hitung_real_count_id: @hitung1.id, file: @file
       @image2 = FactoryBot.create :hitung_image, hitung_real_count_id: @hitung2.id, file: @file
     end
+
     it "success" do
       delete "/hitung/v1/calculation/images/#{@image1.id}", headers: stub_auth_headers(@access_token)
       expect(response.status).to eq(200)
