@@ -1,7 +1,7 @@
 class API::V1::Hitung::Districts::Resources::Districts < API::V1::ApplicationResource
   helpers API::V1::Helpers
 
-  resources "districts" do
+  resource "districts" do
     desc "get list of districts" do
       detail "get list of districts"
     end

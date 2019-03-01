@@ -1,7 +1,7 @@
 class API::V1::Hitung::Villages::Resources::Villages < API::V1::ApplicationResource
   helpers API::V1::Helpers
 
-  resources "villages" do
+  resource "villages" do
     desc "get list of villages" do
       detail "get list of villages"
     end

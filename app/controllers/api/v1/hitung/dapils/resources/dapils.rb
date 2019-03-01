@@ -1,6 +1,6 @@
 module API::V1::Hitung::Dapils::Resources
   class Dapils < API::V1::ApplicationResource
-    resources "dapils" do
+    resource "dapils" do
       desc "get dapil by region" do
         detail "get dapil by region"
       end

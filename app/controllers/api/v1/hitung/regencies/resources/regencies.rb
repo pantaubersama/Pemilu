@@ -1,7 +1,7 @@
 class API::V1::Hitung::Regencies::Resources::Regencies < API::V1::ApplicationResource
   helpers API::V1::Helpers
 
-  resources "regencies" do
+  resource "regencies" do
     desc "get list of regencies" do
       detail "get list of regencies"
     end

@@ -1,7 +1,7 @@
 class API::V1::Hitung::Provinces::Resources::Provinces < API::V1::ApplicationResource
   helpers API::V1::Helpers
 
-  resources "provinces" do
+  resource "provinces" do
     desc "get list of provinces" do
       detail "get list of provinces"
     end
