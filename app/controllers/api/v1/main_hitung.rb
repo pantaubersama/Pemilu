@@ -12,6 +12,7 @@ module API
       mount API::V1::Hitung::RealCounts::Routes
       mount API::V1::Hitung::Images::Routes
       mount API::V1::Hitung::Regions::Routes
+      mount API::V1::Hitung::Calculation::Routes
 
 
       # Swagger config

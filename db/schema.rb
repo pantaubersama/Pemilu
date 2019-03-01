@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_28_082721) do
+ActiveRecord::Schema.define(version: 2019_02_28_101509) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -130,12 +130,40 @@ ActiveRecord::Schema.define(version: 2019_02_28_082721) do
     t.index ["type", "source_id", "crowling_id"], name: "index_feeds_on_type_and_source_id_and_crowling_id", unique: true
   end
 
+  create_table "hitung_form_c1s", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "a3_laki_laki", default: 0
+    t.integer "a3_perempuan", default: 0
+    t.integer "a4_laki_laki", default: 0
+    t.integer "a4_perempuan", default: 0
+    t.integer "a_dpk_laki_laki", default: 0
+    t.integer "a_dpk_perempuan", default: 0
+    t.integer "c7_dpt_laki_laki", default: 0
+    t.integer "c7_dpt_perempuan", default: 0
+    t.integer "c7_dptb_laki_laki", default: 0
+    t.integer "c7_dptb_perempuan", default: 0
+    t.integer "c7_dpk_laki_laki", default: 0
+    t.integer "c7_dpk_perempuan", default: 0
+    t.integer "disabilitas_terdaftar_laki_laki", default: 0
+    t.integer "disabilitas_terdaftar_perempuan", default: 0
+    t.integer "disabilitas_hak_pilih_laki_laki", default: 0
+    t.integer "disabilitas_hak_pilih_perempuan", default: 0
+    t.integer "surat_dikembalikan", default: 0
+    t.integer "surat_tidak_digunakan", default: 0
+    t.integer "surat_digunakan", default: 0
+    t.uuid "hitung_real_count_id"
+    t.integer "form_c1_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hitung_real_count_id"], name: "index_hitung_form_c1s_on_hitung_real_count_id"
+  end
+
   create_table "hitung_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "file"
     t.integer "image_type"
     t.uuid "hitung_real_count_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["hitung_real_count_id"], name: "index_hitung_images_on_hitung_real_count_id"
   end
 
   create_table "hitung_real_counts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
