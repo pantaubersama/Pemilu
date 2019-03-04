@@ -8,18 +8,17 @@ module API::V1::Hitung::Candidates::Resources
       end
       params do
         requires :dapil_id, type: Integer, desc: "Dapil ID"
-        optional :political_party_id, type: Integer, desc: "Political Party ID"
         requires :tingkat, type: String, values: %w[dpr provinsi kabupaten dpd], desc: "Tingkat Pemilihan"
       end
       paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
 
       get "/" do
-        if params.tingkat == "dpd"
-          candidates = Candidate.joins(:dapil).where(electoral_district_id: params.dapil_id).where("dapils.tingkat = ?", Dapil.tingkats[params.tingkat])
-        else
-          candidates = Candidate.joins(:dapil).where(electoral_district_id: params.dapil_id).where("dapils.tingkat = ? ", Dapil.tingkats[params.tingkat])
-          candidates = candidates.where(political_party_id: params.political_party_id) if params.political_party_id.present?
-        end
+        candidates = Candidate.joins(:dapil)
+          .where(electoral_district_id: params.dapil_id)
+          .where("dapils.tingkat = ? ", Dapil.tingkats[params.tingkat])
+          .order(political_party_id: :asc)
+          .order(serial_number: :asc)
+
         resources = paginate(candidates)
         present :candidates, resources, with: API::V1::Hitung::Candidates::Entities::Candidate
         present_metas resources
