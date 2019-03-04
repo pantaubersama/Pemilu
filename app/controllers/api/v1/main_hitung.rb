@@ -19,6 +19,7 @@ module API
       mount API::V1::Hitung::Images::Routes
       mount API::V1::Hitung::FormC1::Routes
       mount API::V1::Hitung::Counter::Routes
+      mount API::V1::Hitung::Candidates::Routes
 
 
       # Swagger config
