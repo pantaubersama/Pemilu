@@ -38,19 +38,10 @@ module Pemilu
       g.orm :active_record, primary_key_type: :uuid
     end
     config.active_job.queue_adapter = :sidekiq
-    # config.action_mailer.delivery_method = :mailgun
-    # config.action_mailer.mailgun_settings = {
-    #   api_key: ENV["MAILGUN_API_KEY"],
-    #   domain: ENV["MAILGUN_DOMAIN"],
-    # }
-    config.action_mailer.delivery_method = :smtp
-    config.action_mailer.smtp_settings = {
-      :user_name => 'cf9b0f106e5055',
-      :password => 'fbb3a9f9ca0af1',
-      :address => 'smtp.mailtrap.io',
-      :domain => 'smtp.mailtrap.io',
-      :port => '2525',
-      :authentication => :cram_md5
+    config.action_mailer.delivery_method = :mailgun
+    config.action_mailer.mailgun_settings = {
+      api_key: ENV["MAILGUN_API_KEY"],
+      domain: ENV["MAILGUN_DOMAIN"],
     }
   end
 end
