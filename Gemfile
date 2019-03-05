@@ -151,3 +151,4 @@ gem 'redis'
 gem "bunny"
 
 gem 'groupdate'
+gem 'mailgun-ruby', '~>1.1.6'
