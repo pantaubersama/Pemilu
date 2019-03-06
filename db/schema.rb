@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_04_171814) do
+ActiveRecord::Schema.define(version: 2019_03_05_055210) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -128,6 +128,24 @@ ActiveRecord::Schema.define(version: 2019_03_04_171814) do
     t.text "source_media"
     t.index ["deleted_at"], name: "index_feeds_on_deleted_at"
     t.index ["type", "source_id", "crowling_id"], name: "index_feeds_on_type_and_source_id_and_crowling_id", unique: true
+  end
+
+  create_table "hitung_calculation_details", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "hitung_real_count_id"
+    t.uuid "hitung_calculation_id"
+    t.string "actor_type"
+    t.string "actor_id"
+    t.integer "total_vote"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "hitung_calculations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "hitung_real_count_id"
+    t.integer "calculation_type"
+    t.integer "invalid_vote"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "hitung_form_c1s", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

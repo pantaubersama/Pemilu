@@ -10,31 +10,10 @@ RSpec.describe "Api::V1::Hitung::FormC1", type: :request do
 
   describe "Create form C1 presiden" do
     it "success" do
-      put "/hitung/v1/form_c1/", headers: stub_auth_headers(@access_token),
-        params: {
-          hitung_real_count_id: @hitung1.id,
-          form_c1_type: "presiden",
-          a3_laki_laki: 1,
-          a3_perempuan: 2,
-          a4_laki_laki: 3,
-          a4_perempuan: 4,
-          a_dpk_laki_laki: 5,
-          a_dpk_perempuan: 6,
-          c7_dpt_laki_laki: 7,
-          c7_dpt_perempuan: 8,
-          c7_dptb_laki_laki: 9,
-          c7_dptb_perempuan: 10,
-          c7_dpk_laki_laki: 11,
-          c7_dpk_perempuan: 12,
-          disabilitas_terdaftar_laki_laki: 13,
-          disabilitas_terdaftar_perempuan: 14,
-          disabilitas_hak_pilih_laki_laki: 15,
-          disabilitas_hak_pilih_perempuan: 16,
-          surat_dikembalikan: 17,
-          surat_tidak_digunakan: 18,
-          surat_digunakan: 19,
-        }
+      response, json_response = create_c1 "presiden"
+
       expect(response.status).to eq(200)
+      expect(@hitung1.forms.presiden.map(&:form_c1_type)).to eq(["presiden"])
       expect(json_response[:data][:form_c1][:form_c1_type]).to eq("presiden")
       expect(json_response[:data][:form_c1][:aggregates][:a3_total]).to eq(3)
       expect(json_response[:data][:form_c1][:aggregates][:a4_total]).to eq(7)
@@ -54,33 +33,51 @@ RSpec.describe "Api::V1::Hitung::FormC1", type: :request do
     end
 
     it "should fail" do
-      put "/hitung/v1/form_c1/", headers: stub_auth_headers(@access_token),
-        params: {
-          hitung_real_count_id: @hitung2.id,
-          form_c1_type: "presiden",
-          a3_laki_laki: 1,
-          a3_perempuan: 2,
-          a4_laki_laki: 3,
-          a4_perempuan: 4,
-          a_dpk_laki_laki: 5,
-          a_dpk_perempuan: 6,
-          c7_dpt_laki_laki: 7,
-          c7_dpt_perempuan: 8,
-          c7_dptb_laki_laki: 9,
-          c7_dptb_perempuan: 10,
-          c7_dpk_laki_laki: 11,
-          c7_dpk_perempuan: 12,
-          disabilitas_terdaftar_laki_laki: 13,
-          disabilitas_terdaftar_perempuan: 14,
-          disabilitas_hak_pilih_laki_laki: 15,
-          disabilitas_hak_pilih_perempuan: 16,
-          surat_dikembalikan: 17,
-          surat_tidak_digunakan: 18,
-          surat_digunakan: 19,
-        }
+      response, json_response = create_c1 "presiden", @hitung2.id
+
       expect(response.status).to eq(404)
     end
 
+  end
+
+  describe "Create 5 form C1" do
+    it "success" do
+      create_c1 "presiden"
+      create_c1 "dpr"
+      create_c1 "provinsi"
+      create_c1 "kabupaten"
+      create_c1 "dpd"
+      expect(@hitung1.forms.size).to eq(5)
+      expect(@hitung1.forms.map(&:form_c1_type)).to eq(["presiden", "dpr", "provinsi", "kabupaten", "dpd"])
+    end
+  end
+
+  def create_c1 form_type, hitung_id = @hitung1.id
+    put "/hitung/v1/form_c1/", headers: stub_auth_headers(@access_token),
+      params: {
+        hitung_real_count_id: hitung_id,
+        form_c1_type: form_type,
+        a3_laki_laki: 1,
+        a3_perempuan: 2,
+        a4_laki_laki: 3,
+        a4_perempuan: 4,
+        a_dpk_laki_laki: 5,
+        a_dpk_perempuan: 6,
+        c7_dpt_laki_laki: 7,
+        c7_dpt_perempuan: 8,
+        c7_dptb_laki_laki: 9,
+        c7_dptb_perempuan: 10,
+        c7_dpk_laki_laki: 11,
+        c7_dpk_perempuan: 12,
+        disabilitas_terdaftar_laki_laki: 13,
+        disabilitas_terdaftar_perempuan: 14,
+        disabilitas_hak_pilih_laki_laki: 15,
+        disabilitas_hak_pilih_perempuan: 16,
+        surat_dikembalikan: 17,
+        surat_tidak_digunakan: 18,
+        surat_digunakan: 19,
+      }
+    [response, json_response]
   end
 
 end
