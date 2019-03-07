@@ -1,9 +1,10 @@
 FactoryBot.define do
   factory :province do
-    code { 1 }
-    name { "MyString" }
+    code { 34 }
+    # id { 34 }
+    name { "DAERAH ISTIMEWA YOGYAKARTA" }
     level { 1 }
-    domain_name { "MyString" }
-    id_wilayah { 1 }
+    domain_name { "yogyakartaprov" }
+    id_wilayah { 41863 }
   end
 end

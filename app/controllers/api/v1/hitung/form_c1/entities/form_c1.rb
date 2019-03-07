@@ -1,6 +1,7 @@
 module API::V1::Hitung::FormC1::Entities
   class FormC1 < API::V1::ApplicationEntity
     expose :id
+    expose :real_count, using: API::V1::Hitung::RealCounts::Entities::RealCount
     expose :hitung_real_count_id, documentation: { type: String, required: true }
     expose :form_c1_type, documentation: { type: String, required: true, values: ["dpr", "provinsi", "kabupaten", "dpd", "presiden"] }
     expose :a3_laki_laki, documentation: { type: Integer, required: false, default: 0 }
