@@ -13,5 +13,6 @@ module API::V1::Hitung::RealCounts::Entities
     expose :latitude, documentation: { type: Float, required: true }
     expose :longitude, documentation: { type: Float, required: true }
     expose :status
+    expose :user, with: API::V1::Users::Entities::UserSimple
   end
 end

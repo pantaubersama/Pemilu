@@ -4,6 +4,18 @@ module API::V1::Hitung::Images::Resources
     helpers API::V1::SharedParams
 
     resource "images" do
+      desc "suasana pemilihan" do
+        detail "suasana pemilihan"
+        headers AUTHORIZATION_HEADERS
+      end
+      oauth2
+      paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
+      get "/suasana_tps" do
+        suasana_tps = ::Hitung::Image.where(image_type: "suasana_tps")
+        resources = paginate(suasana_tps)
+        present :images, resources, with: API::V1::Hitung::Images::Entities::Image
+        present_metas resources
+      end
 
       desc "Display image" do
         headers AUTHORIZATION_HEADERS
