@@ -47,4 +47,11 @@ RSpec.describe "Api::V1::Hitung::Images", type: :request do
     end
   end
 
+  describe "suasana tps" do
+    it "success return 200" do
+      get "/hitung/v1/images/suasana_tps", headers: stub_auth_headers(@access_token)
+      expect(response.status).to eq(200)
+    end
+  end
+
 end

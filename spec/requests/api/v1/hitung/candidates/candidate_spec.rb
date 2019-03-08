@@ -13,7 +13,7 @@ RSpec.describe "API::V1::Hitung::Candidates", type: :request do
 
     describe "DPD" do
       it "should return 200 and list DPD Caleg" do
-        dapil = FactoryBot.create(:dapil, tingkat: 3)
+        dapil = FactoryBot.create(:dapil,id: 1000, tingkat: 3)
         populate_candidate dapil
         get "/hitung/v1/candidates", params: {
           dapil_id: dapil.id,
@@ -25,7 +25,7 @@ RSpec.describe "API::V1::Hitung::Candidates", type: :request do
 
     describe "DPR" do
       it "should return 200 and list DPR Caleg by Political Party" do
-        dapil = FactoryBot.create(:dapil, tingkat: 0)
+        dapil = FactoryBot.create(:dapil, id: 1, tingkat: 0)
         populate_candidate dapil
         get "/hitung/v1/candidates", params: {
           dapil_id: dapil.id,
@@ -37,7 +37,7 @@ RSpec.describe "API::V1::Hitung::Candidates", type: :request do
 
     describe "Provinsi" do
       it "should return 200 and list Provinsi Caleg by Political Party" do
-        dapil = FactoryBot.create(:dapil, tingkat: 1)
+        dapil = FactoryBot.create(:dapil, id: 81, tingkat: 1)
         populate_candidate dapil
         get "/hitung/v1/candidates", params: {
           dapil_id: dapil.id,
@@ -49,7 +49,7 @@ RSpec.describe "API::V1::Hitung::Candidates", type: :request do
 
     describe "Kabupaten" do
       it "should return 200 and list Kabupaten Caleg by Political Party" do
-        dapil = FactoryBot.create(:dapil, tingkat: 2)
+        dapil = FactoryBot.create(:dapil,id: 1041, tingkat: 2)
         populate_candidate dapil
         get "/hitung/v1/candidates", params: {
           dapil_id: dapil.id,
@@ -60,7 +60,6 @@ RSpec.describe "API::V1::Hitung::Candidates", type: :request do
     end
 
     def populate_candidate dapil
-      FactoryBot.create(:dapil)
       FactoryBot.create(:political_party)
       FactoryBot.create(:candidate, electoral_district_id: dapil.id)
       FactoryBot.create(:candidate, electoral_district_id: dapil.id)

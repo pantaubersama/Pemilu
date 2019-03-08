@@ -4,6 +4,44 @@ module API::V1::Hitung::Images::Resources
     helpers API::V1::SharedParams
 
     resource "images" do
+      desc "suasana pemilihan" do
+        detail "suasana pemilihan"
+        headers AUTHORIZATION_HEADERS
+      end
+      oauth2
+      paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
+      get "/suasana_tps" do
+        suasana_tps = ::Hitung::Image.where(image_type: "suasana_tps")
+        resources = paginate(suasana_tps)
+        present :images, resources, with: API::V1::Hitung::Images::Entities::Image
+        present_metas resources
+      end
+
+      desc "Display image" do
+        headers AUTHORIZATION_HEADERS
+        detail "Display image"
+      end
+      oauth2
+      get "/:id" do
+        image = ::Hitung::Image.find params.id
+        present :image, image, with: API::V1::Hitung::Images::Entities::Image
+      end
+
+      desc "List images" do
+        headers AUTHORIZATION_HEADERS
+        detail "List images"
+      end
+      params do
+        requires :hitung_real_count_id
+      end
+      oauth2
+      get "/" do
+        check_real_count_ownership! current_user, params.hitung_real_count_id
+
+        images = ::Hitung::Image.where(hitung_real_count_id: params.hitung_real_count_id)
+
+        present :image, images, with: API::V1::Hitung::Images::Entities::Image
+      end
 
       desc "Upload image" do
         detail "Upload image"
