@@ -23,6 +23,27 @@ module API::V1::Hitung::Calculations::Resources
 
     resource "calculations" do
 
+      desc "Display saved calculation" do
+        detail "Display saved calculation"
+        headers AUTHORIZATION_HEADERS
+      end
+      params do
+        requires :hitung_real_count_id, type: String
+        requires :calculation_type, type: String, values: ["dpr", "provinsi", "kabupaten", "dpd", "presiden"]
+      end
+      oauth2
+      get "/" do
+        check_real_count_ownership! current_user, params.hitung_real_count_id
+
+        hitung = ::Hitung::RealCount.find params.hitung_real_count_id
+        calculation = ::Hitung::Calculation.find_by hitung_real_count_id: params.hitung_real_count_id,
+          calculation_type: params.calculation_type
+
+        error! "Belum ada perhitungan", 404 if calculation.nil?
+
+        present :calculation, calculation, with: API::V1::Hitung::Calculations::Entities::Calculation
+      end
+
       desc "Create / update calculation" do
         detail <<~DESCRIPTION
           Create / update calculation
@@ -76,8 +97,8 @@ module API::V1::Hitung::Calculations::Resources
       put "/" do
         check_real_count_ownership! current_user, params.hitung_real_count_id
 
-        hitung = Hitung::RealCount.find params.hitung_real_count_id
-        calculation = Hitung::Calculation.find_or_initialize_by hitung_real_count_id: params.hitung_real_count_id,
+        hitung = ::Hitung::RealCount.find params.hitung_real_count_id
+        calculation = ::Hitung::Calculation.find_or_initialize_by hitung_real_count_id: params.hitung_real_count_id,
           calculation_type: params.calculation_type
 
         status = calculation.save_all! params

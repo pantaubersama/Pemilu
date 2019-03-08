@@ -5,6 +5,25 @@ module API::V1::Hitung::FormC1::Resources
 
     resource "form_c1" do
 
+      desc "Display saved form C1" do
+        detail "Display saved form C1"
+        headers AUTHORIZATION_HEADERS
+      end
+      params do
+        requires :hitung_real_count_id
+        requires :form_c1_type, values: ["dpr", "provinsi", "kabupaten", "dpd", "presiden"]
+      end
+      oauth2
+      get "/" do
+        check_real_count_ownership! current_user, params.hitung_real_count_id
+
+        c1 = ::Hitung::FormC1.find_by hitung_real_count_id: params.hitung_real_count_id, form_c1_type: params.form_c1_type
+
+        error! "Belum ada", 404 if c1.nil?
+
+        present :form_c1, c1, with: API::V1::Hitung::FormC1::Entities::FormC1
+      end
+
       desc "Create / update Form C1" do
         detail "Create / update Form C1"
         headers AUTHORIZATION_HEADERS

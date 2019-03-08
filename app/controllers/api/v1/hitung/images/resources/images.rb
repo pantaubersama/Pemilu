@@ -5,6 +5,32 @@ module API::V1::Hitung::Images::Resources
 
     resource "images" do
 
+      desc "Display image" do
+        headers AUTHORIZATION_HEADERS
+        detail "Display image"
+      end
+      oauth2
+      get "/:id" do
+        image = ::Hitung::Image.find params.id
+        present :image, image, with: API::V1::Hitung::Images::Entities::Image
+      end
+
+      desc "List images" do
+        headers AUTHORIZATION_HEADERS
+        detail "List images"
+      end
+      params do
+        requires :hitung_real_count_id
+      end
+      oauth2
+      get "/" do
+        check_real_count_ownership! current_user, params.hitung_real_count_id
+
+        images = ::Hitung::Image.where(hitung_real_count_id: params.hitung_real_count_id)
+
+        present :image, images, with: API::V1::Hitung::Images::Entities::Image
+      end
+
       desc "Upload image" do
         detail "Upload image"
         headers AUTHORIZATION_HEADERS
