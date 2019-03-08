@@ -4,6 +4,13 @@ class Hitung::Calculation < ApplicationRecord
   belongs_to :real_count, foreign_key: :hitung_real_count_id
   has_many :details, class_name: "Hitung::CalculationDetail", foreign_key: :hitung_calculation_id, dependent: :destroy
 
+  def candidates
+    details.where(actor_type: ["Candidate", "President"])
+  end
+
+  def parties
+    details.where(actor_type: "Party")
+  end
   accepts_nested_attributes_for :details
 
   def save_all! params
@@ -17,6 +24,16 @@ class Hitung::Calculation < ApplicationRecord
     end
 
     parties_params = []
+    if params.parties.present?
+      parties_params = params.parties.map do |x|
+        x[:hitung_real_count_id] =  params.hitung_real_count_id
+        x[:calculation] =  self
+        x[:actor_type] = "Party"
+        x[:actor_id] = x[:id]
+        x.delete(:id)
+        x
+      end unless params.calculation_type == "presiden" && params.calculation_type == "dpd"
+    end
 
     self.invalid_vote = params.invalid_vote
 

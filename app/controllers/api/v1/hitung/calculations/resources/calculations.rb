@@ -98,6 +98,18 @@ module API::V1::Hitung::Calculations::Resources
         check_real_count_ownership! current_user, params.hitung_real_count_id
 
         hitung = ::Hitung::RealCount.find params.hitung_real_count_id
+
+        if params.calculation_type == "presiden"
+          ids = params.candidates.map(&:id)
+          error! "ID Presiden = 1 atau 2", 422 unless ids.include?(1) && ids.include?(2)
+        else params.calculation_type == "presiden"
+          dapil = Dapil.by_wilayah params.calculation_type, hitung.province, hitung.regency, hitung.district
+          caleg = Candidate.where(electoral_district_id: dapil.id).map(&:id)
+
+          not_found = params.candidates.map(&:id) - caleg
+          error! "Caleg ID #{not_found} bukan bagian dari Dapil #{dapil.nama} [#{dapil.id}]", 422 if not_found.size > 0
+        end
+
         calculation = ::Hitung::Calculation.find_or_initialize_by hitung_real_count_id: params.hitung_real_count_id,
           calculation_type: params.calculation_type
 
