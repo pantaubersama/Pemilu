@@ -8,7 +8,6 @@ module API
       # Exception Handlers
       include API::V1::ExceptionHandlers
 
-      mount API::V1::Hitung::Infos::Routes
       mount API::V1::Hitung::Provinces::Routes
       mount API::V1::Hitung::Regencies::Routes
       mount API::V1::Hitung::Districts::Routes
