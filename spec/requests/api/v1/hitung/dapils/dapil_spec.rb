@@ -26,8 +26,8 @@ RSpec.describe "API::V1::Hitung::Dapils", type: :request do
           FactoryBot.create(:dapil, nama: "SUMATERA SELATAN", tingkat: "dpd", idWilayah: province.id_wilayah)
           get "/hitung/v1/dapils", params: {
                                              province_code: province.code,
-                                             regency_code: 1,
-                                             district_code: 1,
+                                             regency_code: regency.code,
+                                             district_code: district.code,
                                              tingkat: "dpd",
                                            }
           expect(response.status).to eq(200)
@@ -46,7 +46,7 @@ RSpec.describe "API::V1::Hitung::Dapils", type: :request do
           get "/hitung/v1/dapils", params: {
                                              province_code: province.code,
                                              regency_code: regency.code,
-                                             district_code: 1,
+                                             district_code: district.code,
                                              tingkat: "dpr",
                                            }
 
@@ -65,7 +65,7 @@ RSpec.describe "API::V1::Hitung::Dapils", type: :request do
           get "/hitung/v1/dapils", params: {
                                              province_code: province.code,
                                              regency_code: regency.code,
-                                             district_code: 1,
+                                             district_code: district.code,
                                              tingkat: "provinsi",
                                            }
 
