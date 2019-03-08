@@ -22,6 +22,8 @@ module API
       mount API::V1::Hitung::UnduhData::Routes
       mount API::V1::Hitung::Calculations::Routes
 
+      mount API::V1::Hitung::Summary::Routes
+
 
       # Swagger config
       add_swagger_documentation(
