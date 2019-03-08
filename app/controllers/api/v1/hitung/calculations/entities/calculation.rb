@@ -7,6 +7,16 @@ module API::V1::Hitung::Calculations::Entities
     expose :invalid_vote
     expose :created_at_in_word
     expose :real_count, using: API::V1::Hitung::RealCounts::Entities::RealCount
-    expose :details, as: :candidates, using: API::V1::Hitung::Calculations::Entities::Detail
+    expose :candidates, using: API::V1::Hitung::Calculations::Entities::Detail
+    expose :parties, using: API::V1::Hitung::Calculations::Entities::Detail
+
+    private
+      def candidates
+        object.candidates
+      end
+
+      def parties
+        object.parties
+      end
   end
 end
