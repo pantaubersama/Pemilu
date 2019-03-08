@@ -23,7 +23,7 @@ RSpec.describe "Api::V1::Hitung::RealCounts", type: :request do
         }
       expect(response.status).to eq(201)
       expect(json_response[:data][:status]).to eq(true)
-      expect(json_response[:data][:real_count][:status]).to eq("draft")
+      expect(json_response[:data][:real_count][:status]).to eq("published")
     end
   end
 
