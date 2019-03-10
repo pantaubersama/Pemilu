@@ -20,8 +20,8 @@ module API::V1::Hitung::RealCounts::Resources
         present_metas hitungs
       end
 
-      desc "Create draft real count" do
-        detail "Create draft real count"
+      desc "Create real count" do
+        detail "Create real count"
         params API::V1::Hitung::RealCounts::Entities::RealCount.documentation
         headers AUTHORIZATION_HEADERS
       end
@@ -29,7 +29,7 @@ module API::V1::Hitung::RealCounts::Resources
       post "/" do
         hitung = ::Hitung::RealCount.new hitung_params
         hitung.user_id = current_user.id
-        hitung.status = "draft"
+        hitung.status = "published"
 
         p = Province.find_by code: params.province_code
         error! "Provinsi tidak ditemukan", 404 unless p
@@ -53,7 +53,7 @@ module API::V1::Hitung::RealCounts::Resources
         detail "Show real count"
       end
       get "/:id" do
-        hitung = ::Hitung::RealCount.published.find params.id
+        hitung = ::Hitung::RealCount.find params.id
         present :real_count, hitung, with: API::V1::Hitung::RealCounts::Entities::RealCount
       end
 
