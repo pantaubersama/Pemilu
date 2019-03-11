@@ -1,16 +1,16 @@
 module API::V1::Hitung::Summary::Resources
-  class President < API::V1::ApplicationResource
+  class PresidentDetail < API::V1::ApplicationResource
     resource "summary" do
-      desc "pemilihan presiden" do
-        detail "pemilihan presiden <br>
+      desc "perhitungan presiden" do
+        detail "perhitungan presiden <br>
                 level : <br>
                 0 => se-Indonesia <br>
                 1 => Provinsi <br>
                 2 => Kabupaten / Kota <br>
                 3 => Kecamatan <br>
                 4 => Desa / Kelurahan <br>
-                5 => TPS <br>
-                6 => Perseorangan <br>
+                5 => TPS (Rata - rata) <br>
+                6 => Perseorangan (Satu orang satu TPS) <br>
                "
       end
       params do
@@ -72,6 +72,7 @@ module API::V1::Hitung::Summary::Resources
         present :percentage, result, using: API::V1::Hitung::Summary::Entities::President
 
       end
+
     end
   end
 end
