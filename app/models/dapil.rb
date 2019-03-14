@@ -12,9 +12,17 @@ class Dapil < ApplicationRecord
         .where(idWilayah: regency.id_wilayah)
         .where("dapils.tingkat = ?", 0).last.dapil
     when "provinsi"
-      dapil = DapilWilayah.joins(:dapil)
+      query = DapilWilayah.joins(:dapil)
         .where(idWilayah: regency.id_wilayah)
-        .where("dapils.tingkat = ?", 1).last.dapil
+        .where("dapils.tingkat = ?", 1)
+      if query.empty?
+        query = DapilWilayah.joins(:dapil)
+        .where(idWilayah: district.id_wilayah)
+        .where("dapils.tingkat = ?", 1)
+        dapil = query.last.dapil
+      else
+        dapil = query.last.dapil
+      end
     when "kabupaten"
       dapil = DapilWilayah.joins(:dapil)
         .where(idWilayah: district.id_wilayah)
