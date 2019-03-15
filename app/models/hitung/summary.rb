@@ -3,7 +3,7 @@ module Hitung
     attr_accessor :calculation
 
     def percentage_of x, total
-      ((x.to_f / total) * 100).round(2)
+      ((x.to_f / total) * 100).round(3)
     end
 
   end

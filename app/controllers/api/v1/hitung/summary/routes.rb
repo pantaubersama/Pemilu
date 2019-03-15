@@ -7,5 +7,6 @@ module API::V1::Hitung::Summary
     mount API::V1::Hitung::Summary::Resources::Contribution
     mount API::V1::Hitung::Summary::Resources::PresidentList
     mount API::V1::Hitung::Summary::Resources::PresidentDetail
+    mount API::V1::Hitung::Summary::Resources::Candidates
   end
 end
