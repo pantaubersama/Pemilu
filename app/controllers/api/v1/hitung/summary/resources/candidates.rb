@@ -13,9 +13,10 @@ module API::V1::Hitung::Summary::Resources
       params do
         requires :dapil_id, type: Integer
         requires :level, type: Integer, values: (0..3).to_a
+        optional :hitung_real_count_id, type: String
       end
       get "candidates/show" do
-        hitung = ::Hitung::CalegSummary.new params.level, params.dapil_id
+        hitung = ::Hitung::CalegSummary.new params.level, params.dapil_id, params.hitung_real_count_id
         result, invalid_vote, valid_vote = hitung.run
         present :invalid_vote, invalid_vote, using: API::V1::Hitung::Summary::Entities::Candidate
         present :valid_vote, valid_vote, using: API::V1::Hitung::Summary::Entities::Candidate

@@ -64,6 +64,7 @@ module Hitung
         .group("hitung_real_counts.village_code, hitung_real_counts.tps")
         .select(str_select)
         .where(dapil_id: @dapil_id, calculation_type: @calculation_type)
+        .where("hitung_real_counts.status = 1")
 
       hitung = hitung.where("hitung_real_counts.id = ? ", @real_count_id) if @real_count_id.present?
       hitung.map(&:invalid_vote).sum
@@ -74,10 +75,13 @@ module Hitung
       str_group = "hitung_real_counts.village_code, hitung_real_counts.tps, candidates.political_party_id, hitung_calculation_details.actor_id, hitung_calculation_details.actor_type, candidates.political_party_id, actor_name, actor_serial_number"
       hitung = Hitung::CalculationDetail.joins(:calculation => [:real_count])
         .joins("inner join candidates on cast(hitung_calculation_details.actor_id as integer) = cast(candidates.id as integer)")
-        .where("hitung_calculation_details.actor_type = 'Candidate' and hitung_calculations.dapil_id = ? and hitung_calculations.calculation_type = ?", @dapil_id, @calculation_type)
+        .where("hitung_real_counts.status = 1 and hitung_calculation_details.actor_type = 'Candidate' and hitung_calculations.dapil_id = ? and hitung_calculations.calculation_type = ?", @dapil_id, @calculation_type)
         .select(str_select)
         .group(str_group)
         .order("candidates.political_party_id asc")
+
+      hitung = hitung.where("hitung_real_counts.id = ? ", @real_count_id) if @real_count_id.present?
+      hitung
     end
 
     def run_total_vote_party
@@ -85,9 +89,12 @@ module Hitung
       str_group = "hitung_real_counts.village_code, hitung_real_counts.tps, hitung_calculation_details.actor_id, hitung_calculation_details.actor_type, political_parties.name, political_parties.serial_number, political_parties.logo"
       hitung = Hitung::CalculationDetail.joins(:calculation => [:real_count])
         .joins("inner join political_parties on cast(hitung_calculation_details.actor_id as integer) = cast(political_parties.id as integer)")
-        .where("hitung_calculation_details.actor_type = 'Party' and hitung_calculations.dapil_id = ? and hitung_calculations.calculation_type = ?", @dapil_id, @calculation_type)
+        .where("hitung_real_counts.status = 1 and hitung_calculation_details.actor_type = 'Party' and hitung_calculations.dapil_id = ? and hitung_calculations.calculation_type = ?", @dapil_id, @calculation_type)
         .select(str_select)
         .group(str_group)
+
+      hitung = hitung.where("hitung_real_counts.id = ? ", @real_count_id) if @real_count_id.present?
+      hitung
     end
 
     def decorate_caleg caleg

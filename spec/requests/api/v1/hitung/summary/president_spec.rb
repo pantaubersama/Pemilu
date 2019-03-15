@@ -201,6 +201,10 @@ RSpec.describe "Persentase perhitungan presiden", type: :request do
     end
   end
 
+  describe "[GET] Persentase perseorangan /hitung/v1/summary/president/show?level=6&region=3375011006&tps=1&hitung_real_count_id=YOUR_UUID" do
+    pending "test me please"
+  end
+
 
   def calculation user, tps, vote_candidate_1, vote_candidate_2, invalid_vote=0, region=nil
     @real_count = FactoryBot.create :hitung_real_count, tps: tps, status: "published", user_id: user.id, province_code: region[:province_code], regency_code: region[:regency_code], district_code: region[:district_code], village_code: region[:village_code]
