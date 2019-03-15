@@ -202,7 +202,7 @@ RSpec.describe "Persentase perhitungan presiden", type: :request do
   end
 
   describe "[GET] Persentase perseorangan /hitung/v1/summary/president/show?level=6&region=3375011006&tps=1&hitung_real_count_id=YOUR_UUID" do
-    pending "test me please"
+    pending "test me please ..."
   end
 
 
