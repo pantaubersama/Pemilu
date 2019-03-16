@@ -4,6 +4,17 @@ class Hitung::Calculation < ApplicationRecord
   belongs_to :real_count, foreign_key: :hitung_real_count_id
   has_many :details, class_name: "Hitung::CalculationDetail", foreign_key: :hitung_calculation_id, dependent: :destroy
 
+
+  after_create :save_dapil
+
+  def save_dapil
+    unless calculation_type == "presiden"
+      dapil = Dapil.by_wilayah self.calculation_type, real_count.province, real_count.regency, real_count.district
+      self.dapil_id = dapil.id
+      self.save!
+    end
+  end
+
   def candidates
     details.where(actor_type: ["Candidate", "President"])
   end
