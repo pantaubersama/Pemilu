@@ -165,6 +165,7 @@ RSpec.describe "Persentase perhitungan presiden", type: :request do
     it "success return 200" do
       get "/hitung/v1/real_counts?page=1&village_code=1606011010"
       expect(response.status).to eq(200)
+      expect(json_response[:data][:real_counts].size).to eq(2)
       expect(json_response[:data][:real_counts][0][:village_code]).to eq(1606011010)
     end
   end
