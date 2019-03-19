@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :hitung_calculation, class: 'Hitung::Calculation' do
     hitung_real_count_id { "" }
-    counter_type { 1 }
+    calculation_type { 1 }
     invalid_vote { 1 }
   end
 end

@@ -4,19 +4,6 @@ module API::V1::Hitung::Images::Resources
     helpers API::V1::SharedParams
 
     resource "images" do
-      desc "suasana pemilihan" do
-        detail "suasana pemilihan"
-        headers AUTHORIZATION_HEADERS
-      end
-      oauth2
-      paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
-      get "/suasana_tps" do
-        suasana_tps = ::Hitung::Image.where(image_type: "suasana_tps")
-        resources = paginate(suasana_tps)
-        present :images, resources, with: API::V1::Hitung::Images::Entities::Image
-        present_metas resources
-      end
-
       desc "Display image" do
         headers AUTHORIZATION_HEADERS
         detail "Display image"
@@ -28,19 +15,21 @@ module API::V1::Hitung::Images::Resources
       end
 
       desc "List images" do
-        headers AUTHORIZATION_HEADERS
         detail "List images"
       end
       params do
-        requires :hitung_real_count_id
+        optional :hitung_real_count_id
+        optional :image_type, values: ["", "c1_presiden", "c1_dpr_ri", "c1_dpd", "c1_dprd_provinsi", "c1_dprb_kabupaten", "suasana_tps"]
       end
-      oauth2
+      paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
       get "/" do
-        check_real_count_ownership! current_user, params.hitung_real_count_id
+        images = ::Hitung::Image.where(hitung_real_count_id: params.hitung_real_count_id) if params.hitung_real_count_id.present?
+        images = ::Hitung::Image.all unless params.hitung_real_count_id.present?
+        images = images.where(image_type: params.image_type) if params.image_type.present?
 
-        images = ::Hitung::Image.where(hitung_real_count_id: params.hitung_real_count_id)
-
-        present :image, images, with: API::V1::Hitung::Images::Entities::Image
+        records = paginate(images)
+        present :image, records, with: API::V1::Hitung::Images::Entities::Image
+        present_metas records
       end
 
       desc "Upload image" do

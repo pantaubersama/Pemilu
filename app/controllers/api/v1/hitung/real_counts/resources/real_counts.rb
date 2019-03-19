@@ -4,16 +4,20 @@ module API::V1::Hitung::RealCounts::Resources
     helpers API::V1::SharedParams
 
     resource "real_counts" do
-      desc "List real count" do
-        detail "List real count"
+      desc "List real count / TPS" do
+        detail "List real count / TPS"
       end
       paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
       params do
         optional :user_id, type: String
+        optional :village_code, type: String
+        optional :dapil_id, type: String
       end
       get "/" do
         record = ::Hitung::RealCount.published
         record = record.where(user_id: params.user_id) if params.user_id.present?
+        record = record.joins(:calculations).where(village_code: params.village_code).where("hitung_calculations.calculation_type = ?", 4) if params.village_code.present?
+        record = record.joins(:calculations).where("hitung_calculations.dapil_id = ?", params.dapil_id) if params.dapil_id.present?
         hitungs = paginate(record)
 
         present :real_counts, hitungs, with: API::V1::Hitung::RealCounts::Entities::RealCount

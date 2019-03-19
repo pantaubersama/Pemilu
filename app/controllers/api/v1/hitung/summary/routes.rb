@@ -5,5 +5,8 @@ module API::V1::Hitung::Summary
     error_formatter :json, ::API::ErrorFormatter
 
     mount API::V1::Hitung::Summary::Resources::Contribution
+    mount API::V1::Hitung::Summary::Resources::PresidentList
+    mount API::V1::Hitung::Summary::Resources::PresidentDetail
+    mount API::V1::Hitung::Summary::Resources::Candidates
   end
 end
