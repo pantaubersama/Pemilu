@@ -52,17 +52,17 @@ module Hitung
           candidates: [
             {
               id: 1,
-              total: @calculation.map(&:calon_1).sum.to_i,
+              total_vote: @calculation.map(&:calon_1).sum.to_i,
               percentage: percentage_team_1
             },
             {
               id: 2,
-              total: @calculation.map(&:calon_2).sum.to_i,
+              total_vote: @calculation.map(&:calon_2).sum.to_i,
               percentage: percentage_team_2
             }
           ],
           invalid_vote: {
-            total: calculation.map(&:invalid_vote).sum,
+            total_vote: calculation.map(&:invalid_vote).sum,
             percentage: percentage_invalid_vote
           },
           total_vote: total_vote
