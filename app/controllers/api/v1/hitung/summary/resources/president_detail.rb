@@ -23,38 +23,32 @@ module API::V1::Hitung::Summary::Resources
 
         case params.level
         when 0
-          present :region, nil
           present :tps, nil
           present :user, nil
           result = ::Hitung::PresidentSummary.new.run
         when 1
           region = ::Province.find_by code: params.region
-          present :region, region, using: API::V1::Hitung::Provinces::Entities::Province
           present :tps, nil
           present :user, nil
           result = ::Hitung::PresidentSummary.new.run "province", params.region
         when 2
           region = ::Regency.find_by code: params.region
-          present :region, region, using: API::V1::Hitung::Regencies::Entities::Regency
           present :tps, nil
           present :user, nil
           result = ::Hitung::PresidentSummary.new.run "regency", params.region
         when 3
           region = ::District.find_by code: params.region
-          present :region, region, using: API::V1::Hitung::Districts::Entities::District
           present :tps, nil
           present :user, nil
           result = ::Hitung::PresidentSummary.new.run "district", params.region
         when 4
           region = ::Village.find_by code: params.region
-          present :region, region, using: API::V1::Hitung::Villages::Entities::Village
           present :tps, nil
           present :user, nil
           result = ::Hitung::PresidentSummary.new.run "village", params.region
         when 5
           region = ::Village.find_by code: params.region
           error! "TPS membutuhkan Kode Wilayah", 406 if region.nil?
-          present :region, region, using: API::V1::Hitung::Villages::Entities::Village
           present :tps, params.tps
           present :user, nil
           result = ::Hitung::PresidentSummary.new.run "tps", params.region, params.tps
@@ -63,7 +57,6 @@ module API::V1::Hitung::Summary::Resources
           hitung = ::Hitung::RealCount.find params.hitung_real_count_id
           error! "TPS membutuhkan Kode Wilayah", 406 if region.nil?
           error! "Perhitungan tidak ditemukan", 406 if hitung.nil?
-          present :region, region, using: API::V1::Hitung::Villages::Entities::Village
           present :tps, params.tps
           present :user, hitung.user, using: API::V1::Users::Entities::User
           result = ::Hitung::PresidentSummary.new.run "perseorangan", params.region, params.tps, params.hitung_real_count_id
