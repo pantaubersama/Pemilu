@@ -18,6 +18,7 @@ module Hitung
     end
 
     def run summary_type = "all", id = nil, tps = nil, real_count_id = nil
+      region = nil
       str_select = "round(avg(hitung_calculations.invalid_vote)) as invalid_vote,
         round(avg(hitung_calculation_details.total_vote) filter(where actor_type = 'President' and actor_id = '1')) as calon_1,
         round(avg(hitung_calculation_details.total_vote) filter(where actor_type = 'President' and actor_id = '2')) as calon_2"
@@ -28,17 +29,23 @@ module Hitung
 
       @calculation = case summary_type
       when "province"
+        region = ::Province.find_by code: id
         @calculation.where("hitung_real_counts.province_code  = ? ", id)
       when "regency"
+        region = ::Regency.find_by code: id
         @calculation.where("hitung_real_counts.regency_code  = ? ", id)
       when "district"
+        region = ::District.find_by code: id
         @calculation.where("hitung_real_counts.district_code  = ? ", id)
       when "village"
+        region = ::Village.find_by code: id
         @calculation.where("hitung_real_counts.village_code  = ? ", id)
       when "tps"
+        region = ::Village.find_by code: id
         @calculation.where("hitung_real_counts.village_code  = ? ", id).
           where("hitung_real_counts.tps = ?" , tps)
       when "perseorangan"
+        region = ::Village.find_by code: id
         @calculation.where("hitung_real_counts.village_code  = ? ", id).
           where("hitung_real_counts.tps = ?" , tps).
           where("hitung_real_counts.id = ? ", real_count_id)
@@ -48,6 +55,7 @@ module Hitung
 
       if @calculation.present?
         h = {
+          region: region,
           summary_type: summary_type,
           candidates: [
             {
