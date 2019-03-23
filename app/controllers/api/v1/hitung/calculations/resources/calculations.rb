@@ -102,7 +102,7 @@ module API::V1::Hitung::Calculations::Resources
         if params.calculation_type == "presiden"
           ids = params.candidates.map(&:id)
           error! "ID Presiden = 1 atau 2", 422 unless ids.include?(1) && ids.include?(2)
-        else params.calculation_type == "presiden"
+        else
           dapil = Dapil.by_wilayah params.calculation_type, hitung.province, hitung.regency, hitung.district
           caleg = Candidate.where(electoral_district_id: dapil.id).map(&:id)
 
