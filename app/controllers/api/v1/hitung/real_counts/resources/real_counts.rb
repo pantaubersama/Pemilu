@@ -33,7 +33,7 @@ module API::V1::Hitung::RealCounts::Resources
       post "/" do
         hitung = ::Hitung::RealCount.new hitung_params
         hitung.user_id = current_user.id
-        hitung.status = "published"
+        hitung.status = "draft"
 
         p = Province.find_by code: params.province_code
         error! "Provinsi tidak ditemukan", 404 unless p

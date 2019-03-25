@@ -220,7 +220,6 @@ RSpec.describe "Persentase perhitungan presiden", type: :request do
     it "success return 200" do
       get "/hitung/v1/summary/president/show?level=6&region=3375011006&tps=1&hitung_real_count_id=#{@real_count2.id}"
       expect(response.status).to eq(200)
-      expect(json_response[:data][:region][:id]).to eq(@region_jateng[:village_code])
       expect(json_response[:data][:tps]).to eq(1)
       expect(json_response[:data][:user][:full_name]).to eq(@user1.full_name)
       expect(json_response[:data][:percentage]).to eq(nil)

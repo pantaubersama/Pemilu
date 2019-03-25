@@ -24,6 +24,8 @@ module Hitung
         round(avg(hitung_calculation_details.total_vote) filter(where actor_type = 'President' and actor_id = '2')) as calon_2"
 
       @calculation = Hitung::Calculation.joins(:real_count, :details)
+        .where("hitung_real_counts.status = 1")
+        .where("hitung_calculations.calculation_type = 4")
         .group("hitung_real_counts.village_code, hitung_real_counts.tps")
         .select(str_select)
 
