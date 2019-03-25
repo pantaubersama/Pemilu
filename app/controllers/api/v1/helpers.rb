@@ -53,6 +53,10 @@ module API::V1::Helpers
     error!("Tidak dapat mengakses API", 403) unless (current_user.cluster.present? && current_user.cluster.is_eligible)
   end
 
+  def authorize_merayakan!
+    error!("Fitur merayakan tidak sedang dalam rentang waktu yang ditentukan", 403) if ENV["ENABLE_MERAYAKAN"].in?(["false", false])
+  end
+
   def question_filter(x)
     case x
     when "user_verified_true"

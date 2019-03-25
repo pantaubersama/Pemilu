@@ -95,6 +95,7 @@ module API::V1::Hitung::Calculations::Resources
         end
       end
       put "/" do
+        authorize_merayakan!
         check_real_count_ownership! current_user, params.hitung_real_count_id
 
         hitung = ::Hitung::RealCount.find params.hitung_real_count_id
