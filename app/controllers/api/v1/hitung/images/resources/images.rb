@@ -43,6 +43,7 @@ module API::V1::Hitung::Images::Resources
       end
       oauth2
       post "/" do
+        authorize_merayakan!
         check_real_count_ownership! current_user, params.hitung_real_count_id
 
         parameters = {
@@ -62,6 +63,7 @@ module API::V1::Hitung::Images::Resources
       end
       oauth2
       delete "/:id" do
+        authorize_merayakan!
         img = ::Hitung::Image.find params.id
 
         check_real_count_ownership! current_user, img.hitung_real_count_id

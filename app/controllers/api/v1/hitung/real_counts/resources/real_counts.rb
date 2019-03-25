@@ -31,6 +31,8 @@ module API::V1::Hitung::RealCounts::Resources
       end
       oauth2
       post "/" do
+        authorize_merayakan!
+
         hitung = ::Hitung::RealCount.new hitung_params
         hitung.user_id = current_user.id
         hitung.status = "draft"
@@ -70,6 +72,8 @@ module API::V1::Hitung::RealCounts::Resources
       end
       oauth2
       put "/:id" do
+        authorize_merayakan!
+
         hitung = ::Hitung::RealCount.find_by id: params.id, user_id: current_user.id
         status = hitung.update_attributes!({tps: params.tps})
 
@@ -83,6 +87,8 @@ module API::V1::Hitung::RealCounts::Resources
       end
       oauth2
       delete "/:id" do
+        authorize_merayakan!
+
         hitung = ::Hitung::RealCount.find_by id: params.id, user_id: current_user.id
 
         hitung.destroy!
@@ -98,6 +104,8 @@ module API::V1::Hitung::RealCounts::Resources
       end
       oauth2
       post "/:id/publish" do
+        authorize_merayakan!
+
         hitung = ::Hitung::RealCount.find_by id: params.id, user_id: current_user.id
         status = hitung.published!
 
@@ -111,6 +119,8 @@ module API::V1::Hitung::RealCounts::Resources
       end
       oauth2
       post "/:id/draft" do
+        authorize_merayakan!
+
         hitung = ::Hitung::RealCount.find_by id: params.id, user_id: current_user.id
         status = hitung.draft!
 

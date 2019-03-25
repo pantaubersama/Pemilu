@@ -27,6 +27,7 @@ module API::V1::Hitung::FormC1::Resources
       end
       oauth2
       put "/" do
+        authorize_merayakan!
         check_real_count_ownership! current_user, params.hitung_real_count_id
 
         c1 = ::Hitung::FormC1.find_or_initialize_by hitung_real_count_id: params.hitung_real_count_id, form_c1_type: params.form_c1_type
