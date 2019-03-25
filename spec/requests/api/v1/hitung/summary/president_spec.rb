@@ -5,6 +5,7 @@ RSpec.describe "Persentase perhitungan presiden", type: :request do
   before do
     populate_region
     populate_region_sumsel
+    populate_region_jateng
     @user1 = FactoryBot.create(:user)
     @user2 = FactoryBot.create(:user)
     @user3 = FactoryBot.create(:user)
@@ -20,6 +21,12 @@ RSpec.describe "Persentase perhitungan presiden", type: :request do
       regency_code: 1606,
       district_code: 160601,
       village_code: 1606011010
+    }
+    @region_jateng = {
+      province_code: 33,
+      regency_code: 3326,
+      district_code: 337501,
+      village_code: 3375011006
     }
   end
 
@@ -203,9 +210,21 @@ RSpec.describe "Persentase perhitungan presiden", type: :request do
   end
 
   describe "[GET] Persentase perseorangan /hitung/v1/summary/president/show?level=6&region=3375011006&tps=1&hitung_real_count_id=YOUR_UUID" do
-    pending "test me please ..."
+    it "return 404" do
+      get "/hitung/v1/summary/president/show?level=6&region=3375011006&tps=1&hitung_real_count_id="
+      expect(response.status).to eq(404)
+    end
+    before do
+      populate_real_count @user1, 1, @region_jateng
+    end
+    it "success return 200" do
+      get "/hitung/v1/summary/president/show?level=6&region=3375011006&tps=1&hitung_real_count_id=#{@real_count2.id}"
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:tps]).to eq(1)
+      expect(json_response[:data][:user][:full_name]).to eq(@user1.full_name)
+      expect(json_response[:data][:percentage]).to eq(nil)
+    end
   end
-
 
   def calculation user, tps, vote_candidate_1, vote_candidate_2, invalid_vote=0, region=nil
     @real_count = FactoryBot.create :hitung_real_count, tps: tps, status: "published", user_id: user.id, province_code: region[:province_code], regency_code: region[:regency_code], district_code: region[:district_code], village_code: region[:village_code]
@@ -227,6 +246,13 @@ RSpec.describe "Persentase perhitungan presiden", type: :request do
     FactoryBot.create :district, id: 160602, regency_code: 1606, code: 160602, name: "LAIS", id_parent: 18942, id_wilayah: 18958, level: 3
     FactoryBot.create :village, id: 1606011010, code: 1606011010, district_code: 160601, name: "Serasan Jaya"
     FactoryBot.create :village, id: 1606011009, code: 1606011009, district_code: 160601, name: "Kayu Ara"
+  end
+
+  def populate_region_jateng
+    FactoryBot.create :province, id: 33, code: 33, name: "JAWA TENGAH", level: 1, id_wilayah: 32676
+    FactoryBot.create :regency, id: 3375, province_id: 33, code: 3375, name: "PEKALONGAN", level: 2, id_wilayah: 41779, id_parent: 32676
+    FactoryBot.create :district, id: 337501, regency_code: 3375, code: 337501, name: "PEKALONGAN BARAT", id_parent: 41779, id_wilayah: 41780, level: 3
+    FactoryBot.create :village, id: 3375011006, code: 3375011006, district_code: 337501, name: "Bendan Kergon"
   end
 
 end

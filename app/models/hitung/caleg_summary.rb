@@ -65,6 +65,7 @@ module Hitung
         .select(str_select)
         .where(dapil_id: @dapil_id, calculation_type: @calculation_type)
         .where("hitung_real_counts.status = 1")
+        .where("hitung_calculations.calculation_type != 4")
 
       hitung = hitung.where("hitung_real_counts.id = ? ", @real_count_id) if @real_count_id.present?
       hitung.map(&:invalid_vote).sum
@@ -76,6 +77,7 @@ module Hitung
       hitung = Hitung::CalculationDetail.joins(:calculation => [:real_count])
         .joins("inner join candidates on cast(hitung_calculation_details.actor_id as integer) = cast(candidates.id as integer)")
         .where("hitung_real_counts.status = 1 and hitung_calculation_details.actor_type = 'Candidate' and hitung_calculations.dapil_id = ? and hitung_calculations.calculation_type = ?", @dapil_id, @calculation_type)
+        .where("hitung_calculations.calculation_type != 4")
         .select(str_select)
         .group(str_group)
         .order("candidates.political_party_id asc")
@@ -90,6 +92,7 @@ module Hitung
       hitung = Hitung::CalculationDetail.joins(:calculation => [:real_count])
         .joins("inner join political_parties on cast(hitung_calculation_details.actor_id as integer) = cast(political_parties.id as integer)")
         .where("hitung_real_counts.status = 1 and hitung_calculation_details.actor_type = 'Party' and hitung_calculations.dapil_id = ? and hitung_calculations.calculation_type = ?", @dapil_id, @calculation_type)
+        .where("hitung_calculations.calculation_type != 4")
         .select(str_select)
         .group(str_group)
 
