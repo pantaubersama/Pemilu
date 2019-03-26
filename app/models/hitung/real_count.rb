@@ -16,31 +16,33 @@ class Hitung::RealCount < ApplicationRecord
     User.find self.user_id
   end
 
+  # TODO : Optimize this query!
   def logs
-    {
-      calculation: {
-        presiden: calculations.where(calculation_type: "presiden").present? ? true : false,
-        dpr_ri: calculations.where(calculation_type: "dpr").present? ? true : false,
-        dpd: calculations.where(calculation_type: "dpd").present? ? true : false,
-        dprd_provinsi: calculations.where(calculation_type: "provinsi").present? ? true : false,
-        dprd_kabupaten: calculations.where(calculation_type: "kabupaten").present? ? true : false,
-      },
-      form_c1: {
-        presiden: forms.where(form_c1_type: "presiden").present? ? true : false,
-        dpr_ri: forms.where(form_c1_type: "dpr").present? ? true : false,
-        dpd: forms.where(form_c1_type: "dpd").present? ? true : false,
-        dprd_provinsi: forms.where(form_c1_type: "provinsi").present? ? true : false,
-        dprd_kabupaten: forms.where(form_c1_type: "kabupaten").present? ? true : false,
-      },
-      images: {
-        presiden: images.where(image_type: "c1_presiden").present? ? true : false,
-        dpr_ri: images.where(image_type: "c1_dpr_ri").present? ? true : false,
-        dpd: images.where(image_type: "c1_dpd").present? ? true : false,
-        dprd_provinsi: images.where(image_type: "c1_dprd_provinsi").present? ? true : false,
-        dprd_kabupaten: images.where(image_type: "c1_dprb_kabupaten").present? ? true : false,
-        suasana_tps: images.where(image_type: "suasana_tps").present? ? true : false,
-      }
-    }
+    nil
+    # {
+    #   calculation: {
+    #     presiden: calculations.where(calculation_type: "presiden").present? ? true : false,
+    #     dpr_ri: calculations.where(calculation_type: "dpr").present? ? true : false,
+    #     dpd: calculations.where(calculation_type: "dpd").present? ? true : false,
+    #     dprd_provinsi: calculations.where(calculation_type: "provinsi").present? ? true : false,
+    #     dprd_kabupaten: calculations.where(calculation_type: "kabupaten").present? ? true : false,
+    #   },
+    #   form_c1: {
+    #     presiden: forms.where(form_c1_type: "presiden").present? ? true : false,
+    #     dpr_ri: forms.where(form_c1_type: "dpr").present? ? true : false,
+    #     dpd: forms.where(form_c1_type: "dpd").present? ? true : false,
+    #     dprd_provinsi: forms.where(form_c1_type: "provinsi").present? ? true : false,
+    #     dprd_kabupaten: forms.where(form_c1_type: "kabupaten").present? ? true : false,
+    #   },
+    #   images: {
+    #     presiden: images.where(image_type: "c1_presiden").present? ? true : false,
+    #     dpr_ri: images.where(image_type: "c1_dpr_ri").present? ? true : false,
+    #     dpd: images.where(image_type: "c1_dpd").present? ? true : false,
+    #     dprd_provinsi: images.where(image_type: "c1_dprd_provinsi").present? ? true : false,
+    #     dprd_kabupaten: images.where(image_type: "c1_dprb_kabupaten").present? ? true : false,
+    #     suasana_tps: images.where(image_type: "suasana_tps").present? ? true : false,
+    #   }
+    # }
   end
 
 end

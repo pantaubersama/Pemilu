@@ -6,6 +6,7 @@ module API::V1::Hitung::RealCounts::Resources
     resource "real_counts" do
       desc "List real count / TPS" do
         detail "List real count / TPS"
+        headers OPTIONAL_AUTHORIZATION_HEADERS
       end
       paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
       params do
@@ -13,8 +14,14 @@ module API::V1::Hitung::RealCounts::Resources
         optional :village_code, type: String
         optional :dapil_id, type: String
       end
+      optional_oauth2
       get "/" do
-        record = ::Hitung::RealCount.published
+        record = ::Hitung::RealCount.includes(:province, :regency, :district, :village)
+        if params.user_id.present? && current_user.present? && params.user_id == current_user.id
+          record = record.all
+        else
+          record = record.published
+        end
         record = record.where(user_id: params.user_id) if params.user_id.present?
         record = record.joins(:calculations).where(village_code: params.village_code).where("hitung_calculations.calculation_type = ?", 4) if params.village_code.present?
         record = record.joins(:calculations).where("hitung_calculations.dapil_id = ?", params.dapil_id) if params.dapil_id.present?
