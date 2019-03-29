@@ -15,7 +15,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
     }
     
     # Create DAPIL
-    @dapil1 = FactoryBot.create(:dapil, id: 1, nama: "SUMATERA SELATAN", tingkat: "dpd", idWilayah: Province.last.id_wilayah)
+    @dapil1 = FactoryBot.create(:dapil, id: 1, nama: "SUMATERA SELATAN", tingkat: 3, idWilayah: Province.last.id_wilayah)
     
     @dapil2 = FactoryBot.create(:dapil, id: 2, nama: "SUMATERA SELATAN I", idWilayah: Regency.last.id_wilayah, tingkat: 0)
     FactoryBot.create(:dapil_wilayah, id: 3, namaWilayah: "MUSI BANYUASIN", idWilayah: Regency.last.id_wilayah, idDapil: @dapil2.id)
@@ -284,7 +284,51 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
 
   # https://xd.adobe.com/view/84d8fe59-666f-4491-6a46-f8403070acf0-f2e9/screen/ca77829d-106b-488b-9c75-80282d240fe2/5-PERHITUNGAN-explore-data-DPD-DKI-Jakarta-01?fullscreen
   describe "[GET] Persentase DPD /hitung/v1/summary/candidates/show?dapil_id=2&level=3" do
-    
+    context "When a TPS has multiple votes" do
+      before do
+        @real_count1 = populate_real_count @user1, 1, @region_sumsel
+        @real_count2 = populate_real_count @user1, 1, @region_sumsel
+        @candidate1 = FactoryBot.create(:candidate, political_party_id: @p1.id,  electoral_district_id: @dapil1.id)
+        @candidate2 = FactoryBot.create(:candidate, political_party_id: @p2.id, electoral_district_id: @dapil1.id)
+        candidates1 = [
+            { id: @candidate1.id, total_vote: 10, },
+            { id: @candidate2.id, total_vote: 20, },
+          ]
+        candidates2 = [
+            { id: @candidate1.id, total_vote: 15 },
+            { id: @candidate2.id, total_vote: 25 }
+          ]
+        build_calculation @real_count1, "dpd", 10, candidates1
+        build_calculation @real_count2, "dpd", 10, candidates2
+      end
+      it "success" do
+        get "/hitung/v1/summary/candidates/show?dapil_id=#{@dapil1.id}&level=3"
+        expect(response.status).to eq(200)
+
+        perc_1 = json_response[:data][:invalid_vote][:percentage]
+        perc_2 = json_response[:data][:percentages][0][:percentage]
+        perc_3 = json_response[:data][:percentages][1][:percentage]
+        total_percentage = perc_1 + perc_2 + perc_3
+
+        # Invalid Vote
+        expect(response.status).to eq(200)
+        expect(json_response[:data][:invalid_vote][:total_vote]).to eq(10)
+        expect(perc_1).to eq(21.739)
+        expect(json_response[:data][:valid_vote]).to eq(36)
+        
+        # Valid Vote Candidate 1
+        expect(json_response[:data][:percentages][0][:cv]).to eq(13)
+        expect(json_response[:data][:percentages][0][:total_vote]).to eq(13)
+        expect(perc_2).to eq(28.261)
+
+        # Valid Vote Candidate 2
+        expect(json_response[:data][:percentages][1][:cv]).to eq(23)
+        expect(json_response[:data][:percentages][1][:total_vote]).to eq(23)
+        expect(perc_3).to eq(50.0)
+        
+        expect(total_percentage.ceil).to eq(100)
+      end
+    end
   end
 
   # https://xd.adobe.com/view/84d8fe59-666f-4491-6a46-f8403070acf0-f2e9/screen/1deb1e05-69e1-4025-9d99-7cbcf0546264/5-PERHITUNGAN-explore-data-DPRD-provinsi-Dapil-DKI?fullscreen
@@ -493,16 +537,16 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(json_response[:data][:valid_vote]).to eq(770)
         
         # Valid Vote Candidate 1
-        expect(json_response[:data][:percentages][0][:pv]).to eq(25)
-        expect(json_response[:data][:percentages][0][:candidates][0][:cv]).to eq(250)
-        expect(json_response[:data][:percentages][0][:total_vote]).to eq(275)
-        expect(perc_2).to eq(34.81)
+        expect(json_response[:data][:percentages][1][:pv]).to eq(25)
+        expect(json_response[:data][:percentages][1][:candidates][0][:cv]).to eq(250)
+        expect(json_response[:data][:percentages][1][:total_vote]).to eq(275)
+        expect(perc_2).to eq(62.658)
 
         # Valid Vote Candidate 2
-        expect(json_response[:data][:percentages][1][:pv]).to eq(45)
-        expect(json_response[:data][:percentages][1][:candidates][0][:cv]).to eq(450)
-        expect(json_response[:data][:percentages][1][:total_vote]).to eq(495)
-        expect(perc_3).to eq(62.658)
+        expect(json_response[:data][:percentages][0][:pv]).to eq(45)
+        expect(json_response[:data][:percentages][0][:candidates][0][:cv]).to eq(450)
+        expect(json_response[:data][:percentages][0][:total_vote]).to eq(495)
+        expect(perc_3).to eq(34.81)
         
         expect(total_percentage.ceil).to eq(100)
       end
@@ -560,37 +604,156 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
   describe "[GET] Perhitungan per TPS /hitung/v1/summary/candidates/show?hitung_real_count_id=YOUR_UUID&dapil_id=XX&level=X" do
     before do
       @real_count1 = populate_real_count @user1, 1, @region_sumsel
-      @candidate1 = FactoryBot.create(:candidate, political_party_id: @p1.id,  electoral_district_id: @dapil4.id)
-      @candidate2 = FactoryBot.create(:candidate, political_party_id: @p2.id, electoral_district_id: @dapil4.id)
-      candidates1 = [
-          { id: @candidate1.id, total_vote: 100, },
-          { id: @candidate2.id, total_vote: 200, },
-        ]
-      parties1 = [
+
+      @candidate_dpr_ri1 = FactoryBot.create(:candidate, political_party_id: @p1.id,  electoral_district_id: @dapil2.id)
+      @candidate_dpr_ri2 = FactoryBot.create(:candidate, political_party_id: @p2.id, electoral_district_id: @dapil2.id)
+      
+      @candidate_dprd_prov1 = FactoryBot.create(:candidate, political_party_id: @p1.id,  electoral_district_id: @dapil3.id)
+      @candidate_dprd_prov2 = FactoryBot.create(:candidate, political_party_id: @p2.id, electoral_district_id: @dapil3.id)
+
+      @candidate_dprd_kab1 = FactoryBot.create(:candidate, political_party_id: @p1.id,  electoral_district_id: @dapil4.id)
+      @candidate_dprd_kab2 = FactoryBot.create(:candidate, political_party_id: @p2.id, electoral_district_id: @dapil4.id)
+
+      @candidate_dpd1 = FactoryBot.create(:candidate, political_party_id: nil,  electoral_district_id: @dapil1.id)
+      @candidate_dpd2 = FactoryBot.create(:candidate, political_party_id: nil, electoral_district_id: @dapil1.id)
+      
+      @candidates_dpr_ri = [
+        { id: @candidate_dpr_ri1.id, total_vote: 100, },
+        { id: @candidate_dpr_ri2.id, total_vote: 200, },
+      ]
+      @candidates_dprd_prov = [
+        { id: @candidate_dprd_prov1.id, total_vote: 100, },
+        { id: @candidate_dprd_prov2.id, total_vote: 200, },
+      ]
+      @candidates_drpd_kab = [
+          { id: @candidate_dprd_kab1.id, total_vote: 100, },
+          { id: @candidate_dprd_kab2.id, total_vote: 200, },
+      ]
+      @candidates_dpd = [
+          { id: @candidate_dpd1.id, total_vote: 100, },
+          { id: @candidate_dpd2.id, total_vote: 200, },
+      ]
+      @parties1 = [
         { id: @p1.id, total_vote: 10 },
         { id: @p2.id, total_vote: 20 }
       ]
-      build_calculation @real_count1, "kabupaten", 10, candidates1, parties1
-    end
-    it "success" do
-      get "/hitung/v1/summary/candidates/show?hitung_real_count_id=#{@real_count1.id}&dapil_id=#{@dapil4.id}&level=2"
-      expect(response.status).to eq(200)
-      
-      expect(json_response[:data][:invalid_vote][:total_vote]).to eq(10)
-      expect(json_response[:data][:valid_vote]).to eq(330)
 
-      expect(json_response[:data][:percentages][0][:candidates][0][:name]).to eq(@candidate1.name)
-      expect(json_response[:data][:percentages][0][:candidates][0][:cv]).to eq(100)
-      expect(json_response[:data][:percentages][0][:pv]).to eq(10)
-      expect(json_response[:data][:percentages][0][:total_vote]).to eq(110)
-      expect(json_response[:data][:percentages][0][:percentage]).to eq(32.353)
-      
-      expect(json_response[:data][:percentages][1][:candidates][0][:name]).to eq(@candidate2.name)
-      expect(json_response[:data][:percentages][1][:candidates][0][:cv]).to eq(200)
-      expect(json_response[:data][:percentages][1][:pv]).to eq(20)
-      expect(json_response[:data][:percentages][1][:total_vote]).to eq(220)
-      expect(json_response[:data][:percentages][1][:percentage]).to eq(64.706)
+      build_calculation @real_count1, "dpr", 10, @candidates_dpr_ri, @parties1
+      build_calculation @real_count1, "provinsi", 10, @candidates_dprd_prov, @parties1
+      build_calculation @real_count1, "kabupaten", 10, @candidates_drpd_kab, @parties1
+      build_calculation @real_count1, "dpd", 10, @candidates_dpd
+
     end
+    
+    context "When Level DPR RI" do
+      it "success" do
+        get "/hitung/v1/summary/candidates/show?dapil_id=#{@dapil2.id}&level=0&hitung_real_count_id=#{@real_count1.id}"
+        expect(response.status).to eq(200)
+        expect(json_response[:data][:invalid_vote][:total_vote]).to eq(10)        
+        expect(json_response[:data][:valid_vote]).to eq(330)
+
+        perc_1 = json_response[:data][:invalid_vote][:percentage]
+        perc_2 = json_response[:data][:percentages][0][:percentage]
+        perc_3 = json_response[:data][:percentages][1][:percentage]
+        total_percentage = perc_1 + perc_2 + perc_3
+
+        expect(json_response[:data][:percentages][0][:candidates][0][:name]).to eq(@candidate_dpr_ri1.name)
+        expect(json_response[:data][:percentages][0][:candidates][0][:cv]).to eq(100)
+        expect(json_response[:data][:percentages][0][:pv]).to eq(10)
+        expect(json_response[:data][:percentages][0][:total_vote]).to eq(110)
+        expect(perc_2).to eq(32.353)
+        
+        expect(json_response[:data][:percentages][1][:candidates][0][:name]).to eq(@candidate_dpr_ri2.name)
+        expect(json_response[:data][:percentages][1][:candidates][0][:cv]).to eq(200)
+        expect(json_response[:data][:percentages][1][:pv]).to eq(20)
+        expect(json_response[:data][:percentages][1][:total_vote]).to eq(220)
+        expect(perc_3).to eq(64.706)
+      end
+    end
+
+    context "When Level DPRD Provinsi" do
+      it "success" do
+        get "/hitung/v1/summary/candidates/show?dapil_id=#{@dapil3.id}&level=1&hitung_real_count_id=#{@real_count1.id}"
+        expect(response.status).to eq(200)
+        
+        expect(json_response[:data][:invalid_vote][:total_vote]).to eq(10)
+        expect(json_response[:data][:valid_vote]).to eq(330)
+
+        perc_1 = json_response[:data][:invalid_vote][:percentage]
+        perc_2 = json_response[:data][:percentages][0][:percentage]
+        perc_3 = json_response[:data][:percentages][1][:percentage]
+        total_percentage = perc_1 + perc_2 + perc_3
+
+        expect(json_response[:data][:percentages][0][:candidates][0][:name]).to eq(@candidate_dprd_prov1.name)
+        expect(json_response[:data][:percentages][0][:candidates][0][:cv]).to eq(100)
+        expect(json_response[:data][:percentages][0][:pv]).to eq(10)
+        expect(json_response[:data][:percentages][0][:total_vote]).to eq(110)
+        expect(perc_2).to eq(32.353)
+        
+        expect(json_response[:data][:percentages][1][:candidates][0][:name]).to eq(@candidate_dprd_prov2.name)
+        expect(json_response[:data][:percentages][1][:candidates][0][:cv]).to eq(200)
+        expect(json_response[:data][:percentages][1][:pv]).to eq(20)
+        expect(json_response[:data][:percentages][1][:total_vote]).to eq(220)
+        expect(perc_3).to eq(64.706)
+      end
+    end
+
+    context "When Level Kabupaten" do
+      it "success" do
+        get "/hitung/v1/summary/candidates/show?dapil_id=#{@dapil4.id}&level=2&hitung_real_count_id=#{@real_count1.id}"
+        expect(response.status).to eq(200)
+        
+        expect(json_response[:data][:invalid_vote][:total_vote]).to eq(10)
+        expect(json_response[:data][:valid_vote]).to eq(330)
+
+        perc_1 = json_response[:data][:invalid_vote][:percentage]
+        perc_2 = json_response[:data][:percentages][0][:percentage]
+        perc_3 = json_response[:data][:percentages][1][:percentage]
+        total_percentage = perc_1 + perc_2 + perc_3
+
+        expect(json_response[:data][:percentages][0][:candidates][0][:name]).to eq(@candidate_dprd_kab1.name)
+        expect(json_response[:data][:percentages][0][:candidates][0][:cv]).to eq(100)
+        expect(json_response[:data][:percentages][0][:pv]).to eq(10)
+        expect(json_response[:data][:percentages][0][:total_vote]).to eq(110)
+        expect(perc_2).to eq(32.353)
+        
+        expect(json_response[:data][:percentages][1][:candidates][0][:name]).to eq(@candidate_dprd_kab2.name)
+        expect(json_response[:data][:percentages][1][:candidates][0][:cv]).to eq(200)
+        expect(json_response[:data][:percentages][1][:pv]).to eq(20)
+        expect(json_response[:data][:percentages][1][:total_vote]).to eq(220)
+        expect(perc_3).to eq(64.706)
+
+        expect(total_percentage).to eq(100)
+      end
+    end
+
+    context "When Level DPD" do
+      it "success" do
+        get "/hitung/v1/summary/candidates/show?dapil_id=#{@dapil1.id}&level=3&hitung_real_count_id=#{@real_count1.id}"
+        expect(response.status).to eq(200)
+        
+        expect(json_response[:data][:invalid_vote][:total_vote]).to eq(10)
+        expect(json_response[:data][:valid_vote]).to eq(300)
+
+        perc_1 = json_response[:data][:invalid_vote][:percentage]
+        perc_2 = json_response[:data][:percentages][0][:percentage]
+        perc_3 = json_response[:data][:percentages][1][:percentage]
+        total_percentage = perc_1 + perc_2 + perc_3
+
+        expect(json_response[:data][:percentages][0][:name]).to eq(@candidate_dpd1.name)
+        expect(json_response[:data][:percentages][0][:cv]).to eq(100)
+        expect(json_response[:data][:percentages][0][:total_vote]).to eq(100)
+        expect(perc_2).to eq(32.258)
+        
+        expect(json_response[:data][:percentages][1][:name]).to eq(@candidate_dpd2.name)
+        expect(json_response[:data][:percentages][1][:cv]).to eq(200)
+        expect(json_response[:data][:percentages][1][:total_vote]).to eq(200)
+        expect(perc_3).to eq(64.516)
+
+        expect(total_percentage).to eq(100)
+      end
+    end
+
   end
 
   def populate_region_sumsel
