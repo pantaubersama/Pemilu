@@ -414,9 +414,12 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
       end
       it "success" do
         get "/hitung/v1/summary/candidates/show?dapil_id=#{@dapil3.id}&level=1"
+
+        sorted_json = json_response[:data][:percentages].sort_by { |val| val[:id].to_i }
+
         perc_1 = json_response[:data][:invalid_vote][:percentage]
-        perc_2 = json_response[:data][:percentages][0][:percentage]
-        perc_3 = json_response[:data][:percentages][1][:percentage]
+        perc_2 = sorted_json[0][:percentage]
+        perc_3 = sorted_json[1][:percentage]
         total_percentage = perc_1 + perc_2 + perc_3
 
         # Invalid Vote
@@ -426,15 +429,15 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(json_response[:data][:valid_vote]).to eq(140)
         
         # Valid Vote Candidate 1
-        expect(json_response[:data][:percentages][0][:pv]).to eq(25)
-        expect(json_response[:data][:percentages][0][:candidates][0][:cv]).to eq(25)
-        expect(json_response[:data][:percentages][0][:total_vote]).to eq(50)
+        expect(sorted_json[0][:pv]).to eq(25)
+        expect(sorted_json[0][:candidates][0][:cv]).to eq(25)
+        expect(sorted_json[0][:total_vote]).to eq(50)
         expect(perc_2).to eq(31.25)
 
         # Valid Vote Candidate 2
-        expect(json_response[:data][:percentages][1][:pv]).to eq(45)
-        expect(json_response[:data][:percentages][1][:candidates][0][:cv]).to eq(45)
-        expect(json_response[:data][:percentages][1][:total_vote]).to eq(90)
+        expect(sorted_json[1][:pv]).to eq(45)
+        expect(sorted_json[1][:candidates][0][:cv]).to eq(45)
+        expect(sorted_json[1][:total_vote]).to eq(90)
         expect(perc_3).to eq(56.25)
         
         expect(total_percentage.ceil).to eq(100)
@@ -525,9 +528,12 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
       end
       it "success" do
         get "/hitung/v1/summary/candidates/show?dapil_id=#{@dapil4.id}&level=2"
+
+        sorted_json = json_response[:data][:percentages].sort_by { |val| val[:id].to_i }
+
         perc_1 = json_response[:data][:invalid_vote][:percentage]
-        perc_2 = json_response[:data][:percentages][0][:percentage]
-        perc_3 = json_response[:data][:percentages][1][:percentage]
+        perc_2 = sorted_json[0][:percentage]
+        perc_3 = sorted_json[1][:percentage]
         total_percentage = perc_1 + perc_2 + perc_3
 
         # Invalid Vote
@@ -537,16 +543,16 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(json_response[:data][:valid_vote]).to eq(770)
         
         # Valid Vote Candidate 1
-        expect(json_response[:data][:percentages][1][:pv]).to eq(25)
-        expect(json_response[:data][:percentages][1][:candidates][0][:cv]).to eq(250)
-        expect(json_response[:data][:percentages][1][:total_vote]).to eq(275)
-        expect(perc_2).to eq(62.658)
+        expect(sorted_json[0][:pv]).to eq(25)
+        expect(sorted_json[0][:candidates][0][:cv]).to eq(250)
+        expect(sorted_json[0][:total_vote]).to eq(275)
+        expect(perc_2).to eq(34.81)
 
         # Valid Vote Candidate 2
-        expect(json_response[:data][:percentages][0][:pv]).to eq(45)
-        expect(json_response[:data][:percentages][0][:candidates][0][:cv]).to eq(450)
-        expect(json_response[:data][:percentages][0][:total_vote]).to eq(495)
-        expect(perc_3).to eq(34.81)
+        expect(sorted_json[1][:pv]).to eq(45)
+        expect(sorted_json[1][:candidates][0][:cv]).to eq(450)
+        expect(sorted_json[1][:total_vote]).to eq(495)
+        expect(perc_3).to eq(62.658)
         
         expect(total_percentage.ceil).to eq(100)
       end
