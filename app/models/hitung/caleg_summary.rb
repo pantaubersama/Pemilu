@@ -45,17 +45,18 @@ module Hitung
         }
       }
       if calculation_type == 3
-        key = :cv
-        valid_vote = summed_candidates.map{|k| k[key]}.sum
-        output = summed_candidates
+        valid_vote = summed_candidates.map{|k| k[:cv]}.sum
+        output = summed_candidates.map! {|candidate|
+          candidate[:total_vote] = candidate[:cv]
+          candidate
+        }
       else
-        key = :total_vote
         valid_vote = summed_parties.map{|k| k[:total_vote]}.sum
         output = summed_parties
       end
 
       output.map! {|party| party.dup.tap {|p|
-          p[:percentage] = percentage_of(p[key], valid_vote + invalid_vote )
+          p[:percentage] = percentage_of(p[:total_vote], valid_vote + invalid_vote )
         }
       }
 
