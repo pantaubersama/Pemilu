@@ -95,6 +95,9 @@ module API::V1::Hitung::Calculations::Resources
         end
       end
       put "/" do
+        total = params.candidates.map(&:total_vote).sum + params.invalid_vote
+        error! "Total suara (#{total}) melebihi 500", 422 if total > 500
+
         authorize_merayakan!
         check_real_count_ownership! current_user, params.hitung_real_count_id
 
