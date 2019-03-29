@@ -266,16 +266,16 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(json_response[:data][:valid_vote]).to eq(770)
         
         # Valid Vote Candidate 1
-        expect(json_response[:data][:percentages][0][:pv]).to eq(45)
-        expect(json_response[:data][:percentages][0][:candidates][0][:cv]).to eq(450)
-        expect(json_response[:data][:percentages][0][:total_vote]).to eq(495)
-        expect(perc_2).to eq(62.658)
+        expect(json_response[:data][:percentages][0][:pv]).to eq(25)
+        expect(json_response[:data][:percentages][0][:candidates][0][:cv]).to eq(250)
+        expect(json_response[:data][:percentages][0][:total_vote]).to eq(275)
+        expect(perc_2).to eq(34.81)
 
         # Valid Vote Candidate 2
-        expect(json_response[:data][:percentages][1][:pv]).to eq(25)
-        expect(json_response[:data][:percentages][1][:candidates][0][:cv]).to eq(250)
-        expect(json_response[:data][:percentages][1][:total_vote]).to eq(275)
-        expect(perc_3).to eq(34.81)
+        expect(json_response[:data][:percentages][1][:pv]).to eq(45)
+        expect(json_response[:data][:percentages][1][:candidates][0][:cv]).to eq(450)
+        expect(json_response[:data][:percentages][1][:total_vote]).to eq(495)
+        expect(perc_3).to eq(62.658)
         
         expect(total_percentage.ceil).to eq(100)
       end
@@ -284,7 +284,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
 
   # https://xd.adobe.com/view/84d8fe59-666f-4491-6a46-f8403070acf0-f2e9/screen/ca77829d-106b-488b-9c75-80282d240fe2/5-PERHITUNGAN-explore-data-DPD-DKI-Jakarta-01?fullscreen
   describe "[GET] Persentase DPD /hitung/v1/summary/candidates/show?dapil_id=2&level=3" do
-    pending "test me please"
+    
   end
 
   # https://xd.adobe.com/view/84d8fe59-666f-4491-6a46-f8403070acf0-f2e9/screen/1deb1e05-69e1-4025-9d99-7cbcf0546264/5-PERHITUNGAN-explore-data-DPRD-provinsi-Dapil-DKI?fullscreen
