@@ -26,7 +26,7 @@ class Dapil < ApplicationRecord
     when "kabupaten"
       dapil = DapilWilayah.joins(:dapil)
         .where(idWilayah: district.id_wilayah)
-        .where("dapils.tingkat = ?", 2).last.dapil
+        .where("dapils.tingkat = ?", 2).last.try(:dapil)
     end
     dapil
   end
