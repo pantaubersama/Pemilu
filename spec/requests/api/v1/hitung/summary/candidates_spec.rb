@@ -13,19 +13,19 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
       district_code: 160601,
       village_code: 1606011010,
     }
-    
+
     # Create DAPIL
     @dapil1 = FactoryBot.create(:dapil, id: 1, nama: "SUMATERA SELATAN", tingkat: 3, idWilayah: Province.last.id_wilayah)
-    
+
     @dapil2 = FactoryBot.create(:dapil, id: 2, nama: "SUMATERA SELATAN I", idWilayah: Regency.last.id_wilayah, tingkat: 0)
     FactoryBot.create(:dapil_wilayah, id: 3, namaWilayah: "MUSI BANYUASIN", idWilayah: Regency.last.id_wilayah, idDapil: @dapil2.id)
-    
+
     @dapil3 = FactoryBot.create(:dapil, id: 4, nama: "SUMATERA SELATAN I", idWilayah: Regency.last.id_wilayah, tingkat: 1)
     FactoryBot.create(:dapil_wilayah, id: 5, namaWilayah: "MUSI BANYUASIN", idWilayah: Regency.last.id_wilayah, idDapil: @dapil3.id)
-    
+
     @dapil4 = FactoryBot.create(:dapil, id: 6, nama: "MUSI BANYUASIN 1", tingkat: 2)
     FactoryBot.create(:dapil_wilayah, id: 7, namaWilayah: "SEKAYU", idWilayah: District.last.id_wilayah, idDapil: @dapil4.id)
-    
+
     # Create Political Party
     @p1 = FactoryBot.create :political_party
     @p2 = FactoryBot.create :political_party
@@ -51,7 +51,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
       expect(json_response[:data][:regencies][0][:name]).to eq("MUSI BANYUASIN")
     end
   end
-  
+
   # https://xd.adobe.com/view/84d8fe59-666f-4491-6a46-f8403070acf0-f2e9/screen/4b9c21bc-241b-40d9-8376-15066fa51b41/5-PERHITUNGAN-explore-data-DPR-RI-Dapil?fullscreen
   # https://xd.adobe.com/view/84d8fe59-666f-4491-6a46-f8403070acf0-f2e9/screen/163d3adc-235b-46d3-ab42-203e90f1b1c4/5-PERHITUNGAN-explore-data-DPRD-provinsi-Dapil-?fullscreen
   describe "[GET] /hitung/v1/dapils/region" do
@@ -65,7 +65,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
                                               tingkat: "dpd",
                                             }
           expect(response.status).to eq(422)
-          expect(JSON.parse(response.body)["error"]["errors"]).to eq(["Record Province tidak ditemukan"])
+          expect(JSON.parse(response.body)["error"]["errors"]).to eq(["Provinsi tidak ditemukan"])
         end
       end
 
@@ -78,7 +78,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
                                               tingkat: "dpd",
                                             }
           expect(response.status).to eq(422)
-          expect(JSON.parse(response.body)["error"]["errors"]).to eq(["Record Regency tidak ditemukan"])
+          expect(JSON.parse(response.body)["error"]["errors"]).to eq(["Kabupaten tidak ditemukan"])
         end
       end
 
@@ -91,7 +91,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
                                               tingkat: "dpd",
                                             }
           expect(response.status).to eq(422)
-          expect(JSON.parse(response.body)["error"]["errors"]).to eq(["Record District tidak ditemukan"])
+          expect(JSON.parse(response.body)["error"]["errors"]).to eq(["Kecamatan tidak ditemukan"])
         end
       end
 
@@ -210,7 +210,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(json_response[:data][:invalid_vote][:total_vote]).to eq(10)
         expect(perc_1).to eq(2.525)
         expect(json_response[:data][:valid_vote]).to eq(386)
-        
+
         # Valid Vote Candidate 1
         expect(json_response[:data][:percentages][0][:pv]).to eq(13)
         expect(json_response[:data][:percentages][0][:candidates][0][:cv]).to eq(125)
@@ -222,7 +222,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(json_response[:data][:percentages][1][:candidates][0][:cv]).to eq(225)
         expect(json_response[:data][:percentages][1][:total_vote]).to eq(248)
         expect(perc_3).to eq(62.626)
-        
+
         expect(total_percentage.ceil).to eq(100)
       end
     end
@@ -264,7 +264,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(json_response[:data][:invalid_vote][:total_vote]).to eq(20)
         expect(perc_1).to eq(2.532)
         expect(json_response[:data][:valid_vote]).to eq(770)
-        
+
         # Valid Vote Candidate 1
         expect(json_response[:data][:percentages][0][:pv]).to eq(25)
         expect(json_response[:data][:percentages][0][:candidates][0][:cv]).to eq(250)
@@ -276,7 +276,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(json_response[:data][:percentages][1][:candidates][0][:cv]).to eq(450)
         expect(json_response[:data][:percentages][1][:total_vote]).to eq(495)
         expect(perc_3).to eq(62.658)
-        
+
         expect(total_percentage.ceil).to eq(100)
       end
     end
@@ -315,7 +315,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(json_response[:data][:invalid_vote][:total_vote]).to eq(10)
         expect(perc_1).to eq(21.739)
         expect(json_response[:data][:valid_vote]).to eq(36)
-        
+
         # Valid Vote Candidate 1
         expect(json_response[:data][:percentages][0][:cv]).to eq(13)
         expect(json_response[:data][:percentages][0][:total_vote]).to eq(13)
@@ -325,7 +325,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(json_response[:data][:percentages][1][:cv]).to eq(23)
         expect(json_response[:data][:percentages][1][:total_vote]).to eq(23)
         expect(perc_3).to eq(50.0)
-        
+
         expect(total_percentage.ceil).to eq(100)
       end
     end
@@ -370,7 +370,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(json_response[:data][:invalid_vote][:total_vote]).to eq(10)
         expect(perc_1).to eq(12.195)
         expect(json_response[:data][:valid_vote]).to eq(72)
-        
+
         # Valid Vote Candidate 1
         expect(json_response[:data][:percentages][0][:pv]).to eq(13)
         expect(json_response[:data][:percentages][0][:candidates][0][:cv]).to eq(13)
@@ -382,7 +382,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(json_response[:data][:percentages][1][:candidates][0][:cv]).to eq(23)
         expect(json_response[:data][:percentages][1][:total_vote]).to eq(46)
         expect(perc_3).to eq(56.098)
-        
+
         expect(total_percentage.ceil).to eq(100)
       end
     end
@@ -427,7 +427,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(json_response[:data][:invalid_vote][:total_vote]).to eq(20)
         expect(perc_1).to eq(12.5)
         expect(json_response[:data][:valid_vote]).to eq(140)
-        
+
         # Valid Vote Candidate 1
         expect(sorted_json[0][:pv]).to eq(25)
         expect(sorted_json[0][:candidates][0][:cv]).to eq(25)
@@ -439,7 +439,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(sorted_json[1][:candidates][0][:cv]).to eq(45)
         expect(sorted_json[1][:total_vote]).to eq(90)
         expect(perc_3).to eq(56.25)
-        
+
         expect(total_percentage.ceil).to eq(100)
       end
     end
@@ -484,7 +484,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(json_response[:data][:invalid_vote][:total_vote]).to eq(10)
         expect(perc_1).to eq(2.525)
         expect(json_response[:data][:valid_vote]).to eq(386)
-        
+
         # Valid Vote Candidate 1
         expect(json_response[:data][:percentages][0][:pv]).to eq(13)
         expect(json_response[:data][:percentages][0][:candidates][0][:cv]).to eq(125)
@@ -496,7 +496,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(json_response[:data][:percentages][1][:candidates][0][:cv]).to eq(225)
         expect(json_response[:data][:percentages][1][:total_vote]).to eq(248)
         expect(perc_3).to eq(62.626)
-        
+
         expect(total_percentage.ceil).to eq(100)
       end
     end
@@ -541,7 +541,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(json_response[:data][:invalid_vote][:total_vote]).to eq(20)
         expect(perc_1).to eq(2.532)
         expect(json_response[:data][:valid_vote]).to eq(770)
-        
+
         # Valid Vote Candidate 1
         expect(sorted_json[0][:pv]).to eq(25)
         expect(sorted_json[0][:candidates][0][:cv]).to eq(250)
@@ -553,7 +553,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(sorted_json[1][:candidates][0][:cv]).to eq(450)
         expect(sorted_json[1][:total_vote]).to eq(495)
         expect(perc_3).to eq(62.658)
-        
+
         expect(total_percentage.ceil).to eq(100)
       end
     end
@@ -591,10 +591,10 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
     end
     it "success" do
       get "/hitung/v1/real_counts?dapil_id=#{@dapil4.id}"
-      expect(json_response[:data][:real_counts][0][:id]).to eq(@real_count1.id)
-      expect(json_response[:data][:real_counts][1][:id]).to eq(@real_count2.id)
-      expect(json_response[:data][:real_counts][0][:tps]).to eq(1)
-      expect(json_response[:data][:real_counts][1][:tps]).to eq(2)
+      expect(json_response[:data][:real_counts][0][:id]).to eq(@real_count2.id)
+      expect(json_response[:data][:real_counts][1][:id]).to eq(@real_count1.id)
+      expect(json_response[:data][:real_counts][0][:tps]).to eq(2)
+      expect(json_response[:data][:real_counts][1][:tps]).to eq(1)
       expect(json_response[:data][:real_counts].map {|a| a[:province_code] }.uniq.join.to_i).to eq(16)
       expect(json_response[:data][:real_counts].map {|a| a[:province] }.map {|v| v[:name] }.uniq.join).to eq("SUMATERA SELATAN")
       expect(json_response[:data][:real_counts].map {|a| a[:regency] }.map {|v| v[:name] }.uniq.join).to eq("MUSI BANYUASIN")
@@ -613,7 +613,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
 
       @candidate_dpr_ri1 = FactoryBot.create(:candidate, political_party_id: @p1.id,  electoral_district_id: @dapil2.id)
       @candidate_dpr_ri2 = FactoryBot.create(:candidate, political_party_id: @p2.id, electoral_district_id: @dapil2.id)
-      
+
       @candidate_dprd_prov1 = FactoryBot.create(:candidate, political_party_id: @p1.id,  electoral_district_id: @dapil3.id)
       @candidate_dprd_prov2 = FactoryBot.create(:candidate, political_party_id: @p2.id, electoral_district_id: @dapil3.id)
 
@@ -622,7 +622,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
 
       @candidate_dpd1 = FactoryBot.create(:candidate, political_party_id: nil,  electoral_district_id: @dapil1.id)
       @candidate_dpd2 = FactoryBot.create(:candidate, political_party_id: nil, electoral_district_id: @dapil1.id)
-      
+
       @candidates_dpr_ri = [
         { id: @candidate_dpr_ri1.id, total_vote: 100, },
         { id: @candidate_dpr_ri2.id, total_vote: 200, },
@@ -650,12 +650,12 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
       build_calculation @real_count1, "dpd", 10, @candidates_dpd
 
     end
-    
+
     context "When Level DPR RI" do
       it "success" do
         get "/hitung/v1/summary/candidates/show?dapil_id=#{@dapil2.id}&level=0&hitung_real_count_id=#{@real_count1.id}"
         expect(response.status).to eq(200)
-        expect(json_response[:data][:invalid_vote][:total_vote]).to eq(10)        
+        expect(json_response[:data][:invalid_vote][:total_vote]).to eq(10)
         expect(json_response[:data][:valid_vote]).to eq(330)
 
         perc_1 = json_response[:data][:invalid_vote][:percentage]
@@ -668,7 +668,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(json_response[:data][:percentages][0][:pv]).to eq(10)
         expect(json_response[:data][:percentages][0][:total_vote]).to eq(110)
         expect(perc_2).to eq(32.353)
-        
+
         expect(json_response[:data][:percentages][1][:candidates][0][:name]).to eq(@candidate_dpr_ri2.name)
         expect(json_response[:data][:percentages][1][:candidates][0][:cv]).to eq(200)
         expect(json_response[:data][:percentages][1][:pv]).to eq(20)
@@ -681,7 +681,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
       it "success" do
         get "/hitung/v1/summary/candidates/show?dapil_id=#{@dapil3.id}&level=1&hitung_real_count_id=#{@real_count1.id}"
         expect(response.status).to eq(200)
-        
+
         expect(json_response[:data][:invalid_vote][:total_vote]).to eq(10)
         expect(json_response[:data][:valid_vote]).to eq(330)
 
@@ -695,7 +695,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(json_response[:data][:percentages][0][:pv]).to eq(10)
         expect(json_response[:data][:percentages][0][:total_vote]).to eq(110)
         expect(perc_2).to eq(32.353)
-        
+
         expect(json_response[:data][:percentages][1][:candidates][0][:name]).to eq(@candidate_dprd_prov2.name)
         expect(json_response[:data][:percentages][1][:candidates][0][:cv]).to eq(200)
         expect(json_response[:data][:percentages][1][:pv]).to eq(20)
@@ -708,7 +708,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
       it "success" do
         get "/hitung/v1/summary/candidates/show?dapil_id=#{@dapil4.id}&level=2&hitung_real_count_id=#{@real_count1.id}"
         expect(response.status).to eq(200)
-        
+
         expect(json_response[:data][:invalid_vote][:total_vote]).to eq(10)
         expect(json_response[:data][:valid_vote]).to eq(330)
 
@@ -722,7 +722,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(json_response[:data][:percentages][0][:pv]).to eq(10)
         expect(json_response[:data][:percentages][0][:total_vote]).to eq(110)
         expect(perc_2).to eq(32.353)
-        
+
         expect(json_response[:data][:percentages][1][:candidates][0][:name]).to eq(@candidate_dprd_kab2.name)
         expect(json_response[:data][:percentages][1][:candidates][0][:cv]).to eq(200)
         expect(json_response[:data][:percentages][1][:pv]).to eq(20)
@@ -737,7 +737,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
       it "success" do
         get "/hitung/v1/summary/candidates/show?dapil_id=#{@dapil1.id}&level=3&hitung_real_count_id=#{@real_count1.id}"
         expect(response.status).to eq(200)
-        
+
         expect(json_response[:data][:invalid_vote][:total_vote]).to eq(10)
         expect(json_response[:data][:valid_vote]).to eq(300)
 
@@ -750,7 +750,7 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
         expect(json_response[:data][:percentages][0][:cv]).to eq(100)
         expect(json_response[:data][:percentages][0][:total_vote]).to eq(100)
         expect(perc_2).to eq(32.258)
-        
+
         expect(json_response[:data][:percentages][1][:name]).to eq(@candidate_dpd2.name)
         expect(json_response[:data][:percentages][1][:cv]).to eq(200)
         expect(json_response[:data][:percentages][1][:total_vote]).to eq(200)
@@ -770,12 +770,12 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
   end
 
   def populate_real_count user, tps, region
-    FactoryBot.create :hitung_real_count, tps: tps, 
-                                          status: "published", 
-                                          user_id: user.id, 
-                                          province_code: region[:province_code], 
-                                          regency_code: region[:regency_code], 
-                                          district_code: region[:district_code], 
+    FactoryBot.create :hitung_real_count, tps: tps,
+                                          status: "published",
+                                          user_id: user.id,
+                                          province_code: region[:province_code],
+                                          regency_code: region[:regency_code],
+                                          district_code: region[:district_code],
                                           village_code: region[:village_code]
   end
 
@@ -791,5 +791,5 @@ RSpec.describe "Persentase perhitungan caleg", type: :request do
                                   params: p
     [response, json_response]
   end
-  
+
 end
