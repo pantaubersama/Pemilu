@@ -39,7 +39,7 @@ module API::V1::Hitung::Calculations::Resources
         calculation = ::Hitung::Calculation.find_by hitung_real_count_id: params.hitung_real_count_id,
           calculation_type: params.calculation_type
 
-        error! "Belum ada perhitungan", 404 if calculation.nil?
+        error! "Data perhitungan tidak ditemukan", 404 if calculation.nil?
 
         present :calculation, calculation, with: API::V1::Hitung::Calculations::Entities::Calculation
       end
