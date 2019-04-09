@@ -6,7 +6,7 @@ class API::V1::Dashboard::BannerInfos::Resources::BannerInfos < API::V1::Applica
     params do
       requires :title, type: String
       requires :body, type: String
-      requires :page_name, type: String, values: ["pilpres", "janji politik", "tanya", "kuis", "lapor", "debat", "tantangan", "perhitungan","my_input", "rekapitulasi"]
+      requires :page_name, type: String, values: ["pilpres", "janji politik", "tanya", "kuis", "lapor", "debat", "tantangan", "perhitungan","my_input", "rekapitulasi", "debat_public", "debat_personal"]
       optional :header_image, type: File
       optional :image, type: File
     end
@@ -34,6 +34,10 @@ class API::V1::Dashboard::BannerInfos::Resources::BannerInfos < API::V1::Applica
         banner = BannerInfo.find("8880dbe8-3324-4f7a-b3f6-8e97af355def")
       elsif params.page_name.eql?("rekapitulasi")
         banner = BannerInfo.find("1f4d3106-f0a3-4ede-a271-441b788f6a6e")
+      elsif params.page_name.eql?("debat_public")
+        banner = BannerInfo.find("aff9706e-cb65-48f5-bbd0-de4afbdd7614")
+      elsif params.page_name.eql?("debat_personal")
+        banner = BannerInfo.find("53f65142-f86c-4a6c-befc-bd029ec519c4")
       end
       error!("Record banner info tidak ditemukan", 422) unless banner
       banner.update(params)

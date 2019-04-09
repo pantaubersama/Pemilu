@@ -38,5 +38,10 @@ module Pemilu
       g.orm :active_record, primary_key_type: :uuid
     end
     config.active_job.queue_adapter = :sidekiq
+    config.action_mailer.delivery_method = :mailgun
+    config.action_mailer.mailgun_settings = {
+      api_key: ENV["MAILGUN_API_KEY"],
+      domain: ENV["MAILGUN_DOMAIN"],
+    }
   end
 end

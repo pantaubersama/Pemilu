@@ -38,3 +38,5 @@
 
 # Ignore production recipe
 /config/deploy/production.rb
+
+/dump_db/*

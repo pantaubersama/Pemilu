@@ -147,6 +147,34 @@ RSpec.describe "Api::V1::Dashboard::BannerInfos", type: :request do
       expect(json_response['data']['banner_info']['body']).to eq("Rekapitulasi")
       expect(json_response['data']['banner_info']['page_name']).to eq("rekapitulasi")
     end
+    it "success update banner with page_name debat_public" do
+      put "/dashboard/v1/banner_infos", headers:stub_admin_auth_headers(@access_token),
+      params: {
+        title: "debat public",
+        body: "debat public",
+        page_name: "debat_public",
+        header_image: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png'))),
+        image: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png')))
+      }
+      expect(response.status).to eq(200)
+      expect(json_response['data']['banner_info']['title']).to eq("debat public")
+      expect(json_response['data']['banner_info']['body']).to eq("debat public")
+      expect(json_response['data']['banner_info']['page_name']).to eq("debat_public")
+    end
+    it "success update banner with page_name debat_personal" do
+      put "/dashboard/v1/banner_infos", headers:stub_admin_auth_headers(@access_token),
+      params: {
+        title: "debat personal",
+        body: "debat personal",
+        page_name: "debat_personal",
+        header_image: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png'))),
+        image: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png')))
+      }
+      expect(response.status).to eq(200)
+      expect(json_response['data']['banner_info']['title']).to eq("debat personal")
+      expect(json_response['data']['banner_info']['body']).to eq("debat personal")
+      expect(json_response['data']['banner_info']['page_name']).to eq("debat_personal")
+    end
   end
 
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_25_080940) do
+ActiveRecord::Schema.define(version: 2019_03_15_034736) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -36,6 +36,17 @@ ActiveRecord::Schema.define(version: 2019_02_25_080940) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "candidates", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.string "gender"
+    t.integer "political_party_id"
+    t.integer "electoral_district_id"
+    t.integer "serial_number"
+    t.string "original_filename"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "crowlings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "keywords", null: false
     t.integer "team", null: false
@@ -44,6 +55,61 @@ ActiveRecord::Schema.define(version: 2019_02_25_080940) do
     t.datetime "deleted_at"
     t.integer "feeds_count", default: 0
     t.index ["deleted_at"], name: "index_crowlings_on_deleted_at"
+  end
+
+  create_table "dapil_wilayahs", id: :serial, force: :cascade do |t|
+    t.integer "idDapil"
+    t.integer "idWilayah"
+    t.string "namaWilayah"
+    t.integer "urutanWilayahDapil"
+    t.boolean "flagInclude"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["id"], name: "index_dapil_wilayahs_on_id", unique: true
+    t.index ["idDapil"], name: "index_dapil_wilayahs_on_idDapil"
+    t.index ["idWilayah"], name: "index_dapil_wilayahs_on_idWilayah"
+  end
+
+  create_table "dapils", id: :serial, force: :cascade do |t|
+    t.string "nama"
+    t.integer "tingkat"
+    t.string "jumlahPenduduk"
+    t.integer "idWilayah"
+    t.integer "totalAlokasiKursi"
+    t.integer "idVersi"
+    t.integer "noDapil"
+    t.boolean "statusCoterminous"
+    t.integer "idPro"
+    t.integer "parent"
+    t.integer "alokasiKursi"
+    t.integer "sisaPenduduk"
+    t.integer "peringkatPenduduk"
+    t.integer "alokasiSisaKursi"
+    t.decimal "stdDev"
+    t.decimal "mean"
+    t.integer "dapilOwner"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "maxAlokasiKursi"
+    t.integer "minAlokasiKursi"
+    t.index ["id"], name: "index_dapils_on_id", unique: true
+    t.index ["idPro"], name: "index_dapils_on_idPro"
+    t.index ["idVersi"], name: "index_dapils_on_idVersi"
+    t.index ["idWilayah"], name: "index_dapils_on_idWilayah"
+    t.index ["parent"], name: "index_dapils_on_parent"
+  end
+
+  create_table "districts", id: :serial, force: :cascade do |t|
+    t.integer "code"
+    t.integer "regency_code"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "id_parent"
+    t.integer "id_wilayah"
+    t.integer "level"
+    t.index ["id"], name: "index_districts_on_id", unique: true
+    t.index ["regency_code"], name: "index_districts_on_regency_code"
   end
 
   create_table "feeds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -64,6 +130,75 @@ ActiveRecord::Schema.define(version: 2019_02_25_080940) do
     t.index ["type", "source_id", "crowling_id"], name: "index_feeds_on_type_and_source_id_and_crowling_id", unique: true
   end
 
+  create_table "hitung_calculation_details", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "hitung_real_count_id"
+    t.uuid "hitung_calculation_id"
+    t.string "actor_type"
+    t.string "actor_id"
+    t.integer "total_vote"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "hitung_calculations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "hitung_real_count_id"
+    t.integer "calculation_type"
+    t.integer "invalid_vote"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "dapil_id"
+  end
+
+  create_table "hitung_form_c1s", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "a3_laki_laki", default: 0
+    t.integer "a3_perempuan", default: 0
+    t.integer "a4_laki_laki", default: 0
+    t.integer "a4_perempuan", default: 0
+    t.integer "a_dpk_laki_laki", default: 0
+    t.integer "a_dpk_perempuan", default: 0
+    t.integer "c7_dpt_laki_laki", default: 0
+    t.integer "c7_dpt_perempuan", default: 0
+    t.integer "c7_dptb_laki_laki", default: 0
+    t.integer "c7_dptb_perempuan", default: 0
+    t.integer "c7_dpk_laki_laki", default: 0
+    t.integer "c7_dpk_perempuan", default: 0
+    t.integer "disabilitas_terdaftar_laki_laki", default: 0
+    t.integer "disabilitas_terdaftar_perempuan", default: 0
+    t.integer "disabilitas_hak_pilih_laki_laki", default: 0
+    t.integer "disabilitas_hak_pilih_perempuan", default: 0
+    t.integer "surat_dikembalikan", default: 0
+    t.integer "surat_tidak_digunakan", default: 0
+    t.integer "surat_digunakan", default: 0
+    t.uuid "hitung_real_count_id"
+    t.integer "form_c1_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hitung_real_count_id"], name: "index_hitung_form_c1s_on_hitung_real_count_id"
+  end
+
+  create_table "hitung_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "file"
+    t.integer "image_type"
+    t.uuid "hitung_real_count_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hitung_real_count_id"], name: "index_hitung_images_on_hitung_real_count_id"
+  end
+
+  create_table "hitung_real_counts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "tps"
+    t.bigint "province_code"
+    t.bigint "regency_code"
+    t.bigint "district_code"
+    t.bigint "village_code"
+    t.integer "status", default: 0
+    t.decimal "latitude", precision: 18, scale: 10
+    t.decimal "longitude", precision: 18, scale: 10
+    t.uuid "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "janji_politiks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
     t.text "body", null: false
@@ -80,6 +215,26 @@ ActiveRecord::Schema.define(version: 2019_02_25_080940) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "link"
+  end
+
+  create_table "political_parties", id: :serial, force: :cascade do |t|
+    t.integer "serial_number"
+    t.string "name"
+    t.string "description"
+    t.string "acronym"
+    t.string "logo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "provinces", id: :serial, force: :cascade do |t|
+    t.integer "code", null: false
+    t.string "name"
+    t.integer "level"
+    t.string "domain_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "id_wilayah"
   end
 
   create_table "question_folders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -185,6 +340,29 @@ ActiveRecord::Schema.define(version: 2019_02_25_080940) do
     t.index ["deleted_at"], name: "index_quizzes_on_deleted_at"
   end
 
+  create_table "regencies", id: :serial, force: :cascade do |t|
+    t.integer "province_id", null: false
+    t.integer "code", null: false
+    t.string "name"
+    t.integer "level"
+    t.string "domain_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "id_wilayah"
+    t.integer "id_parent"
+    t.index ["province_id"], name: "index_regencies_on_province_id"
+  end
+
+  create_table "request_data", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "organization"
+    t.string "email"
+    t.string "phone"
+    t.text "necessity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "seed_migration_data_migrations", id: :serial, force: :cascade do |t|
     t.string "version"
     t.integer "runtime"
@@ -209,6 +387,16 @@ ActiveRecord::Schema.define(version: 2019_02_25_080940) do
     t.datetime "created_at"
     t.text "object_changes"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+  end
+
+  create_table "villages", force: :cascade do |t|
+    t.bigint "code"
+    t.bigint "district_code"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["district_code"], name: "index_villages_on_district_code"
+    t.index ["id"], name: "index_villages_on_id", unique: true
   end
 
   create_table "violation_report_details", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

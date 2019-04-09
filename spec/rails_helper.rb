@@ -116,6 +116,8 @@ RSpec.configure do |config|
                          {id: "90495b56-414d-4865-9765-867ecfb14966", page_name: "perhitungan", title: "Perhitungan", body:"Perhitungan"},
                          {id: "8880dbe8-3324-4f7a-b3f6-8e97af355def", page_name: "my_input", title: "My Input", body:"My Input"},
                          { id: "1f4d3106-f0a3-4ede-a271-441b788f6a6e", page_name: "rekapitulasi", title: "rekapitulasi", body:"rekapitulasi" },
+                         { id: "aff9706e-cb65-48f5-bbd0-de4afbdd7614", page_name: "debat_public", title: "debat public", body: "debat public" },
+                         { id: "53f65142-f86c-4a6c-befc-bd029ec519c4", page_name: "debat_personal", title: "debat personal", body: "debat personal" },
                        ])
     Kenalan.create!([
                       { id: "c46bae56-8c87-4f54-8328-b959d89c931f", text: 'Melakukan Verifikasi' },
@@ -172,6 +174,13 @@ def delete_all_indices!
     rescue
     end
   end and true
+end
+
+def populate_region
+  FactoryBot.create :province, id: 92, code: 92, name: "ACEH", level: 1, id_wilayah: 81877
+  FactoryBot.create :regency, id: 9271, province_id: 92, code: 9271, name: "KOTA SORONG", level: 2, id_wilayah: 83289, id_parent: 81877
+  FactoryBot.create :district, id: 927110, regency_code: 9271, code: 927110, name: "MALADUM MES", id_parent: 83289, id_wilayah: 928196, level: 3
+  FactoryBot.create :village, id: 9271101004, code: 9271101004, district_code: 927110, name: "Tanjung Kasuari"
 end
 
 RSpec::Sidekiq.configure do |config|
