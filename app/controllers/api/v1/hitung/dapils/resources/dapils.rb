@@ -15,11 +15,11 @@ module API::V1::Hitung::Dapils::Resources
           dapils = Dapil.dapils_by_region params.tingkat
         when "provinsi", "dpr"
           province = Province.find_by(code: params.province_code)
-          error!("Record Province tidak ditemukan", 422) unless province
+          error!("Provinsi tidak ditemukan", 422) unless province
           dapils = Dapil.dapils_by_region params.tingkat, province
         when "kabupaten"
           regency = Regency.find_by(code: params.regency_code)
-          error!("Record Regency tidak ditemukan", 422) unless regency
+          error!("Kabupaten tidak ditemukan", 422) unless regency
           dapils = Dapil.dapils_by_region params.tingkat, nil, regency
         end
         present :dapils, dapils, with: API::V1::Hitung::Dapils::Entities::Dapil
@@ -36,13 +36,13 @@ module API::V1::Hitung::Dapils::Resources
       end
       get "/region" do
         province = Province.find_by(code: params.province_code)
-        error!("Record Province tidak ditemukan", 422) unless province
+        error!("Provinsi tidak ditemukan", 422) unless province
 
         regency = Regency.find_by(code: params.regency_code)
-        error!("Record Regency tidak ditemukan", 422) unless regency
+        error!("Kabupaten tidak ditemukan", 422) unless regency
 
         district = District.find_by(code: params.district_code)
-        error!("Record District tidak ditemukan", 422) unless district
+        error!("Kecamatan tidak ditemukan", 422) unless district
 
         dapil = Dapil.by_wilayah params.tingkat, province, regency, district
         present dapil, with: API::V1::Hitung::Dapils::Entities::Dapil
