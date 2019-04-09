@@ -25,6 +25,7 @@ module API::V1::Hitung::RealCounts::Resources
         record = record.where(user_id: params.user_id) if params.user_id.present?
         record = record.joins(:calculations).where(village_code: params.village_code).where("hitung_calculations.calculation_type = ?", 4) if params.village_code.present?
         record = record.joins(:calculations).where("hitung_calculations.dapil_id = ?", params.dapil_id) if params.dapil_id.present?
+        record = record.order("hitung_real_counts.created_at desc")
         hitungs = paginate(record)
 
         present :real_counts, hitungs, with: API::V1::Hitung::RealCounts::Entities::RealCount
