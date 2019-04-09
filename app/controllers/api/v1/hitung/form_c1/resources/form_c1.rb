@@ -15,7 +15,7 @@ module API::V1::Hitung::FormC1::Resources
       get "/" do
         c1 = ::Hitung::FormC1.find_by hitung_real_count_id: params.hitung_real_count_id, form_c1_type: params.form_c1_type
 
-        error! "Belum ada", 404 if c1.nil?
+        error! "Data form C1 tidak ditemukan", 404 if c1.nil?
 
         present :form_c1, c1, with: API::V1::Hitung::FormC1::Entities::FormC1
       end
