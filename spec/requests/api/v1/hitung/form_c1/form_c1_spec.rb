@@ -38,6 +38,12 @@ RSpec.describe "Api::V1::Hitung::FormC1", type: :request do
       expect(response.status).to eq(404)
     end
 
+    it "should fail because validation" do
+      response, json_response = create_c1_failed "presiden", @hitung1.id
+
+      expect(response.status).to eq(422)
+    end
+
   end
 
   describe "Create 5 form C1" do
@@ -76,6 +82,34 @@ RSpec.describe "Api::V1::Hitung::FormC1", type: :request do
         surat_dikembalikan: 17,
         surat_tidak_digunakan: 18,
         surat_digunakan: 19,
+      }
+    [response, json_response]
+  end
+
+  def create_c1_failed form_type, hitung_id = @hitung1.id
+    put "/hitung/v1/form_c1/", headers: stub_auth_headers(@access_token),
+      params: {
+        hitung_real_count_id: hitung_id,
+        form_c1_type: form_type,
+        a3_laki_laki: 1,
+        a3_perempuan: 2,
+        a4_laki_laki: 3,
+        a4_perempuan: 4,
+        a_dpk_laki_laki: 5,
+        a_dpk_perempuan: 6,
+        c7_dpt_laki_laki: 7,
+        c7_dpt_perempuan: 8,
+        c7_dptb_laki_laki: 9,
+        c7_dptb_perempuan: 10,
+        c7_dpk_laki_laki: 11,
+        c7_dpk_perempuan: 12,
+        disabilitas_terdaftar_laki_laki: 13,
+        disabilitas_terdaftar_perempuan: 14,
+        disabilitas_hak_pilih_laki_laki: 15,
+        disabilitas_hak_pilih_perempuan: 16,
+        surat_dikembalikan: 300,
+        surat_tidak_digunakan: 200,
+        surat_digunakan: 100,
       }
     [response, json_response]
   end

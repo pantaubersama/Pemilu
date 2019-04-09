@@ -30,6 +30,9 @@ module API::V1::Hitung::FormC1::Resources
         authorize_merayakan!
         check_real_count_ownership! current_user, params.hitung_real_count_id
 
+        total = params.surat_dikembalikan.to_i + params.surat_tidak_digunakan.to_i + params.surat_digunakan.to_i
+        error! "Total suara (#{total}) melebihi 500", 422 if total > 500
+
         c1 = ::Hitung::FormC1.find_or_initialize_by hitung_real_count_id: params.hitung_real_count_id, form_c1_type: params.form_c1_type
 
         status = c1.update_attributes(c1_params)
