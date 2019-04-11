@@ -54,7 +54,7 @@ module API::V1::Helpers
   end
 
   def authorize_merayakan!
-    error!("Fitur merayakan tidak sedang dalam rentang waktu yang ditentukan", 403) if ENV["ENABLE_MERAYAKAN"].in?(["false", false])
+    error!("Lho! Bercanda, yaa? Pemilu aja belum mulai. Kok sudah submit data? 😝", 403) if ENV["ENABLE_MERAYAKAN"].in?(["false", false])
   end
 
   def question_filter(x)
