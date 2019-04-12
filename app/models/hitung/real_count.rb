@@ -38,7 +38,7 @@ class Hitung::RealCount < ApplicationRecord
         dpr_ri: images.where(image_type: "c1_dpr_ri").present? ? true : false,
         dpd: images.where(image_type: "c1_dpd").present? ? true : false,
         dprd_provinsi: images.where(image_type: "c1_dprd_provinsi").present? ? true : false,
-        dprd_kabupaten: images.where(image_type: "c1_dprb_kabupaten").present? ? true : false,
+        dprd_kabupaten: images.where(image_type: "c1_dprd_kabupaten").present? ? true : false,
         suasana_tps: images.where(image_type: "suasana_tps").present? ? true : false,
       }
     }
