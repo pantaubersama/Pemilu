@@ -19,7 +19,7 @@ module API::V1::Hitung::Images::Resources
       end
       params do
         optional :hitung_real_count_id
-        optional :image_type, values: ["", "c1_presiden", "c1_dpr_ri", "c1_dpd", "c1_dprd_provinsi", "c1_dprb_kabupaten", "suasana_tps"]
+        optional :image_type, values: ["", "c1_presiden", "c1_dpr_ri", "c1_dpd", "c1_dprd_provinsi", "c1_dprd_kabupaten", "suasana_tps"]
       end
       paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
       get "/" do
@@ -39,7 +39,7 @@ module API::V1::Hitung::Images::Resources
       params do
         requires :file, type: File
         requires :hitung_real_count_id, type: String
-        requires :image_type, type: String, values: ["c1_presiden", "c1_dpr_ri", "c1_dpd", "c1_dprd_provinsi", "c1_dprb_kabupaten", "suasana_tps"]
+        requires :image_type, type: String, values: ["c1_presiden", "c1_dpr_ri", "c1_dpd", "c1_dprd_provinsi", "c1_dprd_kabupaten", "suasana_tps"]
       end
       oauth2
       post "/" do
