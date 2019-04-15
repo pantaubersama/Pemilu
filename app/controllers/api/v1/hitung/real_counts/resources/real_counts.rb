@@ -76,7 +76,7 @@ module API::V1::Hitung::RealCounts::Resources
         headers AUTHORIZATION_HEADERS
       end
       params do
-        requires :tps, type: Integer, values: (1..9).to_a
+        requires :tps, type: Integer, values: (1..99).to_a
       end
       oauth2
       put "/:id" do
