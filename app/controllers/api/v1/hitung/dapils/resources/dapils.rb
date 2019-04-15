@@ -32,6 +32,7 @@ module API::V1::Hitung::Dapils::Resources
         requires :province_code, type: Integer, desc: "Province Code"
         requires :regency_code, type: Integer, desc: "Regency Code"
         requires :district_code, type: Integer, desc: "District Code"
+        optional :village_code, type: Integer, desc: "Village Code (Mandatory for DPRD Kabupaten)"
         requires :tingkat, type: String, values: %w[dpr provinsi kabupaten dpd], desc: "Tingkat Pemilihan"
       end
       get "/region" do
@@ -44,7 +45,9 @@ module API::V1::Hitung::Dapils::Resources
         district = District.find_by(code: params.district_code)
         error!("Kecamatan tidak ditemukan", 422) unless district
 
-        dapil = Dapil.by_wilayah params.tingkat, province, regency, district
+        village = Village.find_by(code: params.village_code)
+
+        dapil = Dapil.by_wilayah params.tingkat, province, regency, district, village
         present dapil, with: API::V1::Hitung::Dapils::Entities::Dapil
       end
     end

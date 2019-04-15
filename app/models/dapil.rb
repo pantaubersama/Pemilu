@@ -3,7 +3,7 @@ class Dapil < ApplicationRecord
 
   has_many :dapil_wilayahs, foreign_key: :idWilayah
 
-  def self.by_wilayah level, province, regency, district
+  def self.by_wilayah level, province, regency, district, village = nil
     case level
     when "dpd"
       dapil = Dapil.where(tingkat: 3, idWilayah: province.id_wilayah).first
@@ -24,9 +24,17 @@ class Dapil < ApplicationRecord
         dapil = query.last.dapil
       end
     when "kabupaten"
-      dapil = DapilWilayah.joins(:dapil)
+      query = DapilWilayah.joins(:dapil)
         .where(idWilayah: district.id_wilayah)
-        .where("dapils.tingkat = ?", 2).last.try(:dapil)
+        .where("dapils.tingkat = ?", 2)
+      if query.empty?
+        query = DapilWilayah.joins(:dapil)
+          .where(idWilayah: village.id_wilayah)
+          .where("dapils.tingkat = ?", 2)
+        dapil = query.last.dapil
+      else
+        dapil = query.last.dapil
+      end
     end
     dapil
   end
