@@ -10,7 +10,7 @@ class Hitung::RealCount < ApplicationRecord
   belongs_to :district, foreign_key: :district_code, optional: true
   belongs_to :village, foreign_key: :village_code, optional: true
 
-  validates_presence_of :province_code, :regency_code, :district_code, :village_code
+  validates_presence_of :province_code, :regency_code, :district_code
 
   def user
     User.find self.user_id
