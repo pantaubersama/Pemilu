@@ -8,7 +8,7 @@ module API::V1::Hitung::RealCounts::Entities
     expose :regency, using: API::V1::Hitung::Regencies::Entities::Regency
     expose :district_code, documentation: { type: Integer, required: true }
     expose :district, using: API::V1::Hitung::Districts::Entities::District
-    expose :village_code, documentation: { type: Integer, required: true }
+    expose :village_code, documentation: { type: Integer, required: false }
     expose :village, using: API::V1::Hitung::Villages::Entities::Village
     expose :latitude, documentation: { type: Float, required: true }
     expose :longitude, documentation: { type: Float, required: true }

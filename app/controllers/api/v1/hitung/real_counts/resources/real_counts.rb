@@ -54,8 +54,8 @@ module API::V1::Hitung::RealCounts::Resources
         d = District.find_by code: params.district_code, regency_code: params.regency_code
         error! "Kecamatan tidak ditemukan", 404 unless d
 
-        v = Village.find_by code: params.village_code, district_code: params.district_code
-        error! "Kelurahan tidak ditemukan", 404 unless v
+        v = Village.find_by code: params.village_code, district_code: params.district_code if params.village_code.present?
+        # error! "Kelurahan tidak ditemukan", 404 unless v
 
         status = hitung.save!
 
